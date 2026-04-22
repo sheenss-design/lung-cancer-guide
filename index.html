@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<meta name="description" content="NCCN 2025/2026 기준 폐암 바이오마커 검사 가이드 — 세포형별 우선순위, 변이유형별 표적치료제, PCR/FISH/IHC/NGS 검사법 비교">
+<meta property="og:title" content="폐암 바이오마커 검사 가이드">
+<meta property="og:description" content="NCCN Guidelines 2025/2026 기준 임상 참고용 인터랙티브 가이드">
+<meta property="og:type" content="website">
+<title>폐암 바이오마커 검사 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=DM+Mono:wght@400;500&family=Lora:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f6fa;
+  --bg2:#eef1f7;
+  --surface:#ffffff;
+  --surface2:#f8f9fc;
+  --surface3:#f0f3f8;
+  --border:#dde3ee;
+  --border2:#c8d1e4;
+  --text:#1a2233;
+  --text2:#4a5568;
+  --muted:#8a96aa;
+  --shadow:0 2px 12px rgba(30,50,100,.07);
+  --shadow2:0 4px 24px rgba(30,50,100,.12);
+
+  /* method colors */
+  --pcr:#0ea5e9;
+  --fish:#8b5cf6;
+  --ihc:#10b981;
+  --ngs:#f59e0b;
+
+  /* cancer type */
+  --ad:#2563eb;
+  --sq:#dc2626;
+  --lc:#7c3aed;
+  --sclc:#9333ea;
+
+  /* priority */
+  --p1:#16a34a;
+  --p2:#d97706;
+  --p3:#6b7280;
+
+  /* nature */
+  --dna:#0284c7;
+  --rna:#7c3aed;
+  --prot:#059669;
+  --dual:#d97706;
+  --quant:#db2777;
+
+  --radius:14px;
+  --radius-sm:8px;
+  --radius-xs:5px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.6}
+
+/* ── LAYOUT ── */
+.app{max-width:960px;margin:0 auto;padding:24px 16px 80px}
+
+/* ── HEADER ── */
+.header{margin-bottom:32px;padding:28px 28px 24px;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow2);border:1px solid var(--border);position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:linear-gradient(135deg,rgba(37,99,235,.07),rgba(14,165,233,.05));pointer-events:none}
+.header-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.badge-nccn{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:100px;background:#fefce8;border:1px solid #fde68a;color:#92400e;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.badge-live{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse-green 2s infinite}
+h1{font-family:'Lora',serif;font-size:clamp(22px,4vw,32px);font-weight:600;letter-spacing:-.01em;color:var(--text);margin-bottom:6px}
+h1 span{color:#2563eb}
+.subtitle{color:var(--text2);font-size:13px;line-height:1.7;max-width:580px}
+.header-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.meta-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;border:1px solid}
+.mc-blue{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8}
+.mc-green{background:#f0fdf4;border-color:#bbf7d0;color:#15803d}
+.mc-amber{background:#fffbeb;border-color:#fde68a;color:#b45309}
+
+/* ── TOP NAVIGATION TABS ── */
+.top-nav{display:flex;gap:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;box-shadow:var(--shadow)}
+.top-tab{flex:1;padding:12px 8px;text-align:center;font-size:13px;font-weight:600;cursor:pointer;border-right:1px solid var(--border);transition:all .2s;color:var(--muted);background:transparent;user-select:none}
+.top-tab:last-child{border-right:none}
+.top-tab.active{background:var(--ad);color:#fff;border-color:var(--ad)}
+.top-tab[data-main="sq"].active{background:var(--sq);border-color:var(--sq)}
+.top-tab[data-main="lc"].active{background:var(--lc);border-color:var(--lc)}
+.top-tab[data-main="sclc"].active{background:var(--sclc);border-color:var(--sclc)}
+.top-tab .tab-sub{font-size:10px;font-weight:400;opacity:.8;display:block;margin-top:1px}
+
+/* ── SUBTYPE INFO BANNER ── */
+.subtype-banner{padding:14px 18px;border-radius:var(--radius-sm);margin-bottom:20px;border:1px solid;display:flex;gap:12px;align-items:flex-start}
+.sb-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.sb-title{font-size:13px;font-weight:700;margin-bottom:3px}
+.sb-desc{font-size:12px;line-height:1.65;color:var(--text2)}
+.sb-ad{background:#eff6ff;border-color:#bfdbfe}
+.sb-sq{background:#fff1f2;border-color:#fecdd3}
+.sb-lc{background:#f5f3ff;border-color:#ddd6fe}
+.sb-sclc{background:#fdf4ff;border-color:#e9d5ff}
+
+/* ── FILTER ROW ── */
+.filter-section{margin-bottom:20px}
+.filter-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:block}
+.filter-chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:5px 13px;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);transition:all .18s;user-select:none;white-space:nowrap}
+.chip:hover{border-color:var(--border2);color:var(--text2)}
+.chip.on-all{background:#f0fdf4;border-color:var(--p1);color:var(--p1)}
+.chip.on-p1{background:#f0fdf4;border-color:var(--p1);color:var(--p1)}
+.chip.on-p2{background:#fffbeb;border-color:var(--p2);color:var(--p2)}
+.chip.on-pcr{background:#e0f2fe;border-color:var(--pcr);color:var(--pcr)}
+.chip.on-fish{background:#ede9fe;border-color:var(--fish);color:var(--fish)}
+.chip.on-ihc{background:#ecfdf5;border-color:var(--ihc);color:var(--ihc)}
+.chip.on-ngs{background:#fffbeb;border-color:var(--ngs);color:var(--ngs)}
+
+/* ── SUMMARY CARDS ── */
+.summary-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:24px}
+.sc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;box-shadow:var(--shadow)}
+.sc-num{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;line-height:1}
+.sc-lbl{font-size:11px;color:var(--text2);margin-top:3px}
+
+/* ── SECTION TITLE ── */
+.section-head{display:flex;align-items:center;gap:10px;margin:24px 0 12px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.section-head::after{content:'';flex:1;height:1px;background:var(--border)}
+.section-head .sh-count{background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:1px 8px;font-size:10px;color:var(--muted)}
+
+/* ── PRIORITY MARKER ── */
+.priority-strip{width:4px;flex-shrink:0;border-radius:4px 0 0 4px}
+.ps-1{background:var(--p1)}
+.ps-2{background:var(--p2)}
+.ps-3{background:var(--p3)}
+.ps-dx{background:var(--sclc)}
+
+/* ── CARD ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden;transition:box-shadow .2s,border-color .2s;display:flex}
+.card:hover{box-shadow:var(--shadow2);border-color:var(--border2)}
+.card.hidden{display:none}
+.card-main{flex:1;min-width:0}
+.card-header{display:flex;align-items:flex-start;justify-content:space-between;padding:15px 16px;cursor:pointer;gap:10px}
+.card-left{flex:1;min-width:0}
+.card-top-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px}
+.marker-name{font-family:'DM Mono',monospace;font-size:16px;font-weight:500;color:var(--text)}
+.priority-badge{font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:4px}
+.pb-1{background:#dcfce7;color:#15803d;border:1px solid #86efac}
+.pb-2{background:#fef3c7;color:#92400e;border:1px solid #fcd34d}
+.pb-3{background:#f3f4f6;color:#6b7280;border:1px solid #d1d5db}
+.pb-cond{background:#e0f2fe;border:1px solid #7dd3fc;color:#0369a1}
+.nccn-badge-sm{font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px}
+.nb-cat1{background:#fef9c3;border:1px solid #fde047;color:#713f12}
+.nb-cat2{background:#f3f4f6;border:1px solid #d1d5db;color:#6b7280}
+.nb-new{background:#dcfce7;border:1px solid #86efac;color:#14532d}
+.nature-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;letter-spacing:.04em}
+.nat-dna{background:#e0f2fe;border:1px solid #7dd3fc;color:#0369a1}
+.nat-rna{background:#ede9fe;border:1px solid #c4b5fd;color:#5b21b6}
+.nat-prot{background:#ecfdf5;border:1px solid #6ee7b7;color:#065f46}
+.nat-dual{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}
+.nat-quant{background:#fdf2f8;border:1px solid #f0abfc;color:#701a75}
+.marker-full-name{font-size:11px;color:var(--muted);margin-bottom:8px}
+.method-mini{display:flex;gap:5px;flex-wrap:wrap}
+.mm{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px}
+.mm-pcr{background:#e0f2fe;color:var(--pcr)}
+.mm-fish{background:#ede9fe;color:var(--fish)}
+.mm-ihc{background:#ecfdf5;color:var(--ihc)}
+.mm-ngs{background:#fef3c7;color:#b45309}
+.mm-primary{outline:1.5px solid currentColor}
+.card-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+.expand-btn{width:26px;height:26px;border-radius:6px;background:var(--surface3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--muted);transition:all .22s;cursor:pointer;flex-shrink:0}
+.card.open .expand-btn{background:#eff6ff;border-color:#93c5fd;color:var(--ad);transform:rotate(45deg)}
+.time-mini{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;padding:2px 7px;border-radius:4px}
+.tm-fast{background:#dcfce7;color:#15803d}
+.tm-mid{background:#fef3c7;color:#92400e}
+.tm-slow{background:#fee2e2;color:#b91c1c}
+
+/* ── CARD BODY ── */
+.card-body{display:none;padding:16px;border-top:1px solid var(--border);background:var(--surface2)}
+.card.open .card-body{display:block}
+.cb-section{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:14px 0 7px;display:flex;align-items:center;gap:8px}
+.cb-section::after{content:'';flex:1;height:1px;background:var(--border)}
+.cb-section:first-child{margin-top:0}
+
+/* Nature explanation box */
+.nature-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:4px}
+.nb-row{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px}
+.nb-row:last-child{margin-bottom:0}
+.nb-icon{font-size:18px;flex-shrink:0}
+.nb-content .nb-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px}
+.nb-content .nb-text{font-size:12px;color:var(--text2);line-height:1.65}
+
+/* Desc */
+.desc-text{font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:4px}
+
+/* Detail grid */
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px}
+@media(max-width:480px){.detail-grid{grid-template-columns:1fr}}
+.di{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px}
+.di-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.di-val{font-size:12px;color:var(--text);line-height:1.55}
+.di.span2{grid-column:1/-1}
+
+/* Mutation table */
+.mut-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:4px;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border)}
+.mut-table th{background:var(--surface3);padding:8px 10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)}
+.mut-table td{padding:9px 10px;border-bottom:1px solid #eef1f7;color:var(--text2);vertical-align:top;line-height:1.5}
+.mut-table tr:last-child td{border-bottom:none}
+.mut-table tr:hover td{background:#f8faff}
+.mut-type{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--text)}
+.drug-chip{display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;margin:1px;white-space:nowrap}
+.drug-chip.warn{background:#fff1f2;border-color:#fecdd3;color:#9f1239}
+.drug-chip.neutral{background:#f3f4f6;border-color:#d1d5db;color:#6b7280}
+.drug-chip.new{background:#dcfce7;border-color:#86efac;color:#15803d}
+.line-badge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:700;margin-right:3px}
+.line-1{background:#dcfce7;color:#15803d}
+.line-2{background:#fef3c7;color:#92400e}
+.line-no{background:#fee2e2;color:#b91c1c}
+
+/* Method table */
+.method-table{width:100%;border-collapse:collapse;font-size:12px;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border)}
+.method-table th{background:var(--surface3);padding:8px 10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)}
+.method-table td{padding:8px 10px;border-bottom:1px solid #eef1f7;color:var(--text2);vertical-align:top;line-height:1.55}
+.method-table tr:last-child td{border-bottom:none}
+.method-name{font-weight:700;white-space:nowrap;font-size:11px}
+.mname-pcr{color:var(--pcr)}
+.mname-fish{color:var(--fish)}
+.mname-ihc{color:var(--ihc)}
+.mname-ngs{color:#b45309}
+.apply-icon{display:inline-flex;width:20px;height:20px;border-radius:4px;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.ai-primary{background:#fef9c3;color:#92400e;border:1px solid #fde047}
+.ai-yes{background:#dcfce7;color:#15803d;border:1px solid #86efac}
+.ai-no{background:#f9fafb;color:#d1d5db;border:1px solid #e5e7eb}
+
+/* SCLC dx markers */
+.dx-card{background:var(--surface);border:1px solid #e9d5ff;border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:7px}
+.dx-marker-name{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:#7c3aed;margin-bottom:3px}
+.dx-marker-desc{font-size:12px;color:var(--text2);line-height:1.6}
+
+/* Strategy box */
+.strategy-box{background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border:1px solid #bae6fd;border-radius:var(--radius-sm);padding:12px 14px;margin-top:4px}
+.strategy-title{font-size:11px;font-weight:700;color:#0369a1;margin-bottom:5px;display:flex;align-items:center;gap:5px}
+.strategy-text{font-size:12px;color:#075985;line-height:1.65}
+
+/* Legend */
+.legend-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin-top:24px;box-shadow:var(--shadow)}
+.legend-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.legend-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px}
+.legend-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--text2)}
+.li-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+
+/* ── DRIVER MUTATION INFO BOX ── */
+.driver-info-box{background:#fff;border:1px solid #bfdbfe;border-radius:var(--radius-sm);margin-bottom:16px;overflow:hidden;box-shadow:var(--shadow)}
+.driver-info-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(135deg,#eff6ff,#e0f2fe);cursor:pointer;gap:10px;user-select:none}
+.driver-info-header-left{display:flex;align-items:center;gap:10px}
+.driver-info-title{font-size:13px;font-weight:700;color:#1e40af}
+.driver-info-subtitle{font-size:11px;color:#3b82f6;margin-top:1px}
+.driver-info-toggle{width:24px;height:24px;border-radius:6px;background:#dbeafe;border:1px solid #93c5fd;display:flex;align-items:center;justify-content:center;font-size:13px;color:#2563eb;transition:transform .22s;flex-shrink:0}
+.driver-info-box.open .driver-info-toggle{transform:rotate(45deg)}
+.driver-info-body{display:none;padding:16px}
+.driver-info-box.open .driver-info-body{display:block}
+.driver-compare-table{width:100%;border-collapse:collapse;font-size:12px;margin:10px 0;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border)}
+.driver-compare-table th{background:#eff6ff;padding:8px 10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#3b82f6;border-bottom:1px solid #bfdbfe}
+.driver-compare-table td{padding:8px 10px;border-bottom:1px solid #e0e7ff;color:var(--text2);vertical-align:top;line-height:1.55}
+.driver-compare-table tr:last-child td{border-bottom:none}
+.driver-compare-table tr:hover td{background:#f8faff}
+.driver-compare-table td:first-child{font-weight:600;color:var(--text)}
+.driver-flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:12px 0;padding:12px 14px;background:#f8faff;border:1px solid #dbeafe;border-radius:var(--radius-sm)}
+.flow-step{padding:5px 12px;border-radius:100px;font-size:11px;font-weight:600}
+.flow-arrow{color:#93c5fd;font-size:14px;font-weight:700}
+.fs-normal{background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc}
+.fs-mut{background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5}
+.fs-result{background:#fef3c7;color:#92400e;border:1px solid #fcd34d}
+.fs-cancer{background:#fee2e2;color:#9f1239;border:1px solid #fda4af}
+.fs-target{background:#dcfce7;color:#15803d;border:1px solid #86efac}
+.driver-addiction-box{background:linear-gradient(135deg,#fefce8,#fef9c3);border:1px solid #fde047;border-radius:var(--radius-sm);padding:12px 14px;margin:10px 0}
+.addiction-title{font-size:12px;font-weight:700;color:#713f12;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.addiction-text{font-size:12px;color:#78350f;line-height:1.7}
+.driver-examples{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-top:10px}
+.de-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px}
+.de-gene{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:#2563eb;margin-bottom:3px}
+.de-desc{font-size:11px;color:var(--text2);line-height:1.55}
+.driver-note-box{background:#f0fdf4;border:1px solid #86efac;border-radius:var(--radius-sm);padding:10px 14px;margin-top:10px;font-size:12px;color:#14532d;line-height:1.65}
+.driver-note-box strong{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;color:#15803d}
+
+/* ── IMMUNE BIOMARKER INFO BOX ── */
+.immune-info-box{background:#fff;border:1px solid #a7f3d0;border-radius:var(--radius-sm);margin-bottom:16px;overflow:hidden;box-shadow:var(--shadow)}
+.immune-info-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(135deg,#f0fdf4,#dcfce7);cursor:pointer;gap:10px;user-select:none}
+.immune-info-header-left{display:flex;align-items:center;gap:10px}
+.immune-info-title{font-size:13px;font-weight:700;color:#15803d}
+.immune-info-subtitle{font-size:11px;color:#16a34a;margin-top:1px}
+.immune-info-toggle{width:24px;height:24px;border-radius:6px;background:#bbf7d0;border:1px solid #6ee7b7;display:flex;align-items:center;justify-content:center;font-size:13px;color:#15803d;transition:transform .22s;flex-shrink:0}
+.immune-info-box.open .immune-info-toggle{transform:rotate(45deg)}
+.immune-info-body{display:none;padding:16px}
+.immune-info-box.open .immune-info-body{display:block}
+.immune-compare-table{width:100%;border-collapse:collapse;font-size:12px;margin:10px 0;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border)}
+.immune-compare-table th{background:#f0fdf4;padding:8px 10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#16a34a;border-bottom:1px solid #bbf7d0}
+.immune-compare-table td{padding:8px 10px;border-bottom:1px solid #ecfdf5;color:var(--text2);vertical-align:top;line-height:1.55}
+.immune-compare-table tr:last-child td{border-bottom:none}
+.immune-compare-table tr:hover td{background:#f0fdf4}
+.immune-compare-table td:first-child{font-weight:600;color:var(--text)}
+.immune-mechanism-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+@media(max-width:480px){.immune-mechanism-grid{grid-template-columns:1fr}}
+.imm-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 13px}
+.imm-card-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.imm-card-text{font-size:11px;color:var(--text2);line-height:1.65}
+.imm-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px}
+.imm-b-pdl1{background:#dcfce7;color:#15803d;border:1px solid #86efac}
+.imm-b-tmb{background:#fdf4ff;color:#701a75;border:1px solid #e879f9}
+.imm-b-stk11{background:#fff7ed;color:#9a3412;border:1px solid #fdba74}
+.immune-key-point{background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border:1px solid #6ee7b7;border-radius:var(--radius-sm);padding:12px 14px;margin:10px 0}
+.key-point-title{font-size:12px;font-weight:700;color:#15803d;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.key-point-text{font-size:12px;color:#166534;line-height:1.7}
+.immune-note-box{background:#f0fdf4;border:1px solid #86efac;border-radius:var(--radius-sm);padding:10px 14px;margin-top:10px;font-size:12px;color:#14532d;line-height:1.65}
+.immune-note-box strong{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;color:#15803d}
+
+/* ── SCLC SECTION INFO BOXES ── */
+.sclc-info-box{background:#fff;border-radius:var(--radius-sm);margin-bottom:16px;overflow:hidden;box-shadow:var(--shadow)}
+.sclc-info-box.dx-theme{border:1px solid #ddd6fe}
+.sclc-info-box.target-theme{border:1px solid #bae6fd}
+.sclc-info-box.ref-theme{border:1px solid #d1fae5}
+.sclc-info-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;gap:10px;user-select:none}
+.sclc-info-box.dx-theme .sclc-info-header{background:linear-gradient(135deg,#f5f3ff,#ede9fe)}
+.sclc-info-box.target-theme .sclc-info-header{background:linear-gradient(135deg,#f0f9ff,#e0f2fe)}
+.sclc-info-box.ref-theme .sclc-info-header{background:linear-gradient(135deg,#f0fdf4,#dcfce7)}
+.sclc-info-left{display:flex;align-items:center;gap:10px}
+.sclc-info-title{font-size:13px;font-weight:700}
+.sclc-info-box.dx-theme .sclc-info-title{color:#5b21b6}
+.sclc-info-box.target-theme .sclc-info-title{color:#0369a1}
+.sclc-info-box.ref-theme .sclc-info-title{color:#15803d}
+.sclc-info-sub{font-size:11px;margin-top:1px;opacity:.8}
+.sclc-info-toggle{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;transition:transform .22s;flex-shrink:0;border:1px solid}
+.sclc-info-box.dx-theme .sclc-info-toggle{background:#ede9fe;border-color:#c4b5fd;color:#5b21b6}
+.sclc-info-box.target-theme .sclc-info-toggle{background:#e0f2fe;border-color:#7dd3fc;color:#0369a1}
+.sclc-info-box.ref-theme .sclc-info-toggle{background:#dcfce7;border-color:#6ee7b7;color:#15803d}
+.sclc-info-box.open .sclc-info-toggle{transform:rotate(45deg)}
+.sclc-info-body{display:none;padding:16px;border-top:1px solid}
+.sclc-info-box.dx-theme .sclc-info-body{border-color:#ddd6fe}
+.sclc-info-box.target-theme .sclc-info-body{border-color:#bae6fd}
+.sclc-info-box.ref-theme .sclc-info-body{border-color:#d1fae5}
+.sclc-info-box.open .sclc-info-body{display:block}
+.sclc-compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+@media(max-width:480px){.sclc-compare-grid{grid-template-columns:1fr}}
+.sclc-cg-item{border-radius:var(--radius-sm);padding:11px 13px;border:1px solid}
+.sclc-cg-item.dx{background:#f5f3ff;border-color:#ddd6fe}
+.sclc-cg-item.target{background:#f0f9ff;border-color:#bae6fd}
+.sclc-cg-item.ref{background:#f0fdf4;border-color:#d1fae5}
+.sclc-cg-title{font-size:11px;font-weight:700;margin-bottom:4px}
+.sclc-cg-item.dx .sclc-cg-title{color:#5b21b6}
+.sclc-cg-item.target .sclc-cg-title{color:#0369a1}
+.sclc-cg-item.ref .sclc-cg-title{color:#15803d}
+.sclc-cg-text{font-size:11px;color:var(--text2);line-height:1.65}
+.sclc-nsclc-compare{width:100%;border-collapse:collapse;font-size:12px;margin:10px 0;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border)}
+.sclc-nsclc-compare th{padding:8px 10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--border)}
+.sclc-nsclc-compare th:first-child{background:#f5f3ff;color:#5b21b6}
+.sclc-nsclc-compare th:nth-child(2){background:#f0f9ff;color:#0369a1}
+.sclc-nsclc-compare th:nth-child(3){background:#f0fdf4;color:#15803d}
+.sclc-nsclc-compare td{padding:8px 10px;border-bottom:1px solid #eef1f7;color:var(--text2);vertical-align:top;line-height:1.5}
+.sclc-nsclc-compare tr:last-child td{border-bottom:none}
+.sclc-nsclc-compare tr:hover td{background:#fafbff}
+.sclc-nsclc-compare td:first-child{font-weight:600;color:var(--text)}
+
+@keyframes pulse-green{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.app>*{animation:fadeUp .35s ease both}
+.app>*:nth-child(2){animation-delay:.04s}
+.app>*:nth-child(3){animation-delay:.08s}
+.app>*:nth-child(4){animation-delay:.12s}
+.app>*:nth-child(5){animation-delay:.16s}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-eyebrow">
+    <span class="badge-nccn"><span class="badge-live"></span>NCCN Guidelines® 2025/2026</span>
+  </div>
+  <h1>폐암 <span>바이오마커</span> 검사 가이드</h1>
+  <p class="subtitle">세포형별 검사 우선순위 · 변이유형별 표적치료제 · 바이오마커 특성 · 검사법 비교</p>
+  <div class="header-meta">
+    <span class="meta-chip mc-blue">NSCLC v3.2026</span>
+    <span class="meta-chip mc-green">SCLC v2.2026</span>
+    <span class="meta-chip mc-amber">검체 절약 전략 포함</span>
+  </div>
+</div>
+
+<!-- TOP NAV -->
+<div class="top-nav" id="topNav">
+  <div class="top-tab active" data-main="ad" onclick="switchMain('ad',this)">선암종<span class="tab-sub">Adenocarcinoma</span></div>
+  <div class="top-tab" data-main="sq" onclick="switchMain('sq',this)">편평세포암<span class="tab-sub">Squamous Cell</span></div>
+  <div class="top-tab" data-main="lc" onclick="switchMain('lc',this)">대세포암<span class="tab-sub">Large Cell / NOS</span></div>
+  <div class="top-tab" data-main="sclc" onclick="switchMain('sclc',this)">소세포암<span class="tab-sub">SCLC</span></div>
+</div>
+
+<!-- SUBTYPE BANNER -->
+<div id="subtypeBanner"></div>
+
+<!-- FILTERS -->
+<div class="filter-section" id="filterSection">
+  <span class="filter-label">검사 방법 필터</span>
+  <div class="filter-chips" id="filterChips">
+    <div class="chip on-all" onclick="filterMethod(this,'all')">전체</div>
+    <div class="chip" onclick="filterMethod(this,'PCR')">PCR / Real-time PCR</div>
+    <div class="chip" onclick="filterMethod(this,'FISH')">FISH</div>
+    <div class="chip" onclick="filterMethod(this,'IHC')">IHC</div>
+    <div class="chip" onclick="filterMethod(this,'NGS')">NGS 패널</div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div class="summary-row" id="summaryRow"></div>
+
+<!-- CARDS -->
+<div id="cardsArea"></div>
+
+<!-- LEGEND -->
+<div class="legend-box">
+  <div class="legend-title">범례 (Legend)</div>
+  <div class="legend-grid">
+    <div class="legend-item"><div class="li-dot" style="background:var(--p1)"></div>필수 1순위 바이오마커</div>
+    <div class="legend-item"><div class="li-dot" style="background:var(--p2)"></div>2순위 / 조건부 검사</div>
+    <div class="legend-item"><div class="li-dot" style="background:var(--p3)"></div>참고 / 불필요</div>
+    <div class="legend-item"><div class="li-dot" style="background:var(--dna)"></div>DNA 변이 바이오마커</div>
+    <div class="legend-item"><div class="li-dot" style="background:var(--rna)"></div>RNA 융합/이상 바이오마커</div>
+    <div class="legend-item"><div class="li-dot" style="background:var(--prot)"></div>단백질 발현 바이오마커</div>
+    <div class="legend-item"><div class="li-dot" style="background:var(--dual)"></div>이중 속성 (DNA+단백질)</div>
+    <div class="legend-item"><div class="li-dot" style="background:var(--quant)"></div>정량적 DNA 바이오마커</div>
+    <div class="legend-item"><div class="li-dot" style="background:var(--pcr)"></div>PCR 검사</div>
+    <div class="legend-item"><div class="li-dot" style="background:var(--fish)"></div>FISH 검사</div>
+    <div class="legend-item"><div class="li-dot" style="background:var(--ihc)"></div>IHC 검사</div>
+    <div class="legend-item"><div class="li-dot" style="background:var(--ngs)"></div>NGS 패널</div>
+    <div class="legend-item"><div class="li-dot" style="background:#92400e"></div>★ 1차 권고 검사법</div>
+    <div class="legend-item"><div class="li-dot" style="background:#15803d"></div>✔ 적용 가능</div>
+  </div>
+</div>
+
+</div><!-- .app -->
+
+<script>
+/* ============================================================
+   BIOMARKER DATA
+   ============================================================ */
+
+// nature: dna | rna | prot | dual | quant
+// priority per subtype: 1=필수, 2=조건부/2순위, 3=불필요
+// methods: apply, primary, notes
+// mutations: [{type, freq, drugs:[{name,line,note}], note}]
+
+const MARKERS = [
+  /* ── EGFR ── */
+  {
+    id:'egfr', name:'EGFR', full:'표피성장인자수용체 (Epidermal Growth Factor Receptor)',
+    nature:'dna', nccn:'cat1',
+    priority:{ad:1, sq:2, lc:1, sclc:0},
+    priorityNote:{sq:'비흡연자·소량생검·혼합조직형 시만 검사', sclc:'해당 없음'},
+    methods:{
+      PCR:{apply:true, primary:true,  note:'Real-time PCR(qPCR) — classical mutation(Exon19/21) 신속 검출. 당일~1일. 저렴하나 uncommon/novel 변이 검출 어려움. RT-PCR(역전사 포함)은 RNA 융합 검출용으로 EGFR에는 해당 없음.'},
+      FISH:{apply:false, primary:false, note:'EGFR 증폭 평가 시에만 사용. 일반적 점돌연변이 검출 목적 아님.'},
+      IHC:{apply:false, primary:false, note:'돌연변이 단백 발현 검출 가능하나 민감도·특이도 불충분 — 권고 안 함.'},
+      NGS:{apply:true, primary:false, note:'DNA panel: 모든 exon 변이 동시 검출. 내성 기전 파악. 2차 치료 전환 시 특히 유용. 7~14일 소요.'}
+    },
+    time:'3–5일(PCR) / 7–14일(NGS)', timeCls:'tm',
+    natureDesc:'DNA 수준의 점돌연변이(SNV) 및 결실(indel)을 표적으로 합니다. Exon 19 결실, Exon 21 L858R 등 DNA 염기서열 변화가 직접적 치료 표적입니다.',
+    assayPrinciple:'Real-time PCR: 특이적 프로브로 변이 DNA를 실시간 형광 검출. 민감도 높고 신속. DNA NGS: 여러 유전자를 병렬 염기서열 분석.',
+    sample:'FFPE 조직(우선) / 액체생검(ctDNA) — 동시 검사 권고',
+    freq:'아시아인 선암: 40–50% / 서양인: 10–15%',
+    guideline:'NCCN Category 1 — 모든 전이성 선암·대세포암·NOS 필수',
+    note:'조직과 혈액(ctDNA) 동시 검사로 검출률 향상. EGFR 양성 시 다른 드라이버 변이는 거의 없음.',
+    mutations:[
+      {type:'Classical — Exon 19 결실 / Exon 21 L858R', freq:'전체 EGFR의 ~85%',
+       drugs:[{name:'오시머티닙',line:'1차',note:'Preferred, Category 1 (FLAURA)'},{name:'오시머티닙+화학요법',line:'1차',note:'Preferred, Category 1 (FLAURA2)'},{name:'아미반타맙+라제르티닙',line:'1차',note:'Preferred, Category 1 (MARIPOSA)'},{name:'다코미티닙',line:'1차',note:'Category 1'},{name:'아파티닙',line:'1차',note:'Category 1'},{name:'게피티닙',line:'1차',note:'Category 1'},{name:'엘로티닙',line:'1차',note:'Category 1'},{name:'엘로티닙+라무시루맙',line:'1차',note:'Category 1'},{name:'엘로티닙+베바시주맙',line:'1차',note:'Category 1'},{name:'다토포타맙 데룩스테칸(Dato-DXd)',line:'2차',note:'Preferred 2차 — 오시머티닙+화학요법 후 진행 시'}],
+       note:'오시머티닙 단독·화학요법 병용·아미반타맙+라제르티닙 세 가지가 현재 Preferred 1차 치료. Dato-DXd가 2026 NCCN에서 2차 Preferred로 신규 추가.'},
+      {type:'Uncommon — S768I / L861Q / G719X', freq:'전체 EGFR의 ~10%',
+       drugs:[{name:'아파티닙',line:'1차',note:'Preferred, 가장 근거 충분'},{name:'오시머티닙',line:'1차',note:'Category 1'}],
+       note:'Classical TKI(게피티닙·엘로티닙)는 이 변이에서 효과 제한적.'},
+      {type:'Exon 20 삽입 (Insertion)', freq:'전체 EGFR의 ~5%',
+       drugs:[{name:'아미반타맙+화학요법',line:'1차',note:'Category 1, FDA 2023'},{name:'모보세르티닙',line:'2차',note:'Category 2A'},{name:'오시머티닙',line:'불가',note:'효과 없음'}],
+       note:'Classical TKI에 내성. 완전히 다른 치료 전략 필요. 오시머티닙 사용 금기.'},
+      {type:'T790M (획득 내성)', freq:'1/2세대 TKI 진행 후 ~50%',
+       drugs:[{name:'오시머티닙',line:'2차',note:'Category 1, 1/2세대 TKI 내성 후'}],
+       note:'1차 치료 대상 아님. 1/2세대 TKI 진행 후 재생검으로 확인하는 내성 변이.'}
+    ]
+  },
+
+  /* ── ALK ── */
+  {
+    id:'alk', name:'ALK', full:'역형성 림프종 인산화효소 (Anaplastic Lymphoma Kinase)',
+    nature:'rna', nccn:'cat1',
+    priority:{ad:1, sq:2, lc:1, sclc:0},
+    priorityNote:{sq:'비흡연자·소량생검·혼합조직형 시만 검사'},
+    methods:{
+      PCR:{apply:false, primary:false, note:'RT-PCR(역전사PCR)로 RNA 융합전사체 검출 가능하나 novel 파트너 검출 어려워 NCCN 단독 사용 불권고.'},
+      FISH:{apply:true, primary:false, note:'Vysis Break-apart FISH — 전통적 FDA 승인 동반진단. DNA 수준에서 ALK 유전자 분리(rearrangement) 확인. RNA 융합전사체를 직접 보는 것 아님. 3~5일.'},
+      IHC:{apply:true, primary:true, note:'VENTANA D5F3 클론: 융합으로 인한 단백 과발현 검출. 높은 민감도·특이도로 단독 진단도 가능한 예외적 경우. 2~3일. 가장 빠른 스크리닝.'},
+      NGS:{apply:true, primary:false, note:'RNA-based fusion panel: 모든 파트너 검출, 내성 기전 파악. DNA NGS는 ALK 융합 검출 불완전. 7~14일.'}
+    },
+    time:'2–3일(IHC) / 3–5일(FISH) / 7–14일(NGS)', timeCls:'tm',
+    natureDesc:'RNA 융합전사체(EML4-ALK 등)가 실제 종양유전자 역할을 합니다. DNA 수준에서는 유전자 재배열로 나타나고, 단백 수준에서는 ALK 과발현으로 나타납니다. IHC로 단백을 보는 간접 검출이 특이도가 높은 예외적 바이오마커입니다.',
+    assayPrinciple:'IHC: D5F3 항체로 ALK 단백 과발현 검출(스크리닝+확진 가능). FISH: DNA 프로브로 ALK 유전자 분리 확인. RNA NGS: 융합전사체 직접 검출(가장 포괄적).',
+    sample:'FFPE 조직 (IHC 스크리닝 우선) / ctDNA',
+    freq:'NSCLC 선암: 3–7%',
+    guideline:'NCCN Category 1 · FDA 동반진단: VENTANA D5F3(IHC), Vysis ALK FISH',
+    note:'알렉티닙: 1차 치료 및 완전절제 후 보조치료 Category 1(2024). 내성 후 재생검 중요.',
+    mutations:[
+      {type:'EML4-ALK 및 기타 융합 (1차 치료)', freq:'NSCLC 선암 3–7%',
+       drugs:[{name:'알렉티닙',line:'1차',note:'Preferred, 보조치료도 Cat.1'},{name:'브리가티닙',line:'1차',note:'Category 1'},{name:'로라티닙',line:'1차',note:'Category 1'},{name:'크리조티닙',line:'1차',note:'Category 1, 구세대'}],
+       note:'1차 치료는 융합 파트너 무관하게 동일한 약제 선택.'},
+      {type:'G1202R, L1196M (단독 내성 변이)', freq:'진행 후 발생',
+       drugs:[{name:'로라티닙',line:'2차',note:'효과 있음'}],
+       note:'1/2세대 TKI 진행 후 재생검으로 확인.'},
+      {type:'L1196M/G1202R 복합 내성 변이', freq:'드묾',
+       drugs:[{name:'임상시험',line:'2차',note:'로라티닙 효과 제한'}],
+       note:'복합 내성은 현재 승인된 표적치료 제한적.'}
+    ]
+  },
+
+  /* ── ROS1 ── */
+  {
+    id:'ros1', name:'ROS1', full:'ROS Proto-Oncogene 1',
+    nature:'rna', nccn:'cat1',
+    priority:{ad:1, sq:3, lc:1, sclc:0},
+    priorityNote:{sq:'발생 빈도 매우 낮아 일상 검사 불필요'},
+    methods:{
+      PCR:{apply:false, primary:false, note:'RT-PCR 가능하나 다양한 융합 파트너 커버 어려워 단독 사용 불권고.'},
+      FISH:{apply:true, primary:false, note:'Break-apart FISH — 전통적 방법. FIG-ROS1 변이는 검출 어려움. RNA NGS로 점차 대체 중. 5~7일.'},
+      IHC:{apply:false, primary:false, note:'민감도 있으나 특이도 낮아 단독 확진 불가. 일부 기관 스크리닝 목적 사용.'},
+      NGS:{apply:true, primary:true, note:'RNA-based fusion panel: FIG-ROS1 포함 모든 파트너 검출. NCCN 우선 권고. 7~14일.'}
+    },
+    time:'5–7일(FISH) / 7–14일(NGS)', timeCls:'tm',
+    natureDesc:'RNA 융합전사체(CD74-ROS1 등)가 종양유전자 역할을 합니다. FISH는 DNA 수준의 재배열을 간접 확인하고, RNA NGS는 융합전사체를 직접 검출합니다. FIG-ROS1 변이는 FISH에서 유전자 분리가 나타나지 않아 DNA/FISH로 검출 불가.',
+    assayPrinciple:'RNA NGS: 역전사 후 융합전사체 직접 염기서열 분석. FISH: DNA 수준의 유전자 재배열 간접 확인. FIG-ROS1은 inversion이라 FISH break-apart로 잡히지 않음.',
+    sample:'FFPE 조직 / RNA-based NGS 권장',
+    freq:'NSCLC: 1–2%',
+    guideline:'NCCN Category 1 · FDA 승인: 크리조티닙, 엔트렉티닙, 레포트렉티닙',
+    note:'EGFR/ALK 변이와 상호 배타적. 레포트렉티닙이 뇌전이에서도 효과 우수.',
+    mutations:[
+      {type:'CD74-ROS1 등 융합 (1차 치료)', freq:'NSCLC 1–2%',
+       drugs:[{name:'레포트렉티닙',line:'1차',note:'Preferred, 2024 추가'},{name:'엔트렉티닙',line:'1차',note:'뇌전이 포함'},{name:'크리조티닙',line:'1차',note:'Category 1'}],
+       note:'레포트렉티닙이 2024 NCCN에서 preferred 1차 치료로 추가.'},
+      {type:'G2032R (획득 내성, 용매 노출 변이)', freq:'진행 후 발생',
+       drugs:[{name:'임상시험',line:'2차',note:'로라티닙 일부 효과'}],
+       note:'내성 후 재생검으로 확인 권장.'}
+    ]
+  },
+
+  /* ── KRAS ── */
+  {
+    id:'kras', name:'KRAS', full:'Kirsten Rat Sarcoma 바이러스 종양유전자',
+    nature:'dna', nccn:'cat1',
+    priority:{ad:1, sq:2, lc:1, sclc:0},
+    priorityNote:{sq:'편평암에서 ~5%. 낮으나 G12C 표적치료 가능하여 검사 권고'},
+    methods:{
+      PCR:{apply:true, primary:false, note:'G12C 특이 Real-time PCR: 신속(당일~1일), 저렴. G12C 외 변이(G12V, G12D 등) 검출 불가. G12C 확인 목적으로만 사용 가능.'},
+      FISH:{apply:false, primary:false, note:'사용하지 않음.'},
+      IHC:{apply:false, primary:false, note:'사용하지 않음.'},
+      NGS:{apply:true, primary:true, note:'모든 KRAS 변이 아형 검출. 동반변이(STK11, KEAP1) 동시 확인 — 면역항암 효과 예측에 필수. 7~14일.'}
+    },
+    time:'1–2일(PCR) / 7–14일(NGS)', timeCls:'tf',
+    natureDesc:'DNA 점돌연변이(codon 12, 13)로 GTPase 활성이 항구적으로 켜지는 종양유전자입니다. 변이 아형(G12C vs 기타)에 따라 표적치료 가능 여부가 완전히 달라집니다.',
+    assayPrinciple:'Real-time PCR: G12C 특이 프로브로 신속 검출. NGS: KRAS 전체 coding region 분석으로 모든 아형 파악 및 동반변이 확인.',
+    sample:'FFPE 조직 / ctDNA',
+    freq:'서양인 선암: ~30% / 아시아인: 10–15%',
+    guideline:'NCCN Category 1 · G12C: FDA 승인 소토라십, 아다그라십 (2차 치료)',
+    note:'EGFR/ALK/ROS1 음성 확인에도 활용. STK11/KEAP1 동반변이 시 면역항암제 효과 감소.',
+    mutations:[
+      {type:'G12C', freq:'전체 KRAS의 ~40%',
+       drugs:[{name:'1차: 면역항암(±화학요법)',line:'1차',note:'G12C라도 1차는 면역항암 우선'},{name:'소토라십',line:'2차',note:'FDA 승인'},{name:'아다그라십',line:'2차',note:'FDA 승인'}],
+       note:'G12C 억제제는 2차 치료 권고. 1차 치료는 PD-L1 수준에 따른 면역항암요법.'},
+      {type:'G12D, G12V, G13D 등', freq:'전체 KRAS의 ~60%',
+       drugs:[{name:'표적치료 없음',line:'불가',note:'임상시험 단계'}],
+       note:'현재 승인된 표적치료 없음. 면역항암요법+화학요법으로 치료.'}
+    ]
+  },
+
+  /* ── BRAF ── */
+  {
+    id:'braf', name:'BRAF', full:'B-Raf 프로토종양유전자',
+    nature:'dna', nccn:'cat1',
+    priority:{ad:1, sq:2, lc:1, sclc:0},
+    priorityNote:{sq:'Category 2A — 소량생검·혼합조직형 시 검사 권고'},
+    methods:{
+      PCR:{apply:true, primary:false, note:'V600E 특이 Real-time PCR: 신속 검출 가능. non-V600E 변이 검출 불가. V600E 여부만 확인하는 경우 사용.'},
+      FISH:{apply:false, primary:false, note:'사용하지 않음.'},
+      IHC:{apply:false, primary:false, note:'VE1 항체로 V600E 단백 발현 검출 가능하나 확진용 아님.'},
+      NGS:{apply:true, primary:true, note:'전체 BRAF 변이 스펙트럼(V600E + non-V600E) 동시 파악. 7~14일.'}
+    },
+    time:'1–2일(PCR) / 7–14일(NGS)', timeCls:'tf',
+    natureDesc:'DNA 점돌연변이로 MAPK 신호전달경로를 항구적으로 활성화하는 종양유전자입니다. V600E 여부가 표적치료 가능 여부를 결정합니다.',
+    assayPrinciple:'Real-time PCR: V600E 특이 프로브. NGS: BRAF kinase domain 전체 분석으로 V600E 및 non-V600E 변이 모두 검출.',
+    sample:'FFPE 조직 / ctDNA',
+    freq:'NSCLC: 2–4% (V600E 약 50%)',
+    guideline:'NCCN Category 1 (선암, 대세포, NOS) · 2A (편평암 소량생검·혼합조직)',
+    note:'BRAF V600E: 다브라페닙+트라메티닙 병용요법. non-V600E는 표적치료 없음.',
+    mutations:[
+      {type:'V600E', freq:'BRAF 변이의 ~50%',
+       drugs:[{name:'다브라페닙+트라메티닙',line:'1차',note:'병용요법 Category 1, FDA 승인'}],
+       note:'MEK 억제제 트라메티닙 동시 사용으로 내성 지연.'},
+      {type:'non-V600E (G469A, D594G 등)', freq:'BRAF 변이의 ~50%',
+       drugs:[{name:'표적치료 없음',line:'불가',note:'임상시험 단계'}],
+       note:'현재 승인된 표적치료 없음.'}
+    ]
+  },
+
+  /* ── MET ── */
+  {
+    id:'met', name:'MET', full:'Mesenchymal-Epithelial Transition 인산화효소',
+    nature:'dual', nccn:'cat1',
+    priority:{ad:1, sq:2, lc:1, sclc:0},
+    priorityNote:{sq:'2~3% 발생. NGS 패널 포함 시 동시 검사 권고'},
+    methods:{
+      PCR:{apply:false, primary:false, note:'사용하지 않음 — METex14 splicing variant는 PCR로 검출 불가.'},
+      FISH:{apply:true, primary:false, note:'MET 증폭(copy number 증가) 평가에 사용. gene copy number/CEP7 ratio 계산. METex14 skip 검출 불가. 5~7일.'},
+      IHC:{apply:true, primary:false, note:'MET 단백 과발현 확인(c-Met 항체). 단독 확진 불가. METex14 skip과 증폭 여부와 상관관계 불완전.'},
+      NGS:{apply:true, primary:true, note:'RNA-based NGS: METex14 skip 최적 검출. DNA NGS: 증폭·점돌연변이. 두 방법 병행 권장. 7~14일.'}
+    },
+    time:'5–7일(FISH) / 7–14일(NGS)', timeCls:'tm',
+    natureDesc:'MET는 하나의 유전자 이름이지만 임상적으로 완전히 다른 세 가지 이상이 존재합니다: (1) RNA splicing 이상(METex14 skip), (2) DNA 복사수 증가(증폭), (3) 단백 과발현. 각각 기전·검사법·치료가 다릅니다.',
+    assayPrinciple:'RNA NGS: 역전사 후 exon 14 경계 부위 분석으로 splicing variant 검출(DNA만으로는 누락 가능). FISH: 형광 프로브로 copy number/centromere 비율 계산. IHC: 단백 발현 수준 반정량화.',
+    sample:'FFPE 조직 / RNA(METex14) / ctDNA',
+    freq:'METex14 skip: 3–4% / MET 고증폭(driver): 1–2% / EGFR 내성 후 MET 증폭: 5–20%',
+    guideline:'METex14 skip: NCCN Cat 1, FDA 승인(카프마티닙, 테포티닙) / MET 증폭: Emerging biomarker',
+    note:'EGFR 내성 후 MET 증폭 발생 시 오시머티닙+MET TKI 병용 가능(2024).',
+    mutations:[
+      {type:'METex14 skipping mutation (RNA splicing 이상)', freq:'NSCLC: 3–4%',
+       drugs:[{name:'테포티닙',line:'1차',note:'Category 1, FDA 승인'},{name:'카프마티닙',line:'1차',note:'Category 1, FDA 승인'}],
+       note:'RNA-based NGS로 검출. DNA NGS만으로는 누락 가능. 고령·흡연력 있는 선암에서 빈도 높음.'},
+      {type:'MET 고증폭 (de novo, DNA copy number ↑)', freq:'1–2%',
+       drugs:[{name:'크리조티닙',line:'임상',note:'일부 근거'},{name:'임상시험',line:'임상',note:'Emerging biomarker'}],
+       note:'FDA 승인 표적치료 없음. NCCN Emerging biomarker 분류.'},
+      {type:'MET 증폭 (EGFR TKI 내성 후 획득)', freq:'EGFR 내성 후 5–20%',
+       drugs:[{name:'오시머티닙+카프마티닙',line:'2차',note:'NCCN 2024 추가'},{name:'오시머티닙+테포티닙',line:'2차',note:'병용요법'}],
+       note:'EGFR 내성 기전으로 발생. 재생검 필수.'}
+    ]
+  },
+
+  /* ── RET ── */
+  {
+    id:'ret', name:'RET', full:'Rearranged during Transfection 원종양유전자',
+    nature:'rna', nccn:'cat1',
+    priority:{ad:1, sq:3, lc:1, sclc:0},
+    priorityNote:{sq:'발생 빈도 매우 낮아 일상 검사 불필요'},
+    methods:{
+      PCR:{apply:false, primary:false, note:'사용하지 않음 — 다양한 융합 파트너 커버 불가.'},
+      FISH:{apply:true, primary:false, note:'Break-apart FISH 가능. RNA NGS 대비 민감도 낮음. 5~7일.'},
+      IHC:{apply:false, primary:false, note:'사용하지 않음.'},
+      NGS:{apply:true, primary:true, note:'RNA-based fusion panel: KIF5B-RET 등 모든 파트너 검출. DNA panel 병행 시 민감도 향상. 7~14일.'}
+    },
+    time:'5–7일(FISH) / 7–14일(NGS)', timeCls:'tm',
+    natureDesc:'RNA 융합전사체(KIF5B-RET 등)가 종양유전자 역할을 합니다. 갑상선암의 RET 점돌연변이와 달리, 폐암에서는 융합이 주된 이상입니다. RNA NGS에서 가장 민감하게 검출됩니다.',
+    assayPrinciple:'RNA-based NGS: 역전사 후 RET 융합전사체 직접 분석. FISH: DNA 수준의 유전자 분리 간접 확인(민감도 낮음).',
+    sample:'FFPE 조직 / RNA-based NGS',
+    freq:'NSCLC: 1–2%',
+    guideline:'NCCN Category 1 · FDA 승인: 셀퍼카티닙, 프랄세티닙',
+    note:'젊은 비흡연 선암에서 발생. 뇌전이에서도 효과 우수.',
+    mutations:[
+      {type:'KIF5B-RET 등 융합 (1차 치료)', freq:'NSCLC 1–2%',
+       drugs:[{name:'셀퍼카티닙',line:'1차',note:'Category 1, FDA 승인'},{name:'프랄세티닙',line:'1차',note:'Category 1, FDA 승인'}],
+       note:'뇌전이 포함 우수한 효과. RNA NGS 기반 진단.'}
+    ]
+  },
+
+  /* ── NTRK ── */
+  {
+    id:'ntrk', name:'NTRK 1/2/3', full:'Neurotrophic Receptor Tyrosine Kinase',
+    nature:'rna', nccn:'cat1',
+    priority:{ad:1, sq:2, lc:1, sclc:0},
+    priorityNote:{sq:'빈도 낮으나 종양불문 승인으로 검사 권고'},
+    methods:{
+      PCR:{apply:false, primary:false, note:'사용하지 않음 — NTRK3 융합 파트너 매우 다양.'},
+      FISH:{apply:false, primary:false, note:'NTRK2 검출 어려움. RNA NGS로 대체.'},
+      IHC:{apply:true, primary:false, note:'Pan-TRK 항체(EPR17341) 스크리닝: 민감도 높음. 위양성 주의(NTRK3 융합 없는 경우도 양성 가능) → NGS 확인 필수. 2~3일.'},
+      NGS:{apply:true, primary:true, note:'RNA-based panel: NTRK1/2/3 모두 커버. 최적 방법. 7~14일.'}
+    },
+    time:'2–3일(IHC 스크리닝) / 7–14일(NGS)', timeCls:'tm',
+    natureDesc:'RNA 융합전사체(NTRK1/2/3)가 종양유전자 역할을 합니다. IHC로 단백 과발현을 스크리닝한 뒤 RNA NGS로 확진하는 2단계 워크플로우가 표준입니다. ALK와 유사한 접근이나 IHC 위양성이 더 높습니다.',
+    assayPrinciple:'IHC: pan-TRK 항체로 신경친화성 수용체 과발현 스크리닝(빠름). RNA NGS: 3개 유전자 모두 포괄하는 fusion 직접 검출(확진). DNA NGS만으로는 일부 변이 누락.',
+    sample:'FFPE 조직',
+    freq:'NSCLC: <1%',
+    guideline:'NCCN Category 1 · FDA 종양불문(Tumor-agnostic) 승인',
+    note:'NTRK1/2/3 구분 없이 동일 치료제 사용. 2세대(세리트렉티닙 등) 내성 극복 연구 중.',
+    mutations:[
+      {type:'NTRK1/2/3 융합 (1차 치료)', freq:'NSCLC <1%',
+       drugs:[{name:'라로트렉티닙',line:'1차',note:'종양불문 FDA 승인'},{name:'엔트렉티닙',line:'1차',note:'종양불문, ROS1 교차 효과'}],
+       note:'NTRK1/2/3 구분 없이 동일 약제. 내성 후 2세대(세리트렉티닙) 임상시험.'},
+      {type:'Solvent front 변이(G595R 등, 획득 내성)', freq:'진행 후 발생',
+       drugs:[{name:'세리트렉티닙(임상)',line:'2차',note:'2세대 TRK 억제제'},{name:'레포트렉티닙',line:'2차',note:'일부 효과'}],
+       note:'재생검으로 내성 기전 확인 후 임상시험 권장.'}
+    ]
+  },
+
+  /* ── ERBB2 ── */
+  {
+    id:'erbb2', name:'ERBB2 / HER2', full:'Human Epidermal Growth Factor Receptor 2',
+    nature:'dual', nccn:'cat1',
+    priority:{ad:1, sq:2, lc:1, sclc:0},
+    priorityNote:{sq:'2~3% 발생. NGS 패널 포함 시 동시 검사 권고'},
+    methods:{
+      PCR:{apply:false, primary:false, note:'사용하지 않음.'},
+      FISH:{apply:true, primary:false, note:'ERBB2 유전자 증폭(copy number/CEP17 ratio) 평가. 돌연변이 검출 불가. 5~7일.'},
+      IHC:{apply:true, primary:false, note:'단백 과발현(0/1+/2+/3+) 평가. 2+: FISH 반사 검사 권고. 유방암·위암과 달리 폐암에서는 과발현 단독 치료 근거 약함. 2~3일.'},
+      NGS:{apply:true, primary:true, note:'Exon 20 삽입 포함 전체 변이 스펙트럼 검출. 돌연변이·증폭·과발현 각각 별도 평가 필요. 7~14일.'}
+    },
+    time:'2–3일(IHC) / 5–7일(FISH) / 7–14일(NGS)', timeCls:'tm',
+    natureDesc:'ERBB2는 DNA 변이(exon 20 삽입), DNA 증폭, 단백 과발현 세 가지 이상이 각각 다른 기전이며 치료도 다릅니다. 이중 속성(DNA+단백) 바이오마커의 대표 예입니다.',
+    assayPrinciple:'NGS: Exon 20 삽입 등 돌연변이 검출. FISH: 유전자 증폭(copy number) 정량. IHC: 세포막 단백 발현 수준 반정량화. 세 가지 모두 별도로 평가해야 전체 그림이 나옴.',
+    sample:'FFPE 조직',
+    freq:'HER2 exon20 ins: 2–4% / 과발현(IHC 3+): 2–5% / 증폭: 2–5%',
+    guideline:'NCCN Category 1 · FDA 승인: T-DXd(ERBB2 돌연변이)',
+    note:'유방암과 달리 증폭/과발현 단독으로는 표적치료 근거 약함. 세 가지 이상을 각각 구분하여 보고해야 함.',
+    mutations:[
+      {type:'Exon 20 삽입 (돌연변이)', freq:'2–4%',
+       drugs:[{name:'트라스투주맙 데룩스테칸(T-DXd)',line:'1차',note:'Category 1, FDA 승인'},{name:'아미반타맙+화학요법',line:'1차',note:'Category 1'}],
+       note:'가장 명확한 표적치료 대상. T-DXd가 표준 치료.'},
+      {type:'증폭 (FISH copy number ↑)', freq:'2–5%',
+       drugs:[{name:'임상시험',line:'임상',note:'승인 치료 없음'}],
+       note:'현재 FDA 승인 표적치료 없음. 임상시험 참여 권장.'},
+      {type:'과발현 (IHC 3+)', freq:'2–5%',
+       drugs:[{name:'T-DXd 확대 연구 중',line:'임상',note:'근거 축적 중'}],
+       note:'폐암에서 과발현 단독 표적치료 근거 아직 미약.'}
+    ]
+  },
+
+  /* ── NRG1 ── */
+  {
+    id:'nrg1', name:'NRG1', full:'Neuregulin-1 융합유전자',
+    nature:'rna', nccn:'new',
+    priority:{ad:2, sq:3, lc:2, sclc:0},
+    priorityNote:{ad:'드라이버 음성 KRAS-WT 선암에서 적극 검사', sq:'발생 빈도 낮아 일상 검사 불필요'},
+    methods:{
+      PCR:{apply:false, primary:false, note:'사용하지 않음.'},
+      FISH:{apply:true, primary:false, note:'Break-apart FISH 가능. 민감도 제한적. 5~7일.'},
+      IHC:{apply:false, primary:false, note:'사용하지 않음.'},
+      NGS:{apply:true, primary:true, note:'RNA-based panel 최적. DNA만으로는 검출 어려움. 7~14일.'}
+    },
+    time:'7–14일(NGS)', timeCls:'tm',
+    natureDesc:'RNA 융합전사체(CD74-NRG1 등)가 종양유전자 역할을 합니다. 주로 비흡연 침윤성 점액선암(IMA)에서 발생하며, RNA NGS에서 가장 민감하게 검출됩니다.',
+    assayPrinciple:'RNA-based NGS: 역전사 후 NRG1 융합전사체 직접 분석. DNA panel만으로는 검출이 어려워 RNA 검사 병행이 중요.',
+    sample:'FFPE 조직 / RNA-based NGS',
+    freq:'NSCLC 선암: <1% (침윤성 점액선암에서 상대적으로 높음)',
+    guideline:'NCCN v3.2025 신규 추가 · 임상시험 권장',
+    note:'KRAS-WT 선암에서 드라이버 음성 시 검사 권고. 제노쿠투주맙 초기 임상 데이터 유망.',
+    mutations:[
+      {type:'CD74-NRG1 등 융합', freq:'<1%',
+       drugs:[{name:'제노쿠투주맙(임상)',line:'임상',note:'Phase 2 진행 중'}],
+       note:'NCCN 2025 신규 추가. 승인 치료 없음. 임상시험 참여 권장.'}
+    ]
+  },
+
+  /* ── FGFR ── */
+  {
+    id:'fgfr', name:'FGFR 1/2/3', full:'Fibroblast Growth Factor Receptor',
+    nature:'dual', nccn:'new',
+    priority:{ad:3, sq:1, lc:2, sclc:0},
+    priorityNote:{ad:'선암에서 발생 빈도 낮아 일반적 검사 불필요', sq:'편평세포암 특이적 신규 표적 — NCCN 2025 추가'},
+    methods:{
+      PCR:{apply:false, primary:false, note:'사용하지 않음.'},
+      FISH:{apply:true, primary:false, note:'FGFR1 증폭(copy number/centromere ratio) 검출. FGFR2/3 융합은 검출 불가. 5~7일.'},
+      IHC:{apply:false, primary:false, note:'사용하지 않음.'},
+      NGS:{apply:true, primary:true, note:'FGFR2/3 융합·돌연변이 검출에 최적. FGFR1 증폭도 포함 가능. 7~14일.'}
+    },
+    time:'5–7일(FISH) / 7–14일(NGS)', timeCls:'tm',
+    natureDesc:'FGFR1 증폭(DNA copy number 증가)과 FGFR2/3 융합(RNA 수준)이 공존하는 이중 속성 바이오마커입니다. 편평세포암의 대표적 분자 표적.',
+    assayPrinciple:'FISH: FGFR1 증폭만 검출. NGS: FGFR2/3 융합 및 돌연변이 포함 포괄적 분석.',
+    sample:'FFPE 조직',
+    freq:'FGFR1 증폭: 편평암 ~20% / FGFR2/3 융합·변이: <3%',
+    guideline:'NCCN v3.2025 신규 추가 · 임상시험 단계',
+    note:'FGFR1 증폭 단독의 치료 예측력 제한적. 융합·돌연변이가 더 명확한 표적.',
+    mutations:[
+      {type:'FGFR1 증폭', freq:'편평암 ~20%',
+       drugs:[{name:'에르다피티닙(임상)',line:'임상',note:'임상시험 단계'},{name:'인피그라티닙(임상)',line:'임상',note:'임상시험 단계'}],
+       note:'증폭 단독으로는 치료 반응 예측력 제한적.'},
+      {type:'FGFR2/3 융합·돌연변이', freq:'<3%',
+       drugs:[{name:'FGFR 억제제(임상)',line:'임상',note:'임상시험 단계'}],
+       note:'더 명확한 표적. 임상시험 참여 권장.'}
+    ]
+  },
+
+  /* ── PD-L1 ── */
+  {
+    id:'pdl1', name:'PD-L1', full:'Programmed Death-Ligand 1',
+    nature:'prot', nccn:'cat1',
+    priority:{ad:1, sq:1, lc:1, sclc:2},
+    priorityNote:{sclc:'SCLC에서는 치료 선택 필수 바이오마커 아님 (아테졸리주맙·더발루맙 발현 무관 사용)'},
+    methods:{
+      PCR:{apply:false, primary:false, note:'사용하지 않음.'},
+      FISH:{apply:false, primary:false, note:'사용하지 않음.'},
+      IHC:{apply:true, primary:true, note:'표준 검사법. TPS(Tumor Proportion Score) 또는 CPS(Combined Positive Score)로 판정. 클론별 차이 중요: 22C3(펨브롤리주맙용), SP142(아테졸리주맙용), 28-8(니볼루맙용). 2~3일.'},
+      NGS:{apply:false, primary:false, note:'CD274 유전자 증폭으로 발현 예측 가능하나 IHC 대체 불가.'}
+    },
+    time:'2–3일', timeCls:'tf',
+    natureDesc:'세포막 단백질 발현량(TPS/CPS)이 치료 결정 기준입니다. DNA나 RNA 변이가 아닌, 단백질이 암세포 표면에 얼마나 발현되는지를 보는 순수 단백질 바이오마커입니다.',
+    assayPrinciple:'IHC: 특이 항체(22C3, SP142, 28-8 등 클론)로 세포막 PD-L1 단백에 결합 → 발색 반응으로 TPS% 계산. 클론에 따라 결과가 다를 수 있어 표준화 중요.',
+    sample:'FFPE 조직 (신선 생검 권장) — 이전 치료 후 재검사 고려',
+    freq:'TPS ≥50%: NSCLC 약 30% / TPS ≥1%: 약 60%',
+    guideline:'NCCN Category 1 · FDA 동반진단: 22C3(펨브롤리주맙), SP142(아테졸리주맙), 28-8(니볼루맙)',
+    note:'EGFR/ALK 양성 시 TPS 수준과 무관하게 TKI 우선 사용. 면역항암제 단독 비권고.',
+    mutations:[
+      {type:'TPS ≥50%', freq:'NSCLC 약 30%',
+       drugs:[{name:'펨브롤리주맙 단독',line:'1차',note:'Preferred, Category 1'}],
+       note:'가장 강력한 면역항암제 반응 예측.'},
+      {type:'TPS 1–49%', freq:'NSCLC 약 30%',
+       drugs:[{name:'펨브롤리주맙+화학요법',line:'1차',note:'Category 1'},{name:'아테졸리주맙+화학요법',line:'1차',note:'Category 1'}],
+       note:'단독요법보다 병용이 효과적.'},
+      {type:'TPS <1%', freq:'NSCLC 약 40%',
+       drugs:[{name:'화학요법+면역항암 병용',line:'1차',note:'Category 1'},{name:'화학요법 단독',line:'1차',note:'Category 1'}],
+       note:'면역항암제 단독 비권고. 병용 또는 화학요법.'},
+      {type:'EGFR/ALK 양성 동반', freq:'해당 환자',
+       drugs:[{name:'TKI 우선',line:'1차',note:'TPS 무관'}],
+       note:'드라이버 변이 양성 시 TPS 수준과 무관하게 TKI를 1차 치료로 사용.'}
+    ]
+  },
+
+  /* ── TMB ── */
+  {
+    id:'tmb', name:'TMB', full:'종양돌연변이부담 (Tumor Mutational Burden)',
+    nature:'quant', nccn:'cat1',
+    priority:{ad:2, sq:2, lc:2, sclc:2},
+    priorityNote:{sclc:'SCLC에서는 치료 예측력 낮아 일상 검사 불권고'},
+    methods:{
+      PCR:{apply:false, primary:false, note:'측정 불가.'},
+      FISH:{apply:false, primary:false, note:'측정 불가.'},
+      IHC:{apply:false, primary:false, note:'측정 불가.'},
+      NGS:{apply:true, primary:true, note:'Whole exome sequencing 또는 large panel NGS(≥1Mb 커버). FoundationOne CDx, MSK-IMPACT 등. 패널 크기가 결과에 영향. 10~21일.'}
+    },
+    time:'10–21일', timeCls:'ts',
+    natureDesc:'특정 유전자 변이가 아니라 전체 체세포 돌연변이의 총량(정량값)을 측정합니다. 유전자 변이 바이오마커이지만, 특정 유전자가 아닌 "변이 갯수"를 보는 정량적 바이오마커입니다.',
+    assayPrinciple:'Large panel NGS로 수십~수백 개 유전자의 모든 체세포 변이(SNV+indel)를 카운트하여 mut/Mb 단위로 표현. 패널이 클수록 정확도 높음. 플랫폼 간 cut-off 표준화 필요.',
+    sample:'FFPE 조직 (충분한 종양 함량 필요)',
+    freq:'TMB-H(≥10 mut/Mb): NSCLC 약 25–30%',
+    guideline:'NCCN Category 1 · FDA 종양불문 승인(펨브롤리주맙, TMB-H)',
+    note:'NGS 패널에 포함되면 추가 비용 없이 동시 측정 가능. MSI-H와 공존 시 강력한 면역항암 반응.',
+    mutations:[
+      {type:'TMB-High (≥10 mut/Mb)', freq:'NSCLC 약 25–30%',
+       drugs:[{name:'펨브롤리주맙',line:'1차',note:'종양불문 FDA 승인'}],
+       note:'PD-L1 발현과 독립적인 예측 인자. MSI-H 공존 시 반응 더욱 강력.'},
+      {type:'TMB-Low (<10 mut/Mb)', freq:'NSCLC 약 70%',
+       drugs:[{name:'표적치료 선택 참고',line:'참고',note:'다른 바이오마커 기반 치료}'}],
+       note:'면역항암제 반응 낮음 예측. 다른 드라이버 변이 기반 치료 우선.'}
+    ]
+  },
+
+  /* ── STK11 ── */
+  {
+    id:'stk11', name:'STK11 / LKB1', full:'Serine/Threonine Kinase 11',
+    nature:'dna', nccn:'cat2',
+    priority:{ad:2, sq:3, lc:2, sclc:0},
+    priorityNote:{ad:'NGS 패널 포함 시 동시 측정. 독립적 검사 불필요', sq:'선암에 비해 임상적 의미 불충분'},
+    methods:{
+      PCR:{apply:false, primary:false, note:'사용하지 않음.'},
+      FISH:{apply:false, primary:false, note:'사용하지 않음.'},
+      IHC:{apply:false, primary:false, note:'STK11 단백 소실 확인 가능. 일부 기관 사용하나 표준화 부족.'},
+      NGS:{apply:true, primary:true, note:'Comprehensive NGS panel에서 KRAS, KEAP1과 동시 검출. 7~14일.'}
+    },
+    time:'10–21일(NGS)', timeCls:'ts',
+    natureDesc:'DNA 기능상실 변이(Loss-of-function)로 종양억제유전자 기능이 소실됩니다. 치료 표적이 아닌 면역항암제 내성 예측 바이오마커입니다.',
+    assayPrinciple:'NGS: STK11 coding region의 기능상실 변이(절제, 점돌연변이, frameshift) 검출. DNA 수준에서 변이 확인.',
+    sample:'FFPE 조직 / ctDNA',
+    freq:'NSCLC: 15–20% (KRAS G12C와 20–30% 공존)',
+    guideline:'NCCN Category 2A (예측적 참고 바이오마커)',
+    note:'표적치료 없음. KRAS G12C + STK11: 소토라십 반응 감소. KEAP1 공동변이 시 면역항암도 효과 감소.',
+    mutations:[
+      {type:'기능상실 변이 (LOF mutation)', freq:'15–20%',
+       drugs:[{name:'표적치료 없음',line:'불가',note:'면역항암제 내성 예측 목적'}],
+       note:'치료 표적 아님. 면역항암제 치료 효과 예측에 활용.'}
+    ]
+  },
+
+  /* ── SCLC: DIAGNOSIS PANEL ── */
+  {
+    id:'sclc-dx', name:'신경내분비 진단 패널', full:'IHC 진단 마커 패널 (SCLC 진단·감별 목적)',
+    nature:'prot', nccn:'cat1', isDxPanel:true,
+    priority:{ad:0, sq:0, lc:2, sclc:1},
+    priorityNote:{lc:'대세포암에서 SCLC 감별 목적 추가 고려'},
+    methods:{
+      PCR:{apply:false, primary:false, note:'사용하지 않음.'},
+      FISH:{apply:false, primary:false, note:'사용하지 않음.'},
+      IHC:{apply:true, primary:true, note:'소량 생검·세포검사에서도 가능. 최소 패널: CD56+Synaptophysin+Chromogranin A+TTF-1+Ki-67. 2~4일.'},
+      NGS:{apply:false, primary:false, note:'진단 목적으로는 사용하지 않음.'}
+    },
+    time:'2–4일', timeCls:'tf',
+    natureDesc:'신경내분비 분화를 나타내는 단백질 마커들의 발현 패턴으로 SCLC를 진단합니다. 유전자 변이가 아닌 단백질 발현의 조합으로 진단하는 패널입니다.',
+    assayPrinciple:'IHC 패널: 여러 항체를 동시 또는 순차 적용하여 단백 발현 패턴으로 SCLC 진단. Ki-67은 증식지수(%) 계산.',
+    sample:'FFPE 조직 (소량 생검·세포검사 가능)',
+    freq:'전체 폐암의 약 13–15%',
+    guideline:'NCCN SCLC v2.2026 — 검체 제한 시 IHC 필수 권고',
+    note:'TTF-1(+) SCLC가 ~90%. LCNEC와 감별: RB1 소실(SCLC 특이적). 카르시노이드와 감별: Ki-67 수치.',
+    dxMarkers:[
+      {name:'Synaptophysin', desc:'신경내분비 분화 마커. SCLC에서 강양성(diffuse). 민감도 가장 높음.'},
+      {name:'CD56 (NCAM)', desc:'신경내분비 마커. 빠른 스크리닝에 유용. 민감도 높으나 특이도 낮음.'},
+      {name:'Chromogranin A', desc:'신경내분비 분화. SCLC에서 초점 양성 또는 음성 가능. 특이도 높음.'},
+      {name:'TTF-1', desc:'SCLC 약 90% 양성. NSCLC 선암과 감별 주의 필요.'},
+      {name:'Ki-67', desc:'증식 지수. SCLC: 통상 ≥50%. 카르시노이드(낮음)와 감별.'},
+      {name:'RB1 단백', desc:'소실 시 SCLC 특이적. LCNEC와 감별에 유용.'}
+    ],
+    mutations:[],
+    drugs:[]
+  },
+
+  /* ── SCLC: DLL3 ── */
+  {
+    id:'sclc-dll3', name:'DLL3', full:'Delta-like Ligand 3',
+    nature:'prot', nccn:'cat1',
+    priority:{ad:0, sq:0, lc:0, sclc:1},
+    methods:{
+      PCR:{apply:false, primary:false, note:'사용하지 않음.'},
+      FISH:{apply:false, primary:false, note:'사용하지 않음.'},
+      IHC:{apply:true, primary:true, note:'세포막 단백 발현 평가. ≥1% 발현을 양성으로 판정(임상기준). 3~5일.'},
+      NGS:{apply:false, primary:false, note:'사용하지 않음.'}
+    },
+    time:'3–5일', timeCls:'tf',
+    natureDesc:'소세포폐암 세포 표면에 과발현되는 단백질입니다. 유전자 변이가 아닌 단백질 발현 수준을 IHC로 측정합니다. ASCL1 양성 SCLC 서브타입에서 특히 높게 발현됩니다.',
+    assayPrinciple:'IHC: DLL3 특이 항체로 세포막 발현 평가. Notch 신호 억제 시 발현 증가. ≥1% cut-off 기준(임상시험 기반).',
+    sample:'FFPE 조직',
+    freq:'SCLC: 85–96% 발현 (신경내분비 마커보다 높은 진단 민감도)',
+    guideline:'NCCN SCLC v2.2026 · FDA 승인: 타르라타맙(2024) — 백금 기반 화학요법 후 진행성 ES-SCLC 2차 이후',
+    note:'ASCL1 서브타입에서 가장 높은 발현. 타르라타맙은 DLL3 발현 수준에 무관하게 투여 가능(IHC 필수 아님). DeLLphi-301: ORR 40%, DeLLphi-300: ORR 23.4%.',
+    mutations:[
+      {type:'DLL3 과발현 (모든 발현 수준)', freq:'SCLC 85–96%',
+       drugs:[{name:'타르라타맙',line:'2차',note:'DLL3×CD3 BiTE, FDA 2024 — 발현 수준 무관 투여 가능'}],
+       note:'발현 수준과 무관하게 타르라타맙 투여 가능. DLL3 IHC는 참고 목적이며 치료 선택 필수조건 아님.'}
+    ]
+  },
+
+  /* ── SCLC: PD-L1 ── */
+  {
+    id:'sclc-pdl1', name:'PD-L1 (SCLC)', full:'Programmed Death-Ligand 1 (SCLC에서의 역할)',
+    nature:'prot', nccn:'cat2',
+    priority:{ad:0, sq:0, lc:0, sclc:2},
+    methods:{
+      PCR:{apply:false, primary:false, note:'사용하지 않음.'},
+      FISH:{apply:false, primary:false, note:'사용하지 않음.'},
+      IHC:{apply:true, primary:false, note:'발현 평가 가능하나 SCLC 치료 결정에 필수 아님. 2~3일.'},
+      NGS:{apply:false, primary:false, note:'사용하지 않음.'}
+    },
+    time:'2–3일', timeCls:'tf',
+    natureDesc:'SCLC에서 PD-L1 발현은 낮고(10–30%) 면역항암제 반응 예측력이 NSCLC보다 현저히 떨어집니다. 아테졸리주맙·더발루맙은 PD-L1 발현 무관하게 사용 승인되었습니다.',
+    assayPrinciple:'NSCLC와 동일한 IHC 방법. 단, SCLC에서는 결과가 치료 선택에 영향 미치지 않음.',
+    sample:'FFPE 조직',
+    freq:'PD-L1 양성(≥1%): SCLC 약 10–30% (낮음)',
+    guideline:'NCCN Category 2A (참고) — 치료 선택 필수 아님. ESMO도 일상 검사 불권고',
+    note:'아테졸리주맙(IMpower133), 더발루맙(CASPIAN): PD-L1 발현 무관 투여 승인.',
+    mutations:[
+      {type:'PD-L1 발현 (SCLC)', freq:'10–30%',
+       drugs:[{name:'아테졸리주맙(발현 무관)',line:'1차',note:'화학요법 병용'},{name:'더발루맙(발현 무관)',line:'1차',note:'화학요법 병용'}],
+       note:'발현 여부와 무관하게 동일 치료. PD-L1 검사가 치료를 차단하지 않도록 주의.'}
+    ]
+  },
+
+  /* ── SCLC: NGS ── */
+  {
+    id:'sclc-ngs', name:'광범위 NGS (SCLC)', full:'Comprehensive Genomic Profiling — SCLC',
+    nature:'quant', nccn:'cat2',
+    priority:{ad:0, sq:0, lc:0, sclc:2},
+    methods:{
+      PCR:{apply:false, primary:false, note:'사용하지 않음.'},
+      FISH:{apply:false, primary:false, note:'MYC 증폭 등 일부 검출.'},
+      IHC:{apply:false, primary:false, note:'ASCL1, NEUROD1 등 서브타입 마커 연구 목적.'},
+      NGS:{apply:true, primary:true, note:'Comprehensive NGS(WES 또는 large panel). RB1/TP53 등 특징적 변이 확인. 14~21일.'}
+    },
+    time:'14–21일', timeCls:'ts',
+    natureDesc:'SCLC 분자 서브타입(SCLC-A/N/P/I) 분류 및 드라이버 변이 탐색 목적. RB1/TP53 변이가 거의 모든 SCLC에서 발생하며, 드물게 NSCLC 드라이버 변이도 발생 가능합니다.',
+    assayPrinciple:'Large panel NGS 또는 WES: 체세포 변이 전체 프로파일링. RNA 동시 분석 시 서브타입 분류 가능.',
+    sample:'FFPE 조직 / ctDNA',
+    freq:'RB1 소실: >90% / TP53 변이: >90% / NSCLC형 드라이버: <5%',
+    guideline:'NCCN SCLC: 비흡연자·비전형 임상 시 광범위 검사 고려. 임상시험 목적.',
+    note:'SCLC 전환(EGFR 내성 후) 감별에도 활용.',
+    mutations:[
+      {type:'비전형적 NSCLC 드라이버 (EGFR 등)', freq:'<5%',
+       drugs:[{name:'해당 표적치료',line:'임상',note:'NSCLC에 준하는 치료 고려'}],
+       note:'비흡연자, 비전형적 임상 소견 시 광범위 검사로 발견 가능.'}
+    ]
+  }
+];
+
+/* ============================================================
+   SUBTYPE CONFIG
+   ============================================================ */
+const SUBTYPE_CONFIG = {
+  ad: {
+    label:'선암종', en:'Adenocarcinoma', color:'var(--ad)', cls:'sb-ad',
+    icon:'🔵',
+    desc:'드라이버 변이가 풍부(~70%)하여 표적치료 가능성이 가장 높습니다. NCCN은 PD-L1 IHC + RNA/DNA 통합 NGS 패널 동시 시행을 권고합니다. Real-time PCR로 EGFR를 선행 신속 검사 후 NGS 결과 대기 전략도 유용합니다.',
+    strategy:'PD-L1 IHC (신속, 별도 슬라이드) + RNA+DNA 통합 NGS 패널 동시 진행 → EGFR Real-time PCR 선행 결과 먼저 활용'
+  },
+  sq: {
+    label:'편평세포암종', en:'Squamous Cell Carcinoma', color:'var(--sq)', cls:'sb-sq',
+    icon:'🔴',
+    desc:'드라이버 변이 빈도가 선암보다 낮고(~20%), EGFR/ALK/ROS1/RET는 거의 발생하지 않습니다. PD-L1과 FGFR이 가장 중요한 1순위 바이오마커입니다. 검체 절약이 특히 중요하며 광범위 NGS 선택 적용을 고려합니다.',
+    strategy:'PD-L1 IHC 필수 (신속) + KRAS/FGFR 포함 제한적 NGS → 비흡연자이면 선암 수준 광범위 NGS'
+  },
+  lc: {
+    label:'대세포암 / NOS', en:'Large Cell Carcinoma / Not Otherwise Specified', color:'var(--lc)', cls:'sb-lc',
+    icon:'🟣',
+    desc:'NSCLC-NOS(Not Otherwise Specified)를 포함하며, 선암/편평암의 특징이 없는 미분화 암입니다. NCCN은 선암에 준하는 광범위 검사를 권고합니다. 신경내분비 특성이 의심될 때는 SCLC 감별 IHC를 추가 고려합니다.',
+    strategy:'선암종에 준하는 광범위 NGS + PD-L1 IHC 필수 → 신경내분비 마커 추가 고려'
+  },
+  sclc: {
+    label:'소세포폐암', en:'Small Cell Lung Cancer', color:'var(--sclc)', cls:'sb-sclc',
+    icon:'🟤',
+    desc:'고등급 신경내분비 종양. NSCLC와 달리 드라이버 돌연변이 기반 표적치료가 거의 없습니다. 진단 확인용 IHC 패널이 핵심이며, DLL3 IHC가 새로운 표적치료 바이오마커입니다. PD-L1/TMB는 치료 필수 바이오마커가 아닙니다.',
+    strategy:'신경내분비 IHC 패널 (진단 확인) + DLL3 IHC (타르라타맙 대상 확인) → 비흡연자·비전형 시만 광범위 NGS'
+  }
+};
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let currentMain = 'ad';
+let currentMethod = 'all';
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function switchMain(type, el) {
+  currentMain = type;
+  currentMethod = 'all';
+  document.querySelectorAll('.top-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.chip').forEach(c => { c.className = 'chip'; });
+  document.querySelector('#filterChips .chip').classList.add('on-all');
+  renderAll();
+}
+
+function filterMethod(el, method) {
+  currentMethod = method;
+  document.querySelectorAll('.chip').forEach(c => { c.className = 'chip'; });
+  const cls = method === 'all' ? 'on-all' : 'on-' + method.toLowerCase();
+  el.classList.add(cls);
+  renderAll();
+}
+
+function renderAll() {
+  renderBanner();
+  renderSummary();
+  renderCards();
+}
+
+function renderBanner() {
+  const cfg = SUBTYPE_CONFIG[currentMain];
+  document.getElementById('subtypeBanner').innerHTML = `
+    <div class="subtype-banner ${cfg.cls}">
+      <div class="sb-icon">${cfg.icon}</div>
+      <div>
+        <div class="sb-title" style="color:${cfg.color}">${cfg.label} (${cfg.en})</div>
+        <div class="sb-desc">${cfg.desc}</div>
+        <div class="strategy-box" style="margin-top:8px">
+          <div class="strategy-title">🔬 검체 절약 전략</div>
+          <div class="strategy-text">${cfg.strategy}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function getVisibleMarkers() {
+  return MARKERS.filter(m => {
+    const p = m.priority[currentMain];
+    if (!p) return false;
+    if (currentMethod === 'all') return true;
+    return m.methods[currentMethod]?.apply;
+  });
+}
+
+function renderSummary() {
+  const visible = getVisibleMarkers();
+  const p1 = visible.filter(m => m.priority[currentMain] === 1).length;
+  const p2 = visible.filter(m => m.priority[currentMain] === 2).length;
+  const counts = {PCR:0,FISH:0,IHC:0,NGS:0};
+  visible.forEach(m => Object.keys(counts).forEach(k => { if(m.methods[k]?.apply) counts[k]++; }));
+  const colors = {PCR:'var(--pcr)',FISH:'var(--fish)',IHC:'var(--ihc)',NGS:'var(--ngs)'};
+  const container = document.getElementById('summaryRow');
+  let html = `
+    <div class="sc"><div class="sc-num" style="color:var(--p1)">${p1}</div><div class="sc-lbl">필수 1순위</div></div>
+    <div class="sc"><div class="sc-num" style="color:var(--p2)">${p2}</div><div class="sc-lbl">2순위/조건부</div></div>`;
+  Object.entries(counts).forEach(([k,v]) => {
+    html += `<div class="sc"><div class="sc-num" style="color:${colors[k]}">${v}</div><div class="sc-lbl">${k} 적용</div></div>`;
+  });
+  container.innerHTML = html;
+}
+
+function renderCards() {
+  const container = document.getElementById('cardsArea');
+  container.innerHTML = '';
+
+  const isSclc = currentMain === 'sclc';
+
+  const sections = isSclc ? [
+    {label:'진단 확인 마커', ids:['sclc-dx'], note:'SCLC 확진·감별 목적'},
+    {label:'표적치료 바이오마커', ids:['sclc-dll3'], note:'타르라타맙 대상 선택'},
+    {label:'면역·참고 바이오마커', ids:['sclc-pdl1','sclc-ngs'], note:'치료 필수 아님'}
+  ] : [
+    {label:'드라이버 돌연변이', ids:['egfr','alk','ros1','kras','braf','met','ret','ntrk','erbb2','nrg1','fgfr'], note:'표적치료 선택 기준'},
+    {label:'면역·예측 바이오마커', ids:['pdl1','tmb','stk11'], note:'면역항암제 선택 기준'}
+  ];
+
+  const visible = getVisibleMarkers();
+
+  sections.forEach(sec => {
+    const secMarkers = visible.filter(m => sec.ids.includes(m.id));
+    if (!secMarkers.length) return;
+    const head = document.createElement('div');
+    head.className = 'section-head';
+    head.innerHTML = `${sec.label} <span class="sh-count">${secMarkers.length}개</span>`;
+    container.appendChild(head);
+
+    // 섹션별 설명 박스 추가
+    if (sec.label === '드라이버 돌연변이') {
+      container.appendChild(buildDriverInfoBox());
+    }
+    if (sec.label === '면역·예측 바이오마커') {
+      container.appendChild(buildImmuneInfoBox());
+    }
+    if (sec.label === '진단 확인 마커') {
+      container.appendChild(buildSclcInfoBox('dx'));
+    }
+    if (sec.label === '표적치료 바이오마커') {
+      container.appendChild(buildSclcInfoBox('target'));
+    }
+    if (sec.label === '면역·참고 바이오마커') {
+      container.appendChild(buildSclcInfoBox('ref'));
+    }
+
+    secMarkers.forEach(m => container.appendChild(buildCard(m)));
+  });
+}
+
+function buildDriverInfoBox() {
+  const box = document.createElement('div');
+  box.className = 'driver-info-box';
+  box.id = 'driverInfoBox';
+  box.innerHTML = `
+    <div class="driver-info-header" onclick="toggleDriverInfo()">
+      <div class="driver-info-header-left">
+        <span style="font-size:20px">🧬</span>
+        <div>
+          <div class="driver-info-title">드라이버 돌연변이(Driver Mutation)란?</div>
+          <div class="driver-info-subtitle">표적치료의 이론적 근거 — 탭을 눌러 펼치기</div>
+        </div>
+      </div>
+      <div class="driver-info-toggle" id="driverToggleIcon">+</div>
+    </div>
+    <div class="driver-info-body">
+
+      <p style="font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:12px">
+        암세포에서 발생하는 유전자 변이는 크게 두 종류로 나뉩니다. <strong style="color:var(--text)">드라이버 돌연변이</strong>는 암 발생과 증식을 직접 유발하는 변이이고, <strong style="color:var(--text)">패신저 돌연변이(Passenger Mutation)</strong>는 암과 함께 우연히 발생했지만 암 진행에 기여하지 않는 변이입니다.
+      </p>
+
+      <table class="driver-compare-table">
+        <tr><th>구분</th><th>드라이버 돌연변이</th><th>패신저 돌연변이</th></tr>
+        <tr><td>역할</td><td>암 발생·증식을 <strong>직접 유발</strong></td><td>암과 함께 우연히 발생, 기여 없음</td></tr>
+        <tr><td>세포 이점</td><td>생존·증식에 <strong>유리</strong></td><td>없음</td></tr>
+        <tr><td>표적치료 대상</td><td><strong>예</strong> (TKI 등)</td><td>아니오</td></tr>
+        <tr><td>종양 내 분포</td><td>종양 전체 세포에 공통 존재</td><td>일부 세포에만 존재 가능</td></tr>
+        <tr><td>개수</td><td>하나의 종양에 수 개</td><td>수십~수백 개 공존</td></tr>
+      </table>
+
+      <div style="font-size:12px;font-weight:700;color:var(--text);margin:12px 0 6px">🚗 비유: 자동차 사고</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:12px;padding:10px 12px;background:var(--surface3);border-radius:var(--radius-sm)">
+        <strong style="color:var(--text)">드라이버 돌연변이</strong> = 운전자(driver)가 과속·음주운전 → 사고(암)의 직접 원인<br>
+        <strong style="color:var(--text)">패신저 돌연변이</strong> = 조수석 탑승객(passenger) → 사고와 무관, 우연히 함께 존재
+      </div>
+
+      <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px">⚡ 발생 기전</div>
+      <div class="driver-flow">
+        <span class="flow-step fs-normal">정상 유전자</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step fs-mut">드라이버 돌연변이 발생</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step fs-result">성장 신호 항상 ON<br>또는 사멸 억제 신호 항상 ON</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step fs-cancer">암세포 무한 증식</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step fs-target">표적치료로 차단 가능</span>
+      </div>
+
+      <div class="driver-addiction-box">
+        <div class="addiction-title">🎯 Oncogene Addiction (종양유전자 의존성)</div>
+        <div class="addiction-text">
+          드라이버 돌연변이가 임상적으로 중요한 핵심 이유입니다. 암세포는 드라이버 돌연변이로 인한 신호에 <strong>중독(addiction)</strong>되어 있어서, 그 신호 하나를 차단하면 암세포만 선택적으로 사멸시킬 수 있습니다. 이것이 표적치료(TKI, 단클론항체 등)의 이론적 근거입니다. 드라이버 변이는 암세포의 <strong>"아킬레스건"</strong>입니다.
+        </div>
+      </div>
+
+      <div style="font-size:12px;font-weight:700;color:var(--text);margin:12px 0 8px">🔬 폐암에서의 대표 드라이버 돌연변이 예시</div>
+      <div class="driver-examples">
+        <div class="de-item"><div class="de-gene">EGFR</div><div class="de-desc">성장인자 수용체가 리간드 없이도 항상 활성화 → 세포 분열 신호 지속</div></div>
+        <div class="de-item"><div class="de-gene">KRAS G12C</div><div class="de-desc">GTPase 기능 소실 → RAS 단백이 꺼지지 않고 계속 켜진 상태 유지</div></div>
+        <div class="de-item"><div class="de-gene">ALK 융합</div><div class="de-desc">비정상 키나아제가 항상 활성화 → 세포 생존·증식 신호 지속 발사</div></div>
+        <div class="de-item"><div class="de-gene">BRAF V600E</div><div class="de-desc">MAPK 신호전달경로 항구적 활성화 → 세포 증식 브레이크 소실</div></div>
+        <div class="de-item"><div class="de-gene">METex14</div><div class="de-desc">MET 수용체 분해 신호 소실 → 성장 신호 수용체가 과다 축적</div></div>
+        <div class="de-item"><div class="de-gene">RET 융합</div><div class="de-desc">비정상 RET 키나아제 활성화 → 세포 생존·분열 신호 지속</div></div>
+      </div>
+
+      <div class="driver-note-box">
+        <strong>이 앱과의 연결</strong>
+        아래 목록의 EGFR, ALK, ROS1, KRAS, BRAF, MET, RET, NTRK, ERBB2, NRG1, FGFR이 모두 드라이버 돌연변이에 해당합니다. 반면 PD-L1, TMB는 드라이버 돌연변이가 아닌 면역 바이오마커이며, STK11은 종양억제유전자 기능 소실로 드라이버 역할을 하지만 표적치료 대상이 없어 예측 바이오마커로 분류합니다.
+      </div>
+    </div>`;
+  return box;
+}
+
+function toggleDriverInfo() {
+  const box = document.getElementById('driverInfoBox');
+  const icon = document.getElementById('driverToggleIcon');
+  box.classList.toggle('open');
+  icon.textContent = box.classList.contains('open') ? '×' : '+';
+}
+
+function buildImmuneInfoBox() {
+  const box = document.createElement('div');
+  box.className = 'immune-info-box';
+  box.id = 'immuneInfoBox';
+  box.innerHTML = `
+    <div class="immune-info-header" onclick="toggleImmuneInfo()">
+      <div class="immune-info-header-left">
+        <span style="font-size:20px">🛡️</span>
+        <div>
+          <div class="immune-info-title">면역·예측 바이오마커란?</div>
+          <div class="immune-info-subtitle">드라이버 돌연변이와의 차이 · 각 마커의 역할 — 탭을 눌러 펼치기</div>
+        </div>
+      </div>
+      <div class="immune-info-toggle" id="immuneToggleIcon">+</div>
+    </div>
+    <div class="immune-info-body">
+
+      <p style="font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:12px">
+        면역·예측 바이오마커는 <strong style="color:var(--text)">암을 직접 유발하는 변이(드라이버 돌연변이)가 아니라</strong>, 면역항암제가 얼마나 효과적일지, 또는 특정 치료에 내성이 있을지를 <strong style="color:var(--text)">예측</strong>하는 데 쓰입니다. 치료 표적이 되는 것이 아니라 <strong style="color:var(--text)">치료 전략 결정의 나침반</strong> 역할을 합니다.
+      </p>
+
+      <table class="immune-compare-table">
+        <tr><th>구분</th><th>드라이버 돌연변이 바이오마커</th><th>면역·예측 바이오마커</th></tr>
+        <tr><td>역할</td><td>암 증식의 직접 원인 → <strong>표적치료 대상</strong></td><td>치료 반응 예측 → <strong>치료 전략 선택</strong></td></tr>
+        <tr><td>측정 대상</td><td>특정 유전자의 변이 유무</td><td>단백 발현량, 변이 총량, 기능 소실 여부</td></tr>
+        <tr><td>양성일 때</td><td>해당 TKI 표적치료 시작</td><td>면역항암제 효과 예측(높음 또는 낮음)</td></tr>
+        <tr><td>대표 예</td><td>EGFR, ALK, KRAS G12C 등</td><td>PD-L1, TMB, STK11</td></tr>
+        <tr><td>우선 검사법</td><td>PCR, FISH, NGS (DNA/RNA 수준)</td><td>주로 IHC(단백) 또는 NGS(정량)</td></tr>
+      </table>
+
+      <div style="font-size:12px;font-weight:700;color:var(--text);margin:14px 0 8px">🔬 이 섹션의 각 바이오마커 역할</div>
+      <div class="immune-mechanism-grid">
+        <div class="imm-card">
+          <div class="imm-card-title"><span class="imm-badge imm-b-pdl1">PD-L1</span>면역관문 발현 지표</div>
+          <div class="imm-card-text">
+            암세포가 면역세포의 공격을 얼마나 차단하고 있는지를 나타냅니다. PD-L1 단백이 높게 발현될수록 면역세포(T세포)가 억제되어 암이 면역 회피를 잘 하고 있다는 의미입니다.<br><br>
+            <strong style="color:var(--text)">높으면(TPS≥50%)</strong> → 펨브롤리주맙 단독으로 면역관문을 열어 T세포가 암을 공격하게 함<br>
+            <strong style="color:var(--text)">낮으면</strong> → 면역항암제+화학요법 병용 또는 화학요법
+          </div>
+        </div>
+        <div class="imm-card">
+          <div class="imm-card-title"><span class="imm-badge imm-b-tmb">TMB</span>돌연변이 총량 지표</div>
+          <div class="imm-card-text">
+            종양 전체의 돌연변이 갯수를 셉니다. 돌연변이가 많을수록 암세포 표면에 비정상 단백(신생항원)이 많이 나타나, 면역세포가 암을 더 잘 인식합니다.<br><br>
+            <strong style="color:var(--text)">높으면(TMB-H ≥10 mut/Mb)</strong> → 면역계가 암을 잘 인식 → 면역항암제 효과 기대<br>
+            <strong style="color:var(--text)">낮으면</strong> → 면역계가 암을 잘 인식 못함 → 다른 치료 전략 선택
+          </div>
+        </div>
+        <div class="imm-card" style="grid-column:1/-1">
+          <div class="imm-card-title"><span class="imm-badge imm-b-stk11">STK11</span>면역항암제 내성 예측 마커</div>
+          <div class="imm-card-text">
+            STK11/LKB1은 종양억제유전자로, 기능이 소실되면 암세포가 면역항암제를 회피하는 환경을 만듭니다. PD-L1 발현이 높더라도 STK11 변이가 있으면 면역항암제가 잘 듣지 않을 수 있습니다.<br><br>
+            <strong style="color:var(--text)">STK11 변이 있음</strong> → 면역항암제 효과 감소 예측 → 치료 전략 재고<br>
+            <strong style="color:var(--text)">KRAS G12C + STK11 동반</strong> → 소토라십(G12C 억제제) 반응도 감소 보고
+          </div>
+        </div>
+      </div>
+
+      <div class="immune-key-point">
+        <div class="key-point-title">💡 핵심: 면역항암제는 왜 모든 환자에게 동일하게 듣지 않나?</div>
+        <div class="key-point-text">
+          면역항암제(PD-1/PD-L1 억제제)는 면역세포가 암을 공격하도록 브레이크를 풀어주는 약입니다. 그런데 이 브레이크가 실제로 걸려 있어야(PD-L1 발현↑), 그리고 면역세포가 암을 충분히 인식할 수 있어야(TMB↑, 신생항원↑) 효과가 있습니다. STK11 변이처럼 암세포가 면역 회피를 다른 경로로 하고 있으면, 브레이크를 풀어줘도 면역세포가 암을 공격하지 못합니다. 이 세 가지 바이오마커는 이런 복잡한 면역 환경을 미리 파악하는 도구입니다.
+        </div>
+      </div>
+
+      <div class="immune-note-box">
+        <strong>드라이버 변이와의 검사 순서</strong>
+        EGFR/ALK 등 드라이버 돌연변이가 양성이면 TKI를 먼저 사용하므로, 이때는 PD-L1 수치가 높아도 면역항암제 단독 치료는 권고하지 않습니다. 드라이버 변이 음성이거나 미확인 상태일 때 PD-L1·TMB가 1차 치료 결정의 핵심 기준이 됩니다.
+      </div>
+    </div>`;
+  return box;
+}
+
+function toggleImmuneInfo() {
+  const box = document.getElementById('immuneInfoBox');
+  const icon = document.getElementById('immuneToggleIcon');
+  box.classList.toggle('open');
+  icon.textContent = box.classList.contains('open') ? '×' : '+';
+}
+
+function buildSclcInfoBox(type) {
+  const cfg = {
+    dx: {
+      theme:'dx-theme', icon:'🔬', id:'sclcDxBox', toggleId:'sclcDxToggle',
+      title:'진단 확인 마커란?',
+      sub:'SCLC를 진단하고 다른 암종과 감별하는 IHC 패널',
+      body:`
+        <p style="font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:12px">
+          소세포폐암(SCLC)은 병리 조직 검사만으로는 NSCLC, 카르시노이드 종양, 대세포신경내분비암(LCNEC) 등과 구분하기 어렵습니다. <strong style="color:var(--text)">진단 확인 마커</strong>는 치료를 선택하기 위한 것이 아니라, <strong style="color:var(--text)">"이 암이 정말 SCLC인가"를 병리학적으로 확인</strong>하기 위한 IHC 패널입니다.
+        </p>
+        <table class="sclc-nsclc-compare">
+          <tr><th>구분</th><th>진단 확인 마커</th><th>표적치료 바이오마커</th></tr>
+          <tr><td>목적</td><td>암종 진단·감별</td><td>치료 약제 선택</td></tr>
+          <tr><td>검사 시점</td><td>진단 시 최우선</td><td>진단 확인 후</td></tr>
+          <tr><td>결과 활용</td><td>SCLC 확진, 다른 종양과 감별</td><td>타르라타맙 등 투여 여부 결정</td></tr>
+          <tr><td>검사법</td><td>IHC 패널 (여러 항체 동시)</td><td>IHC 단일 마커</td></tr>
+          <tr><td>대표 마커</td><td>Synaptophysin, CD56, Ki-67, TTF-1, RB1</td><td>DLL3</td></tr>
+        </table>
+        <div class="sclc-compare-grid">
+          <div class="sclc-cg-item dx">
+            <div class="sclc-cg-title">🔴 SCLC로 확진되는 패턴</div>
+            <div class="sclc-cg-text">신경내분비 마커(Syn/CD56/CgA) 양성 + Ki-67 ≥50% + RB1 단백 소실 → 소세포폐암 강하게 시사</div>
+          </div>
+          <div class="sclc-cg-item dx">
+            <div class="sclc-cg-title">⚠️ 감별이 필요한 종양</div>
+            <div class="sclc-cg-text">카르시노이드(Ki-67 낮음) / LCNEC(RB1 보존) / NSCLC 선암(TTF-1 양성이나 신경내분비 마커 음성) / 전이암</div>
+          </div>
+        </div>
+        <div style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:var(--radius-sm);padding:10px 13px;font-size:12px;color:#4c1d95;line-height:1.65;margin-top:4px">
+          💡 <strong>검체 제한 상황에서의 전략:</strong> 소량 생검이나 세포검사에서도 IHC 패널로 SCLC 진단 가능. NCCN은 검체가 제한될 때 IHC를 우선 권고. 단, 가능하다면 조직 생검이 세포검사보다 진단 정확도 높음.
+        </div>`
+    },
+    target: {
+      theme:'target-theme', icon:'🎯', id:'sclcTargetBox', toggleId:'sclcTargetToggle',
+      title:'표적치료 바이오마커란? (SCLC)',
+      sub:'NSCLC와 달리 SCLC에서 표적치료 대상이 매우 제한적인 이유',
+      body:`
+        <p style="font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:12px">
+          NSCLC에서는 EGFR, ALK 등 드라이버 돌연변이를 표적으로 하는 TKI가 다수 존재합니다. 그러나 <strong style="color:var(--text)">SCLC에서는 전통적인 드라이버 돌연변이 기반 표적치료가 거의 없습니다.</strong> SCLC는 RB1/TP53 변이가 거의 모든 환자에게서 발생하지만, 이를 표적으로 하는 치료제는 없습니다.
+        </p>
+        <table class="sclc-nsclc-compare">
+          <tr><th>구분</th><th>NSCLC 표적치료 바이오마커</th><th>SCLC 표적치료 바이오마커</th></tr>
+          <tr><td>기전</td><td>드라이버 돌연변이 (EGFR, ALK 등)</td><td>세포 표면 단백 과발현 (DLL3)</td></tr>
+          <tr><td>표적치료 종류</td><td>TKI (소분자 억제제)</td><td>이중특이성 항체 (BiTE)</td></tr>
+          <tr><td>표적치료 수</td><td>10개 이상 승인</td><td>현재 1개 (타르라타맙)</td></tr>
+          <tr><td>치료 선택 기준</td><td>특정 변이 유무</td><td>발현 수준 무관 투여 가능</td></tr>
+          <tr><td>검사 필수 여부</td><td>치료 전 검사 필수</td><td>IHC 필수 아님 (참고용)</td></tr>
+        </table>
+        <div class="sclc-compare-grid">
+          <div class="sclc-cg-item target">
+            <div class="sclc-cg-title">DLL3가 표적인 이유</div>
+            <div class="sclc-cg-text">DLL3는 SCLC 세포 표면에 85–96% 높은 빈도로 과발현됩니다. 정상 조직에서는 발현이 낮아 선택적 표적이 가능합니다. 타르라타맙은 DLL3와 T세포의 CD3를 동시에 잡아 T세포가 암세포를 공격하도록 유도하는 이중특이성 항체(BiTE)입니다.</div>
+          </div>
+          <div class="sclc-cg-item target">
+            <div class="sclc-cg-title">왜 DLL3 IHC가 필수가 아닌가?</div>
+            <div class="sclc-cg-text">DeLLphi 임상시험 결과, DLL3 발현 수준이 낮아도 타르라타맙이 효과를 보였습니다. 현재 FDA 승인 적응증은 DLL3 발현 수준을 요건으로 하지 않습니다. IHC는 참고 목적이며 치료를 차단하지 않습니다.</div>
+          </div>
+        </div>
+        <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:var(--radius-sm);padding:10px 13px;font-size:12px;color:#0c4a6e;line-height:1.65;margin-top:4px">
+          💡 <strong>향후 전망:</strong> SCLC의 분자 서브타입(SCLC-A/N/P/I) 분류 연구가 진행 중이며, ASCL1/NEUROD1/POU2F3 발현 패턴에 따른 맞춤 치료 개발이 이루어지고 있습니다. 현재는 임상시험 참여가 최선의 표적치료 전략입니다.
+        </div>`
+    },
+    ref: {
+      theme:'ref-theme', icon:'📊', id:'sclcRefBox', toggleId:'sclcRefToggle',
+      title:'면역·참고 바이오마커란? (SCLC)',
+      sub:'NSCLC와 달리 SCLC에서 PD-L1·TMB가 치료 결정에 불필요한 이유',
+      body:`
+        <p style="font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:12px">
+          NSCLC에서는 PD-L1과 TMB가 면역항암제 치료 선택의 핵심 기준입니다. 그러나 <strong style="color:var(--text)">SCLC에서는 이 두 바이오마커가 치료 결정에 필요하지 않습니다.</strong> SCLC용 면역항암제(아테졸리주맙, 더발루맙)는 발현 수준과 무관하게 투여 승인되어 있기 때문입니다.
+        </p>
+        <table class="sclc-nsclc-compare">
+          <tr><th>구분</th><th>NSCLC에서의 역할</th><th>SCLC에서의 역할</th></tr>
+          <tr><td>PD-L1</td><td>TPS 기준으로 치료 결정<br>(TPS≥50%: 단독, 1–49%: 병용)</td><td>발현 무관 투여 — 검사 불필요<br>(ESMO/NCCN 모두 일상 검사 불권고)</td></tr>
+          <tr><td>TMB</td><td>TMB-H(≥10): 펨브롤리주맙 종양불문 승인</td><td>예측력 불충분 — 치료 기준 아님<br>(SCLC TMB 높지만 반응 예측 못함)</td></tr>
+          <tr><td>검사 필요성</td><td>치료 전 필수</td><td>임상시험 목적 외 일상 불필요</td></tr>
+          <tr><td>승인 면역항암제</td><td>PD-L1·TMB 기반 선택</td><td>아테졸리주맙·더발루맙 발현 무관</td></tr>
+        </table>
+        <div class="sclc-compare-grid">
+          <div class="sclc-cg-item ref">
+            <div class="sclc-cg-title">왜 SCLC는 PD-L1이 낮은가?</div>
+            <div class="sclc-cg-text">SCLC는 면역원성이 낮은 종양 미세환경을 가집니다. RB1 소실이 MHC-I 발현을 감소시켜 면역세포의 암 인식 능력을 저하시킵니다. 이것이 PD-L1 발현이 낮고 면역항암제 단독 효과가 제한적인 이유입니다.</div>
+          </div>
+          <div class="sclc-cg-item ref">
+            <div class="sclc-cg-title">왜 TMB가 높아도 반응이 없나?</div>
+            <div class="sclc-cg-text">SCLC는 흡연 연관으로 TMB가 높지만, RB1 소실 등으로 항원 제시 경로 자체가 억제되어 있습니다. 돌연변이가 많아도 면역세포가 암을 인식하지 못하면 면역항암제가 효과를 발휘하지 못합니다.</div>
+          </div>
+        </div>
+        <div style="background:#f0fdf4;border:1px solid #d1fae5;border-radius:var(--radius-sm);padding:10px 13px;font-size:12px;color:#14532d;line-height:1.65;margin-top:4px">
+          💡 <strong>실무 주의사항:</strong> SCLC 환자에서 PD-L1 검사 결과가 낮다고 면역항암제를 배제하지 마십시오. 아테졸리주맙(IMpower133)·더발루맙(CASPIAN)은 발현 수준과 무관하게 화학요법 병용으로 1차 치료에 사용됩니다.
+        </div>`
+    }
+  };
+
+  const c = cfg[type];
+  const box = document.createElement('div');
+  box.className = `sclc-info-box ${c.theme}`;
+  box.id = c.id;
+  box.innerHTML = `
+    <div class="sclc-info-header" onclick="toggleSclcInfo('${c.id}','${c.toggleId}')">
+      <div class="sclc-info-left">
+        <span style="font-size:20px">${c.icon}</span>
+        <div>
+          <div class="sclc-info-title">${c.title}</div>
+          <div class="sclc-info-sub">${c.sub}</div>
+        </div>
+      </div>
+      <div class="sclc-info-toggle" id="${c.toggleId}">+</div>
+    </div>
+    <div class="sclc-info-body">${c.body}</div>`;
+  return box;
+}
+
+function toggleSclcInfo(boxId, toggleId) {
+  const box = document.getElementById(boxId);
+  const icon = document.getElementById(toggleId);
+  box.classList.toggle('open');
+  icon.textContent = box.classList.contains('open') ? '×' : '+';
+}
+
+function getPriorityInfo(m) {
+  const p = m.priority[currentMain];
+  if (p === 1) return {cls:'ps-1', badge:'pb-1', text:'필수 1순위'};
+  if (p === 2) return {cls:'ps-2', badge:'pb-2', text:'2순위'};
+  return {cls:'ps-3', badge:'pb-3', text:'참고'};
+}
+
+const NATURE_INFO = {
+  dna:{badge:'nat-dna',text:'DNA 변이'},
+  rna:{badge:'nat-rna',text:'RNA 융합/이상'},
+  prot:{badge:'nat-prot',text:'단백질 발현'},
+  dual:{badge:'nat-dual',text:'이중속성(DNA+단백)'},
+  quant:{badge:'nat-quant',text:'정량적 DNA'}
+};
+const NCCN_INFO = {
+  cat1:{badge:'nb-cat1',text:'NCCN Cat.1'},
+  cat2:{badge:'nb-cat2',text:'NCCN Cat.2A'},
+  new:{badge:'nb-cat1',text:'NCCN 2025 신규'}
+};
+
+function buildCard(m) {
+  const pi = getPriorityInfo(m);
+  const ni = NATURE_INFO[m.nature];
+  const nc = NCCN_INFO[m.nccn];
+  const pNote = m.priorityNote?.[currentMain];
+
+  // Method badges
+  const methodBadges = ['PCR','FISH','IHC','NGS'].filter(k => m.methods[k]?.apply)
+    .map(k => `<span class="mm mm-${k.toLowerCase()}${m.methods[k].primary?' mm-primary':''}">${k}${m.methods[k].primary?'★':''}</span>`).join('');
+
+  // Method table rows
+  const mtRows = ['PCR','FISH','IHC','NGS'].map(k => {
+    const v = m.methods[k];
+    const icon = v?.apply ? (v.primary ? '<span class="apply-icon ai-primary">★</span>' : '<span class="apply-icon ai-yes">✔</span>') : '<span class="apply-icon ai-no">—</span>';
+    return `<tr><td><span class="method-name mname-${k.toLowerCase()}">${k}</span></td><td>${icon}</td><td>${v?.note||'—'}</td></tr>`;
+  }).join('');
+
+  // Mutation rows
+  let mutRows = '';
+  if (m.mutations && m.mutations.length) {
+    mutRows = m.mutations.map(mu => {
+      const drugHtml = mu.drugs ? mu.drugs.map(d => {
+        const lineCls = d.line==='1차'?'line-1':d.line==='2차'?'line-2':d.line==='불가'?'line-no':'';
+        const chipCls = d.line==='불가'?'warn':(d.line==='임상'?'neutral':(d.note?.includes('신규')||d.note?.includes('2024')||d.note?.includes('Preferred')?'new':''));
+        return `<span class="drug-chip ${chipCls}"><span class="line-badge ${lineCls}">${d.line}</span>${d.name}</span>`;
+      }).join('') : '';
+      return `<tr>
+        <td class="mut-type">${mu.type}</td>
+        <td>${mu.freq}</td>
+        <td>${drugHtml}</td>
+        <td>${mu.note||''}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  // DX markers for SCLC panel
+  let dxHtml = '';
+  if (m.isDxPanel && m.dxMarkers) {
+    dxHtml = `<div class="cb-section">진단 IHC 마커 상세</div>`;
+    m.dxMarkers.forEach(dm => {
+      dxHtml += `<div class="dx-card"><div class="dx-marker-name">${dm.name}</div><div class="dx-marker-desc">${dm.desc}</div></div>`;
+    });
+  }
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.id = `card-${m.id}`;
+  card.innerHTML = `
+    <div class="priority-strip ${pi.cls}"></div>
+    <div class="card-main">
+      <div class="card-header" onclick="toggleCard('${m.id}')">
+        <div class="card-left">
+          <div class="card-top-row">
+            <span class="marker-name">${m.name}</span>
+            <span class="priority-badge ${pi.badge}">${pi.text}</span>
+            <span class="nccn-badge-sm ${nc.badge}">${nc.text}</span>
+            <span class="nature-badge ${ni.badge}">${ni.text}</span>
+          </div>
+          <div class="marker-full-name">${m.full}</div>
+          <div class="method-mini">${methodBadges}</div>
+          ${pNote ? `<div style="font-size:11px;color:var(--muted);margin-top:5px">💡 ${pNote}</div>` : ''}
+        </div>
+        <div class="card-right">
+          <div class="expand-btn" id="exp-${m.id}">+</div>
+          <span class="time-mini ${m.timeCls}">${m.time}</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="cb-section">바이오마커 특성</div>
+        <div class="nature-box">
+          <div class="nb-row">
+            <div class="nb-icon">${m.nature==='dna'?'🧬':m.nature==='rna'?'🔀':m.nature==='prot'?'🔬':m.nature==='dual'?'⚗️':'📊'}</div>
+            <div class="nb-content">
+              <div class="nb-title">측정 대상: ${ni.text}</div>
+              <div class="nb-text">${m.natureDesc}</div>
+            </div>
+          </div>
+          <div class="nb-row">
+            <div class="nb-icon">🔍</div>
+            <div class="nb-content">
+              <div class="nb-title">검사 원리</div>
+              <div class="nb-text">${m.assayPrinciple}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cb-section">검사 기본 정보</div>
+        <div class="detail-grid">
+          <div class="di"><div class="di-label">발생 빈도</div><div class="di-val">${m.freq}</div></div>
+          <div class="di"><div class="di-label">검체 종류</div><div class="di-val">${m.sample}</div></div>
+          <div class="di span2"><div class="di-label">가이드라인 등급</div><div class="di-val">${m.guideline}</div></div>
+          <div class="di span2"><div class="di-label">임상 참고사항</div><div class="di-val">${m.note}</div></div>
+        </div>
+
+        <div class="cb-section">검사 방법별 비교</div>
+        <table class="method-table">
+          <tr><th style="width:60px">방법</th><th style="width:36px">적용</th><th>원리·특징·소요시간</th></tr>
+          ${mtRows}
+        </table>
+
+        ${m.mutations && m.mutations.length ? `
+        <div class="cb-section">변이 유형별 1차 치료제</div>
+        <div style="overflow-x:auto">
+        <table class="mut-table">
+          <tr><th style="min-width:180px">변이 유형</th><th style="min-width:80px">빈도</th><th style="min-width:200px">치료제 (라인)</th><th>비고</th></tr>
+          ${mutRows}
+        </table>
+        </div>` : ''}
+
+        ${dxHtml}
+
+        <div style="margin-top:8px;padding:8px 10px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;font-size:11px;color:#92400e">
+          ⚠️ 본 자료는 NCCN Guidelines® 2025/2026 기준 임상 참고용입니다. 실제 치료 결정은 담당 의료진과 상의하십시오.
+        </div>
+      </div>
+    </div>`;
+  return card;
+}
+
+function toggleCard(id) {
+  document.getElementById(`card-${id}`).classList.toggle('open');
+}
+
+/* Init */
+renderAll();
+</script>
+</body>
+</html>
