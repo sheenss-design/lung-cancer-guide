@@ -1027,9 +1027,11 @@ function switchMain(type, el) {
   currentPriority = 'all';
   document.querySelectorAll('.top-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
-  document.querySelectorAll('.chip').forEach(c => { c.className = 'chip'; });
-  document.querySelector('#filterChips .chip').classList.add('on-all');
+  // reset each filter group independently
+  document.querySelectorAll('#priorityChips .chip').forEach(c => { c.className = 'chip'; });
+  document.querySelectorAll('#filterChips .chip').forEach(c => { c.className = 'chip'; });
   document.querySelector('#priorityChips .chip').classList.add('on-all');
+  document.querySelector('#filterChips .chip').classList.add('on-all');
   renderAll();
 }
 
@@ -1108,7 +1110,7 @@ function renderSummary() {
   const filterHint = (currentPriority!=='all' || currentMethod!=='all')
     ? `<div style="grid-column:1/-1;font-size:11px;color:var(--muted);padding:4px 2px">
         🔽 현재 필터: <strong style="color:var(--text2)">${pLabel}</strong> &nbsp;·&nbsp; <strong style="color:var(--text2)">${mLabel}</strong>
-        &nbsp;<span onclick="resetFilters()" style="cursor:pointer;color:var(--pcr);text-decoration:underline">필터 초기화</span>
+        &nbsp;<span id="resetBtn" style="cursor:pointer;color:var(--pcr);text-decoration:underline">필터 초기화</span>
        </div>` : '';
 
   const container = document.getElementById('summaryRow');
@@ -1120,11 +1122,9 @@ function renderSummary() {
     html += `<div class="sc"><div class="sc-num" style="color:${colors[k]}">${v}</div><div class="sc-lbl">${k} 적용</div></div>`;
   });
   container.innerHTML = html;
-}
-  Object.entries(counts).forEach(([k,v]) => {
-    html += `<div class="sc"><div class="sc-num" style="color:${colors[k]}">${v}</div><div class="sc-lbl">${k} 적용</div></div>`;
-  });
-  container.innerHTML = html;
+  // bind reset button after DOM update
+  const resetBtn = document.getElementById('resetBtn');
+  if (resetBtn) resetBtn.addEventListener('click', resetFilters);
 }
 
 function renderCards() {
