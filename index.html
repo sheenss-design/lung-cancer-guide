@@ -400,7 +400,7 @@ h1 span{color:#2563eb}
     <span class="meta-chip mc-blue">NSCLC v3.2026</span>
     <span class="meta-chip mc-green">SCLC v2.2026</span>
     <span class="meta-chip mc-amber">단계별 검사 전략 포함</span>
-    <span class="meta-chip" style="background:#f5f3ff;border-color:#ddd6fe;color:#5b21b6">ver 2.0</span>
+    <span class="meta-chip" style="background:#f5f3ff;border-color:#ddd6fe;color:#5b21b6">ver 2.1</span>
   </div>
 </div>
 
@@ -640,28 +640,28 @@ const MARKERS = [
     priority:{ad:1, sq:2, lc:1, sclc:0},
     priorityNote:{sq:'2~3% 발생. NGS 패널 포함 시 동시 검사 권고'},
     methods:{
-      PCR:{apply:false, primary:false, note:'사용하지 않음 — METex14 splicing variant는 PCR로 검출 불가.'},
-      FISH:{apply:true, primary:false, note:'MET 증폭(copy number 증가) 평가에 사용. gene copy number/CEP7 ratio 계산. METex14 skip 검출 불가. 5~7일.'},
-      IHC:{apply:true, primary:false, note:'MET 단백 과발현 확인(c-Met 항체). 단독 확진 불가. METex14 skip과 증폭 여부와 상관관계 불완전.'},
-      NGS:{apply:true, primary:true, note:'RNA-based NGS: METex14 skip 최적 검출. DNA NGS: 증폭·점돌연변이. 두 방법 병행 권장. 7~14일.'}
+      PCR:{apply:false, primary:false, note:'사용하지 않음 — <em>MET</em>ex14 splicing variant는 PCR로 검출 불가.'},
+      FISH:{apply:true, primary:false, note:'<em>MET</em> 유전자 증폭(copy number 증가) 평가에 사용. gene copy number/CEP7 ratio 계산. <em>MET</em>ex14 skip 검출 불가. 5~7일.'},
+      IHC:{apply:true, primary:false, note:'MET 단백 과발현 확인(c-Met 항체). 단독 확진 불가. <em>MET</em>ex14 skip·유전자 증폭 여부와 단백 발현의 상관관계 불완전.'},
+      NGS:{apply:true, primary:true, note:'RNA-based NGS: <em>MET</em>ex14 skip 최적 검출. DNA NGS: 유전자 증폭·점돌연변이. 두 방법 병행 권장. 7~14일.'}
     },
     time:'5–7일(FISH) / 7–14일(NGS)', timeCls:'tm',
-    natureDesc:'MET는 하나의 유전자 이름이지만 임상적으로 완전히 다른 세 가지 이상이 존재합니다: (1) RNA splicing 이상(METex14 skip), (2) DNA 복사수 증가(증폭), (3) 단백 과발현. 각각 기전·검사법·치료가 다릅니다.',
-    assayPrinciple:'RNA NGS: 역전사 후 exon 14 경계 부위 분석으로 splicing variant 검출(DNA만으로는 누락 가능). FISH: 형광 프로브로 copy number/centromere 비율 계산. IHC: 단백 발현 수준 반정량화.',
-    sample:'FFPE 조직 / RNA(METex14) / ctDNA',
-    freq:'METex14 skip: 3–4% / MET 고증폭(driver): 1–2% / EGFR 내성 후 MET 증폭: 5–20%',
-    guideline:'METex14 skip: NCCN Cat 1, FDA 승인(카프마티닙, 테포티닙) / MET 증폭: Emerging biomarker',
-    note:'EGFR 내성 후 MET 증폭 발생 시 오시머티닙+MET TKI 병용 가능(2024).',
+    natureDesc:'<em>MET</em>는 하나의 유전자 이름이지만 임상적으로 완전히 다른 세 가지 이상이 존재합니다: (1) <em>MET</em>ex14 skipping — RNA splicing 이상 (유전자 수준), (2) <em>MET</em> 유전자 증폭 — DNA copy number 증가, (3) MET 단백 과발현 — 단백질 수준. 이탤릭체(<em>MET</em>)는 유전자를, 로마체(MET)는 단백질을 가리킵니다. 각각 기전·검사법·치료가 다릅니다.',
+    assayPrinciple:'RNA NGS: 역전사 후 exon 14 경계 부위 분석으로 splicing variant 검출(DNA만으로는 누락 가능). FISH: 형광 프로브로 <em>MET</em> 유전자 copy number/centromere 비율 계산. IHC: MET 단백 발현 수준 반정량화.',
+    sample:'FFPE 조직 / RNA(<em>MET</em>ex14) / ctDNA',
+    freq:'<em>MET</em>ex14 skip: 3–4% / <em>MET</em> 고증폭(driver): 1–2% / EGFR 내성 후 <em>MET</em> 증폭: 5–20%',
+    guideline:'<em>MET</em>ex14 skip: NCCN Cat 1, FDA 승인(카프마티닙, 테포티닙) / <em>MET</em> 증폭: Emerging biomarker',
+    note:'EGFR 내성 후 <em>MET</em> 증폭 발생 시 오시머티닙+MET TKI 병용 가능(2024). MET TKI는 MET 단백을 표적으로 하는 억제제.',
     mutations:[
-      {type:'METex14 skipping mutation (RNA splicing 이상)', freq:'NSCLC: 3–4%',
+      {type:'<em>MET</em>ex14 skipping mutation (RNA splicing 이상)', freq:'NSCLC: 3–4%',
        drugs:[{name:'테포티닙',line:'1차',note:'Category 1, FDA 승인'},{name:'카프마티닙',line:'1차',note:'Category 1, FDA 승인'}],
        note:'RNA-based NGS로 검출. DNA NGS만으로는 누락 가능. 고령·흡연력 있는 선암에서 빈도 높음.'},
-      {type:'MET 고증폭 (de novo, DNA copy number ↑)', freq:'1–2%',
+      {type:'<em>MET</em> 고증폭 (de novo, DNA copy number ↑)', freq:'1–2%',
        drugs:[{name:'크리조티닙',line:'임상',note:'일부 근거'},{name:'임상시험',line:'임상',note:'Emerging biomarker'}],
        note:'FDA 승인 표적치료 없음. NCCN Emerging biomarker 분류.'},
-      {type:'MET 증폭 (EGFR TKI 내성 후 획득)', freq:'EGFR 내성 후 5–20%',
+      {type:'<em>MET</em> 증폭 (EGFR TKI 내성 후 획득)', freq:'EGFR 내성 후 5–20%',
        drugs:[{name:'오시머티닙+카프마티닙',line:'2차',note:'NCCN 2024 추가'},{name:'오시머티닙+테포티닙',line:'2차',note:'병용요법'}],
-       note:'EGFR 내성 기전으로 발생. 재생검 필수.'}
+       note:'EGFR 내성 기전으로 발생. 재생검 필수. <em>MET</em> 유전자 증폭이 MET 단백 과발현으로 이어짐.'}
     ]
   },
 
@@ -1038,7 +1038,7 @@ const SUBTYPE_CONFIG = {
               <span class="step-item si-pcr">PCR: KRAS G12C</span>
               <span class="step-item si-pcr">PCR: BRAF V600E</span>
               <span class="step-item si-fish">FISH: ROS1 (IHC 모호 시)</span>
-              <span class="step-item si-fish">FISH: MET 증폭</span>
+              <span class="step-item si-fish">FISH: <em>MET</em> 증폭</span>
             </div>
             <div class="step-note">· 단일 유전자 PCR 반복은 검체 소진 위험 → 가능하면 NGS로 통합<br>· ROS1 FISH는 IHC 결과 모호한 경우에만 추가</div>
           </div>
@@ -1051,7 +1051,7 @@ const SUBTYPE_CONFIG = {
             <div class="step-items">
               <span class="step-item si-ngs">RNA+DNA 통합 NGS</span>
             </div>
-            <div class="step-note">· RET·NRG1·METex14·NTRK 확진·TMB·STK11/KEAP1 동시 파악<br>· <strong style="color:#92400e">처음 생검 시 NGS용 검체를 별도 보존</strong>하면 나중에 추가 가능<br>· 1·2단계 음성인 경우 드라이버 변이 발견 가능성이 있어 NGS 권고<br>· 재생검 시 NGS 우선 고려</div>
+            <div class="step-note">· RET·NRG1·<em>MET</em>ex14·NTRK 확진·TMB·STK11/KEAP1 동시 파악<br>· <strong style="color:#92400e">처음 생검 시 NGS용 검체를 별도 보존</strong>하면 나중에 추가 가능<br>· 1·2단계 음성인 경우 드라이버 변이 발견 가능성이 있어 NGS 권고<br>· 재생검 시 NGS 우선 고려</div>
           </div>
         </div>
       </div>`
@@ -1142,7 +1142,7 @@ const SUBTYPE_CONFIG = {
             <div class="step-items">
               <span class="step-item si-ngs">RNA+DNA 통합 NGS</span>
             </div>
-            <div class="step-note">· RET·METex14·NTRK·NRG1 등 발견 가능<br>· <strong style="color:#92400e">처음 생검 시 NGS용 검체 별도 보존</strong> 권장</div>
+            <div class="step-note">· RET·<em>MET</em>ex14·NTRK·NRG1 등 발견 가능<br>· <strong style="color:#92400e">처음 생검 시 NGS용 검체 별도 보존</strong> 권장</div>
           </div>
         </div>
       </div>`
@@ -1405,13 +1405,13 @@ function buildDriverInfoBox() {
         <div class="de-item"><div class="de-gene">KRAS G12C</div><div class="de-desc">GTPase 기능 소실 → RAS 단백이 꺼지지 않고 계속 켜진 상태 유지</div></div>
         <div class="de-item"><div class="de-gene">ALK 융합</div><div class="de-desc">비정상 키나아제가 항상 활성화 → 세포 생존·증식 신호 지속 발사</div></div>
         <div class="de-item"><div class="de-gene">BRAF V600E</div><div class="de-desc">MAPK 신호전달경로 항구적 활성화 → 세포 증식 브레이크 소실</div></div>
-        <div class="de-item"><div class="de-gene">METex14</div><div class="de-desc">MET 수용체 분해 신호 소실 → 성장 신호 수용체가 과다 축적</div></div>
+        <div class="de-item"><div class="de-gene"><em>MET</em>ex14</div><div class="de-desc">MET 수용체 분해 신호 소실 → 성장 신호 수용체가 과다 축적</div></div>
         <div class="de-item"><div class="de-gene">RET 융합</div><div class="de-desc">비정상 RET 키나아제 활성화 → 세포 생존·분열 신호 지속</div></div>
       </div>
 
       <div class="driver-note-box">
         <strong>이 앱과의 연결</strong>
-        아래 목록의 EGFR, ALK, ROS1, KRAS, BRAF, MET, RET, NTRK, ERBB2, NRG1, FGFR이 모두 드라이버 돌연변이에 해당합니다. 반면 PD-L1, TMB는 드라이버 돌연변이가 아닌 면역 바이오마커이며, STK11은 종양억제유전자 기능 소실로 드라이버 역할을 하지만 표적치료 대상이 없어 예측 바이오마커로 분류합니다.
+        아래 목록의 EGFR, ALK, ROS1, KRAS, BRAF, <em>MET</em>, RET, NTRK, ERBB2, NRG1, FGFR이 모두 드라이버 돌연변이에 해당합니다. 반면 PD-L1, TMB는 드라이버 돌연변이가 아닌 면역 바이오마커이며, STK11은 종양억제유전자 기능 소실로 드라이버 역할을 하지만 표적치료 대상이 없어 예측 바이오마커로 분류합니다.
       </div>
     </div>`;
   return box;
