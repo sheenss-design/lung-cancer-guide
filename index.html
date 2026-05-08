@@ -151,7 +151,7 @@ h1 span{color:#2563eb}
 .nat-prot{background:#ecfdf5;border:1px solid #6ee7b7;color:#065f46}
 .nat-dual{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}
 .nat-quant{background:#fdf2f8;border:1px solid #f0abfc;color:#701a75}
-.marker-full-name{font-size:11px;color:var(--muted);margin-bottom:8px}
+.marker-full-name{font-size:11px;color:var(--muted);margin-bottom:6px;line-height:1.4}
 .method-mini{display:flex;gap:5px;flex-wrap:wrap}
 .mm{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px}
 .mm-pcr{background:#e0f2fe;color:var(--pcr)}
@@ -159,13 +159,17 @@ h1 span{color:#2563eb}
 .mm-ihc{background:#ecfdf5;color:var(--ihc)}
 .mm-ngs{background:#fef3c7;color:#b45309}
 .mm-primary{outline:1.5px solid currentColor}
-.card-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+/* card-right: expand btn + time 가로 배치 */
+.card-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
+.card-right-top{display:flex;align-items:center;gap:6px}
 .expand-btn{width:26px;height:26px;border-radius:6px;background:var(--surface3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--muted);transition:all .22s;cursor:pointer;flex-shrink:0}
 .card.open .expand-btn{background:#eff6ff;border-color:#93c5fd;color:var(--ad);transform:rotate(45deg)}
-.time-mini{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;padding:2px 7px;border-radius:4px}
+.time-mini{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;padding:2px 7px;border-radius:4px;white-space:nowrap}
 .tm-fast{background:#dcfce7;color:#15803d}
 .tm-mid{background:#fef3c7;color:#92400e}
 .tm-slow{background:#fee2e2;color:#b91c1c}
+/* badge row — 한 줄에 모아서 wrap */
+.card-badge-row{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:5px;align-items:center}
 
 /* ── CARD BODY ── */
 .card-body{display:none;padding:16px;border-top:1px solid var(--border);background:var(--surface2)}
@@ -232,6 +236,18 @@ h1 span{color:#2563eb}
 .dx-card{background:var(--surface);border:1px solid #e9d5ff;border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:7px}
 .dx-marker-name{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:#7c3aed;margin-bottom:3px}
 .dx-marker-desc{font-size:12px;color:var(--text2);line-height:1.6}
+
+/* ── FILTER TOOLTIP ── */
+.filter-row-head{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.filter-help-btn{width:16px;height:16px;border-radius:50%;background:var(--surface3);border:1px solid var(--border2);display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--muted);cursor:pointer;flex-shrink:0;user-select:none;transition:all .15s}
+.filter-help-btn:hover,.filter-help-btn.active{background:#dbeafe;border-color:#93c5fd;color:#2563eb}
+.filter-tooltip{display:none;background:#1e293b;color:#e2e8f0;font-size:11px;line-height:1.7;padding:10px 13px;border-radius:8px;margin-bottom:8px;position:relative;box-shadow:0 4px 16px rgba(0,0,0,.18)}
+.filter-tooltip.show{display:block}
+.filter-tooltip::before{content:'';position:absolute;top:-5px;left:16px;width:10px;height:10px;background:#1e293b;transform:rotate(45deg);border-radius:2px}
+.filter-tooltip strong{color:#93c5fd;display:inline}
+.chip.on-nccn1{background:#fef9c3;border-color:#fde047;color:#713f12}
+.chip.on-nccn2{background:#f3f4f6;border-color:#9ca3af;color:#4b5563}
+.chip.on-nccnnew{background:#dcfce7;border-color:#86efac;color:#14532d}
 
 /* Strategy box */
 .strategy-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;margin-top:10px}
@@ -404,7 +420,7 @@ h1 span{color:#2563eb}
     <span class="meta-chip mc-blue">NSCLC v3.2026</span>
     <span class="meta-chip mc-green">SCLC v2.2026</span>
     <span class="meta-chip mc-amber">단계별 검사 전략 포함</span>
-    <span class="meta-chip" style="background:#f5f3ff;border-color:#ddd6fe;color:#5b21b6">ver 2.1</span>
+    <span class="meta-chip" style="background:#f5f3ff;border-color:#ddd6fe;color:#5b21b6">ver 2.2</span>
   </div>
 </div>
 
@@ -421,25 +437,70 @@ h1 span{color:#2563eb}
 
 <!-- FILTERS -->
 <div class="filter-section" id="filterSection">
-  <div style="display:flex;flex-direction:column;gap:10px">
+  <div style="display:flex;flex-direction:column;gap:12px">
+
+    <!-- 검사 순위 필터 -->
     <div>
-      <span class="filter-label">우선순위 필터</span>
+      <div class="filter-row-head">
+        <span class="filter-label" style="margin-bottom:0">검사 순위 필터</span>
+        <span class="filter-help-btn" onclick="toggleTooltip('tt-priority',this)">?</span>
+      </div>
+      <div class="filter-tooltip" id="tt-priority">
+        <strong>검사 순위</strong>는 해당 세포형에서 이 바이오마커를 얼마나 우선적으로 검사해야 하는지를 나타냅니다.<br>
+        · <strong>필수 1순위</strong> — 반드시 검사해야 하는 바이오마커<br>
+        · <strong>2순위</strong> — 검체 여유가 있거나 특정 조건일 때 추가 검사<br>
+        · <em>세포형마다 순위가 달라집니다.</em>
+      </div>
       <div class="filter-chips" id="priorityChips">
-        <div class="chip on-all" onclick="filterPriority(this,'all')">전체 순위</div>
+        <div class="chip on-all" onclick="filterPriority(this,'all')">전체</div>
         <div class="chip" onclick="filterPriority(this,'1')">🟢 필수 1순위만</div>
         <div class="chip" onclick="filterPriority(this,'2')">🟡 2순위 포함</div>
       </div>
     </div>
+
+    <!-- NCCN 카테고리 필터 -->
     <div>
-      <span class="filter-label">검사 방법 필터</span>
-      <div class="filter-chips" id="filterChips">
-        <div class="chip on-all" onclick="filterMethod(this,'all')">전체 방법</div>
-        <div class="chip" onclick="filterMethod(this,'PCR')">PCR / Real-time PCR</div>
-        <div class="chip" onclick="filterMethod(this,'FISH')">FISH</div>
-        <div class="chip" onclick="filterMethod(this,'IHC')">IHC</div>
-        <div class="chip" onclick="filterMethod(this,'NGS')">NGS 패널</div>
+      <div class="filter-row-head">
+        <span class="filter-label" style="margin-bottom:0">NCCN 카테고리 필터</span>
+        <span class="filter-help-btn" onclick="toggleTooltip('tt-nccn',this)">?</span>
+      </div>
+      <div class="filter-tooltip" id="tt-nccn">
+        <strong>NCCN Category</strong>는 NCCN(미국 종합암네트워크)이 임상 근거 수준과 전문가 합의도를 기반으로 매기는 공식 권고 등급입니다.<br>
+        · <strong>Category 1</strong> — 고수준 근거 + 전문가 패널 전원 합의<br>
+        · <strong>Category 2A</strong> — 중간 수준 근거 + 전문가 패널 대부분 합의<br>
+        · <strong>2025 신규</strong> — 최신 가이드라인에 새로 추가된 항목<br>
+        · <em>세포형에 무관하게 동일하게 적용됩니다.</em>
+      </div>
+      <div class="filter-chips" id="nccnChips">
+        <div class="chip on-all" onclick="filterNccn(this,'all')">전체</div>
+        <div class="chip" onclick="filterNccn(this,'cat1')">★ Category 1</div>
+        <div class="chip" onclick="filterNccn(this,'cat2')">Category 2A</div>
+        <div class="chip" onclick="filterNccn(this,'new')">2025 신규</div>
       </div>
     </div>
+
+    <!-- 검사 방법 필터 -->
+    <div>
+      <div class="filter-row-head">
+        <span class="filter-label" style="margin-bottom:0">검사 방법 필터</span>
+        <span class="filter-help-btn" onclick="toggleTooltip('tt-method',this)">?</span>
+      </div>
+      <div class="filter-tooltip" id="tt-method">
+        <strong>검사 방법</strong>으로 필터링합니다. 선택한 방법이 적용 가능한 바이오마커만 표시됩니다.<br>
+        · <strong>PCR</strong> — DNA 점돌연변이 신속 검출 (당일~2일)<br>
+        · <strong>FISH</strong> — DNA 구조 이상(증폭·재배열) 확인 (3~7일)<br>
+        · <strong>IHC</strong> — 단백질 발현량 측정 (1~3일)<br>
+        · <strong>NGS</strong> — DNA·RNA 광범위 동시 분석 (7~21일)
+      </div>
+      <div class="filter-chips" id="filterChips">
+        <div class="chip on-all" onclick="filterMethod(this,'all')">전체</div>
+        <div class="chip" onclick="filterMethod(this,'PCR')">PCR</div>
+        <div class="chip" onclick="filterMethod(this,'FISH')">FISH</div>
+        <div class="chip" onclick="filterMethod(this,'IHC')">IHC</div>
+        <div class="chip" onclick="filterMethod(this,'NGS')">NGS</div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -1191,6 +1252,7 @@ const SUBTYPE_CONFIG = {
 let currentMain = 'ad';
 let currentMethod = 'all';
 let currentPriority = 'all';
+let currentNccn = 'all';
 
 /* ============================================================
    RENDER
@@ -1199,12 +1261,14 @@ function switchMain(type, el) {
   currentMain = type;
   currentMethod = 'all';
   currentPriority = 'all';
+  currentNccn = 'all';
   document.querySelectorAll('.top-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
-  // reset each filter group independently
   document.querySelectorAll('#priorityChips .chip').forEach(c => { c.className = 'chip'; });
+  document.querySelectorAll('#nccnChips .chip').forEach(c => { c.className = 'chip'; });
   document.querySelectorAll('#filterChips .chip').forEach(c => { c.className = 'chip'; });
   document.querySelector('#priorityChips .chip').classList.add('on-all');
+  document.querySelector('#nccnChips .chip').classList.add('on-all');
   document.querySelector('#filterChips .chip').classList.add('on-all');
   renderAll();
 }
@@ -1212,10 +1276,13 @@ function switchMain(type, el) {
 function resetFilters() {
   currentMethod = 'all';
   currentPriority = 'all';
+  currentNccn = 'all';
   document.querySelectorAll('#filterChips .chip').forEach(c => { c.className = 'chip'; });
   document.querySelectorAll('#priorityChips .chip').forEach(c => { c.className = 'chip'; });
+  document.querySelectorAll('#nccnChips .chip').forEach(c => { c.className = 'chip'; });
   document.querySelector('#filterChips .chip').classList.add('on-all');
   document.querySelector('#priorityChips .chip').classList.add('on-all');
+  document.querySelector('#nccnChips .chip').classList.add('on-all');
   renderAll();
 }
 
@@ -1227,12 +1294,28 @@ function filterPriority(el, priority) {
   renderAll();
 }
 
+function filterNccn(el, nccn) {
+  currentNccn = nccn;
+  document.querySelectorAll('#nccnChips .chip').forEach(c => { c.className = 'chip'; });
+  const cls = nccn === 'all' ? 'on-all' : nccn === 'cat1' ? 'on-nccn1' : nccn === 'cat2' ? 'on-nccn2' : 'on-nccnnew';
+  el.classList.add(cls);
+  renderAll();
+}
+
 function filterMethod(el, method) {
   currentMethod = method;
   document.querySelectorAll('#filterChips .chip').forEach(c => { c.className = 'chip'; });
   const cls = method === 'all' ? 'on-all' : 'on-' + method.toLowerCase();
   el.classList.add(cls);
   renderAll();
+}
+
+function toggleTooltip(id, btn) {
+  const tt = document.getElementById(id);
+  const isShow = tt.classList.contains('show');
+  document.querySelectorAll('.filter-tooltip').forEach(t => t.classList.remove('show'));
+  document.querySelectorAll('.filter-help-btn').forEach(b => b.classList.remove('active'));
+  if (!isShow) { tt.classList.add('show'); btn.classList.add('active'); }
 }
 
 function renderAll() {
@@ -1261,10 +1344,9 @@ function getVisibleMarkers() {
   return MARKERS.filter(m => {
     const p = m.priority[currentMain];
     if (!p) return false;
-    // priority filter
     if (currentPriority === '1' && p !== 1) return false;
     if (currentPriority === '2' && p > 2) return false;
-    // method filter
+    if (currentNccn !== 'all' && m.nccn !== currentNccn) return false;
     if (currentMethod === 'all') return true;
     return m.methods[currentMethod]?.apply;
   });
@@ -1280,11 +1362,13 @@ function renderSummary() {
 
   // filter status label
   const pLabel = currentPriority==='1' ? '필수 1순위' : currentPriority==='2' ? '1·2순위' : '전체';
+  const nLabel = currentNccn==='cat1' ? 'Category 1' : currentNccn==='cat2' ? 'Category 2A' : currentNccn==='new' ? '2025 신규' : '전체';
   const mLabel = currentMethod==='all' ? '전체 방법' : currentMethod;
-  const filterHint = (currentPriority!=='all' || currentMethod!=='all')
+  const hasFilter = currentPriority!=='all' || currentNccn!=='all' || currentMethod!=='all';
+  const filterHint = hasFilter
     ? `<div style="grid-column:1/-1;font-size:11px;color:var(--muted);padding:4px 2px">
-        🔽 현재 필터: <strong style="color:var(--text2)">${pLabel}</strong> &nbsp;·&nbsp; <strong style="color:var(--text2)">${mLabel}</strong>
-        &nbsp;<span id="resetBtn" style="cursor:pointer;color:var(--pcr);text-decoration:underline">필터 초기화</span>
+        🔽 필터: <strong style="color:var(--text2)">${pLabel}</strong> · <strong style="color:var(--text2)">${nLabel}</strong> · <strong style="color:var(--text2)">${mLabel}</strong>
+        &nbsp;<span id="resetBtn" style="cursor:pointer;color:var(--pcr);text-decoration:underline">초기화</span>
        </div>` : '';
 
   const container = document.getElementById('summaryRow');
@@ -1704,19 +1788,38 @@ function buildCard(m) {
     <div class="card-main">
       <div class="card-header" onclick="toggleCard('${m.id}')">
         <div class="card-left">
-          <div class="card-top-row">
+
+          <!-- ① 바이오마커 약어 -->
+          <div class="card-top-row" style="margin-bottom:3px">
             <span class="marker-name">${m.name}</span>
-            <span class="priority-badge ${pi.badge}">${pi.text}</span>
-            <span class="nccn-badge-sm ${nc.badge}">${nc.text}</span>
+          </div>
+
+          <!-- ② 풀네임 -->
+          <div class="marker-full-name">${m.full}</div>
+
+          <!-- ③ 변이의 종류 -->
+          <div style="margin-bottom:6px">
             <span class="nature-badge ${ni.badge}">${ni.text}</span>
           </div>
-          <div class="marker-full-name">${m.full}</div>
-          <div class="method-mini">${methodBadges}</div>
-          ${pNote ? `<div style="font-size:11px;color:var(--muted);margin-top:5px">💡 ${pNote}</div>` : ''}
+
+          <!-- ④ 검사순위 + NCCN -->
+          <div class="card-badge-row" style="margin-bottom:6px">
+            <span class="priority-badge ${pi.badge}">${pi.text}</span>
+            <span class="nccn-badge-sm ${nc.badge}">${nc.text}</span>
+          </div>
+
+          <!-- ⑤ 검사방법 -->
+          <div class="method-mini" style="margin-bottom:4px">${methodBadges}</div>
+
+          <!-- ⑥ 리마크 -->
+          ${pNote ? `<div style="font-size:11px;color:var(--muted);margin-top:4px">💡 ${pNote}</div>` : ''}
+
         </div>
         <div class="card-right">
-          <div class="expand-btn" id="exp-${m.id}">+</div>
-          <span class="time-mini ${m.timeCls}">${m.time}</span>
+          <div class="card-right-top">
+            <span class="time-mini ${m.timeCls}">${m.time}</span>
+            <div class="expand-btn" id="exp-${m.id}">+</div>
+          </div>
         </div>
       </div>
       <div class="card-body">
