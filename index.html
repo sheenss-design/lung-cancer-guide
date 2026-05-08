@@ -195,16 +195,20 @@ h1 span{color:#2563eb}
 
 /* Mutation table */
 .mut-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:4px;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border)}
-.mut-table th{background:var(--surface3);padding:8px 10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)}
-.mut-table td{padding:9px 10px;border-bottom:1px solid #eef1f7;color:var(--text2);vertical-align:top;line-height:1.5}
-.mut-table tr:last-child td{border-bottom:none}
-.mut-table tr:hover td{background:#f8faff}
-.mut-type{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--text)}
-.drug-chip{display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;margin:1px;white-space:nowrap}
+/* Mutation cards (변이유형별 치료제) */
+.mut-cards{display:flex;flex-direction:column;gap:8px;margin-bottom:4px}
+.mut-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
+.mut-card-header{padding:9px 12px;background:var(--surface3);border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.mut-type{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--text);flex:1;line-height:1.45}
+.mut-freq-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:100px;background:var(--surface2);border:1px solid var(--border);color:var(--text2);white-space:nowrap;flex-shrink:0}
+.mut-card-body{padding:9px 12px}
+.mut-drugs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px}
+.mut-note-text{font-size:11px;color:var(--muted);line-height:1.55}
+.drug-chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 9px;border-radius:5px;background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;white-space:nowrap}
 .drug-chip.warn{background:#fff1f2;border-color:#fecdd3;color:#9f1239}
 .drug-chip.neutral{background:#f3f4f6;border-color:#d1d5db;color:#6b7280}
 .drug-chip.new{background:#dcfce7;border-color:#86efac;color:#15803d}
-.line-badge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:700;margin-right:3px}
+.line-badge{font-size:9px;padding:1px 5px;border-radius:3px;font-weight:700}
 .line-1{background:#dcfce7;color:#15803d}
 .line-2{background:#fef3c7;color:#92400e}
 .line-no{background:#fee2e2;color:#b91c1c}
@@ -1660,21 +1664,26 @@ function buildCard(m) {
     return `<tr><td><span class="method-name mname-${k.toLowerCase()}">${k}</span></td><td>${icon}</td><td>${v?.note||'—'}</td></tr>`;
   }).join('');
 
-  // Mutation rows
-  let mutRows = '';
+  // Mutation cards
+  let mutCardsHtml = '';
   if (m.mutations && m.mutations.length) {
-    mutRows = m.mutations.map(mu => {
+    mutCardsHtml = m.mutations.map(mu => {
       const drugHtml = mu.drugs ? mu.drugs.map(d => {
         const lineCls = d.line==='1차'?'line-1':d.line==='2차'?'line-2':d.line==='불가'?'line-no':'';
         const chipCls = d.line==='불가'?'warn':(d.line==='임상'?'neutral':(d.note?.includes('신규')||d.note?.includes('2024')||d.note?.includes('Preferred')?'new':''));
         return `<span class="drug-chip ${chipCls}"><span class="line-badge ${lineCls}">${d.line}</span>${d.name}</span>`;
       }).join('') : '';
-      return `<tr>
-        <td class="mut-type">${mu.type}</td>
-        <td>${mu.freq}</td>
-        <td>${drugHtml}</td>
-        <td>${mu.note||''}</td>
-      </tr>`;
+      return `
+        <div class="mut-card">
+          <div class="mut-card-header">
+            <span class="mut-type">${mu.type}</span>
+            <span class="mut-freq-badge">${mu.freq}</span>
+          </div>
+          <div class="mut-card-body">
+            <div class="mut-drugs">${drugHtml}</div>
+            ${mu.note ? `<div class="mut-note-text">💬 ${mu.note}</div>` : ''}
+          </div>
+        </div>`;
     }).join('');
   }
 
@@ -1745,12 +1754,7 @@ function buildCard(m) {
 
         ${m.mutations && m.mutations.length ? `
         <div class="cb-section">변이 유형별 1차 치료제</div>
-        <div style="overflow-x:auto">
-        <table class="mut-table">
-          <tr><th style="min-width:180px">변이 유형</th><th style="min-width:80px">빈도</th><th style="min-width:200px">치료제 (라인)</th><th>비고</th></tr>
-          ${mutRows}
-        </table>
-        </div>` : ''}
+        <div class="mut-cards">${mutCardsHtml}</div>` : ''}
 
         ${dxHtml}
 
