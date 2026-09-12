@@ -470,7 +470,14 @@ h1 span{color:#2563eb}
 .insurance-note{font-size:10px;color:#4ade80;margin-top:5px;line-height:1.55}
 .insurance-link{font-size:10px;color:#15803d;text-decoration:underline;cursor:pointer}
 
-/* ── ctDNA BOX in card body ── */
+/* ── ctDNA HEADER BADGE ── */
+.ctdna-badge{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;white-space:nowrap}
+.ctdna-ok  {background:#f0fdf4;border:1px solid #6ee7b7;color:#065f46}
+.ctdna-lim {background:#fffbeb;border:1px solid #fcd34d;color:#92400e}
+.ctdna-no  {background:#fef2f2;border:1px solid #fca5a5;color:#991b1b}
+/* CDT liquid biopsy inline note */
+.cdt-ctdna-note{display:flex;gap:7px;align-items:flex-start;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:5px;padding:7px 10px;margin-top:5px;font-size:11px;color:#4c1d95;line-height:1.55}
+.cdt-ctdna-icon{font-size:14px;flex-shrink:0}
 .ctdna-box{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:var(--radius-sm);padding:11px 13px;margin-top:2px}
 .ctdna-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#5b21b6;margin-bottom:6px}
 .ctdna-row{display:flex;gap:6px;align-items:flex-start;margin-bottom:4px}
@@ -630,8 +637,8 @@ h1 span{color:#2563eb}
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
     <div class="sec-tab cell-type-btn" id="tab-ad" onclick="switchMain('ad',this)">🔵 선암종 <span style="font-size:10px;opacity:.75;display:block;margin-top:1px">Adenocarcinoma</span></div>
     <div class="sec-tab cell-type-btn" id="tab-sq" onclick="switchMain('sq',this)">🔴 편평세포암 <span style="font-size:10px;opacity:.75;display:block;margin-top:1px">Squamous Cell</span></div>
-    <div class="sec-tab cell-type-btn" id="tab-lc" onclick="switchMain('lc',this)">🟣 대세포암 <span style="font-size:10px;opacity:.75;display:block;margin-top:1px">Large Cell / NOS</span></div>
-    <div class="sec-tab cell-type-btn" id="tab-sclc" onclick="switchMain('sclc',this)">🟤 소세포암 <span style="font-size:10px;opacity:.75;display:block;margin-top:1px">SCLC</span></div>
+    <div class="sec-tab cell-type-btn" id="tab-lc" onclick="switchMain('lc',this)">🟣 대세포암 / 비소세포암 <span style="font-size:10px;opacity:.75;display:block;margin-top:1px">Large Cell / NOS</span></div>
+    <div class="sec-tab cell-type-btn" id="tab-sclc" onclick="switchMain('sclc',this)">🟤 소세포암 <span style="font-size:10px;opacity:.75;display:block;margin-top:1px">Small Cell (SCLC)</span></div>
   </div>
   <!-- 보조 도구: 한 줄 -->
   <div style="display:flex;gap:6px;flex-wrap:wrap">
@@ -825,7 +832,7 @@ h1 span{color:#2563eb}
 const MARKERS = [
   /* ── EGFR ── */
   {
-    id:'egfr', name:'EGFR', full:'표피성장인자수용체 (Epidermal Growth Factor Receptor)',
+    id:'egfr', ctdnaLevel:'ok', name:'EGFR', full:'표피성장인자수용체 (Epidermal Growth Factor Receptor)',
     nature:'dna', nccn:'cat1',
     priority:{ad:1, sq:2, lc:1, sclc:0},
     priorityNote:{sq:'비흡연자·소량생검·혼합조직형 시만 검사', sclc:'해당 없음'},
@@ -860,7 +867,7 @@ const MARKERS = [
 
   /* ── ALK ── */
   {
-    id:'alk', name:'ALK', full:'역형성 림프종 인산화효소 (Anaplastic Lymphoma Kinase)',
+    id:'alk',  ctdnaLevel:'lim', name:'ALK', full:'역형성 림프종 인산화효소 (Anaplastic Lymphoma Kinase)',
     nature:'rna', nccn:'cat1',
     priority:{ad:1, sq:2, lc:1, sclc:0},
     priorityNote:{sq:'비흡연자·소량생검·혼합조직형 시만 검사'},
@@ -892,7 +899,7 @@ const MARKERS = [
 
   /* ── ROS1 ── */
   {
-    id:'ros1', name:'ROS1', full:'ROS Proto-Oncogene 1',
+    id:'ros1', ctdnaLevel:'lim', name:'ROS1', full:'ROS Proto-Oncogene 1',
     nature:'rna', nccn:'cat1',
     priority:{ad:1, sq:3, lc:1, sclc:0},
     priorityNote:{sq:'발생 빈도 매우 낮아 일상 검사 불필요'},
@@ -921,7 +928,7 @@ const MARKERS = [
 
   /* ── KRAS ── */
   {
-    id:'kras', name:'KRAS', full:'Kirsten Rat Sarcoma 바이러스 종양유전자',
+    id:'kras', ctdnaLevel:'ok', name:'KRAS', full:'Kirsten Rat Sarcoma 바이러스 종양유전자',
     nature:'dna', nccn:'cat1',
     priority:{ad:1, sq:2, lc:1, sclc:0},
     priorityNote:{sq:'편평암에서 ~5%. 낮으나 G12C 표적치료 가능하여 검사 권고'},
@@ -950,7 +957,7 @@ const MARKERS = [
 
   /* ── BRAF ── */
   {
-    id:'braf', name:'BRAF', full:'B-Raf 프로토종양유전자',
+    id:'braf', ctdnaLevel:'ok', name:'BRAF', full:'B-Raf 프로토종양유전자',
     nature:'dna', nccn:'cat1',
     priority:{ad:1, sq:2, lc:1, sclc:0},
     priorityNote:{sq:'Category 2A — 소량생검·혼합조직형 시 검사 권고'},
@@ -979,7 +986,7 @@ const MARKERS = [
 
   /* ── MET ── */
   {
-    id:'met', name:'MET', full:'Mesenchymal-Epithelial Transition 인산화효소',
+    id:'met',  ctdnaLevel:'lim', name:'MET', full:'Mesenchymal-Epithelial Transition 인산화효소',
     nature:'dual', nccn:'cat1',
     priority:{ad:1, sq:2, lc:1, sclc:0},
     priorityNote:{sq:'2~3% 발생. NGS 패널 포함 시 동시 검사 권고'},
@@ -1011,7 +1018,7 @@ const MARKERS = [
 
   /* ── RET ── */
   {
-    id:'ret', name:'RET', full:'Rearranged during Transfection 원종양유전자',
+    id:'ret',  ctdnaLevel:'lim', name:'RET', full:'Rearranged during Transfection 원종양유전자',
     nature:'rna', nccn:'cat1',
     priority:{ad:1, sq:3, lc:1, sclc:0},
     priorityNote:{sq:'발생 빈도 매우 낮아 일상 검사 불필요'},
@@ -1037,7 +1044,7 @@ const MARKERS = [
 
   /* ── NTRK ── */
   {
-    id:'ntrk', name:'NTRK 1/2/3', full:'Neurotrophic Receptor Tyrosine Kinase',
+    id:'ntrk', ctdnaLevel:'lim', name:'NTRK 1/2/3', full:'Neurotrophic Receptor Tyrosine Kinase',
     nature:'rna', nccn:'cat1',
     priority:{ad:1, sq:2, lc:1, sclc:0},
     priorityNote:{sq:'빈도 낮으나 종양불문 승인으로 검사 권고'},
@@ -1066,7 +1073,7 @@ const MARKERS = [
 
   /* ── ERBB2 ── */
   {
-    id:'erbb2', name:'ERBB2 / HER2', full:'Human Epidermal Growth Factor Receptor 2',
+    id:'erbb2',ctdnaLevel:'ok', name:'ERBB2 / HER2', full:'Human Epidermal Growth Factor Receptor 2',
     nature:'dual', nccn:'cat1',
     priority:{ad:1, sq:2, lc:1, sclc:0},
     priorityNote:{sq:'2~3% 발생. NGS 패널 포함 시 동시 검사 권고'},
@@ -1098,7 +1105,7 @@ const MARKERS = [
 
   /* ── NRG1 ── */
   {
-    id:'nrg1', name:'NRG1', full:'Neuregulin-1 융합유전자',
+    id:'nrg1', ctdnaLevel:'lim', name:'NRG1', full:'Neuregulin-1 융합유전자',
     nature:'rna', nccn:'new',
     priority:{ad:2, sq:3, lc:2, sclc:0},
     priorityNote:{ad:'드라이버 음성 KRAS-WT 선암에서 적극 검사', sq:'발생 빈도 낮아 일상 검사 불필요'},
@@ -1124,7 +1131,7 @@ const MARKERS = [
 
   /* ── FGFR ── */
   {
-    id:'fgfr', name:'FGFR 1/2/3', full:'Fibroblast Growth Factor Receptor',
+    id:'fgfr', ctdnaLevel:'lim', name:'FGFR 1/2/3', full:'Fibroblast Growth Factor Receptor',
     nature:'dual', nccn:'new',
     priority:{ad:3, sq:1, lc:2, sclc:0},
     priorityNote:{ad:'선암에서 발생 빈도 낮아 일반적 검사 불필요', sq:'편평세포암 특이적 신규 표적 — NCCN 2025 추가'},
@@ -1153,7 +1160,7 @@ const MARKERS = [
 
   /* ── PD-L1 ── */
   {
-    id:'pdl1', name:'PD-L1', full:'Programmed Death-Ligand 1',
+    id:'pdl1', ctdnaLevel:'no', name:'PD-L1', full:'Programmed Death-Ligand 1',
     nature:'prot', nccn:'cat1',
     priority:{ad:1, sq:1, lc:1, sclc:2},
     priorityNote:{sclc:'SCLC에서는 치료 선택 필수 바이오마커 아님 (아테졸리주맙·더발루맙 발현 무관 사용)'},
@@ -1188,7 +1195,7 @@ const MARKERS = [
 
   /* ── TMB ── */
   {
-    id:'tmb', name:'TMB', full:'종양돌연변이부담 (Tumor Mutational Burden)',
+    id:'tmb',  ctdnaLevel:'lim', name:'TMB', full:'종양돌연변이부담 (Tumor Mutational Burden)',
     nature:'quant', nccn:'cat1',
     priority:{ad:2, sq:2, lc:2, sclc:2},
     priorityNote:{sclc:'SCLC에서는 치료 예측력 낮아 일상 검사 불권고'},
@@ -1217,7 +1224,7 @@ const MARKERS = [
 
   /* ── STK11 ── */
   {
-    id:'stk11', name:'STK11 / LKB1', full:'Serine/Threonine Kinase 11',
+    id:'stk11',ctdnaLevel:'lim', name:'STK11 / LKB1', full:'Serine/Threonine Kinase 11',
     nature:'dna', nccn:'cat2',
     priority:{ad:2, sq:3, lc:2, sclc:0},
     priorityNote:{ad:'NGS 패널 포함 시 동시 측정. 독립적 검사 불필요', sq:'선암에 비해 임상적 의미 불충분'},
@@ -1274,7 +1281,7 @@ const MARKERS = [
 
   /* ── SCLC: DLL3 ── */
   {
-    id:'sclc-dll3', name:'DLL3', full:'Delta-like Ligand 3',
+    id:'sclc-dll3',ctdnaLevel:'no', name:'DLL3', full:'Delta-like Ligand 3',
     nature:'prot', nccn:'cat1',
     priority:{ad:0, sq:0, lc:0, sclc:1},
     methods:{
@@ -2128,6 +2135,13 @@ function buildCard(m) {
           <!-- ⑤ 검사방법 -->
           <div class="method-mini" style="margin-bottom:4px">${methodBadges}</div>
 
+          <!-- ctDNA 가능 여부 배지 -->
+          ${m.ctdnaLevel ? `<div style="margin-bottom:4px">${
+            m.ctdnaLevel==='ok'  ? '<span class="ctdna-badge ctdna-ok">🧪 액체생검 가능</span>' :
+            m.ctdnaLevel==='lim' ? '<span class="ctdna-badge ctdna-lim">🧪 액체생검 제한적</span>' :
+            '<span class="ctdna-badge ctdna-no">🧪 액체생검 불가 (조직 필수)</span>'
+          }</div>` : ''}
+
           <!-- ⑥ 리마크 -->
           ${pNote ? `<div style="font-size:11px;color:var(--muted);margin-top:4px">💡 ${pNote}</div>` : ''}
 
@@ -2331,6 +2345,7 @@ const CDT = {
   step: 0,
   data: {
     cellType: null,   // 'ad' | 'sq' | 'lc' | 'sclc'
+    nosIhc: null,     // 'ttf1'(선암방향) | 'p40'(편평암방향) | 'unk'(불확정) — lc 선택시만
     stage: null,      // 'resectable' | 'unresectable3' | 'meta'
     markers: {}       // {egfr:'pos'|'neg'|'unk', alk:..., ...}
   }
@@ -2378,33 +2393,63 @@ function buildCdtPanel() {
 function renderCdtStep() {
   renderCdtStepBar();
   const body = document.getElementById('cdtBody');
-  if (CDT.step === 0) body.innerHTML = cdtStep0();
-  else if (CDT.step === 1) body.innerHTML = cdtStep1();
-  else if (CDT.step === 2) body.innerHTML = cdtStep2();
+  if (CDT.step === 0)   body.innerHTML = cdtStep0();
+  else if (CDT.step === 0.5) body.innerHTML = cdtStepNos();
+  else if (CDT.step === 1)   body.innerHTML = cdtStep1();
+  else if (CDT.step === 2)   body.innerHTML = cdtStep2();
   else body.innerHTML = cdtResult();
-  // bind pdl1 special select if on step 2
   if (CDT.step === 2) bindMcButtons();
 }
 
 function renderCdtStepBar() {
-  const labels = ['세포형','병기','검사결과','결과 확인'];
+  const isNos = CDT.data.cellType === 'lc';
+  const labels = isNos
+    ? ['세포형','조직형 감별','병기','검사결과','결과 확인']
+    : ['세포형','병기','검사결과','결과 확인'];
+  // step → bar index 매핑
+  const stepToIdx = isNos
+    ? {0:0, 0.5:1, 1:2, 2:3, 3:4}
+    : {0:0, 1:1, 2:2, 3:3};
+  const curIdx = stepToIdx[CDT.step] ?? 0;
   document.getElementById('cdtStepBar').innerHTML = `
     <div class="wiz-steps">
       ${labels.map((l,i) => `
         <div class="wiz-step-dot">
-          <div class="wiz-dot ${i < CDT.step ? 'done' : i === CDT.step ? 'active' : ''}">${i < CDT.step ? '✓' : i+1}</div>
-          <div class="wiz-step-label ${i === CDT.step ? 'active' : ''}">${l}</div>
+          <div class="wiz-dot ${i < curIdx ? 'done' : i === curIdx ? 'active' : ''}">${i < curIdx ? '✓' : i+1}</div>
+          <div class="wiz-step-label ${i === curIdx ? 'active' : ''}">${l}</div>
         </div>`).join('')}
     </div>`;
 }
 
-/* Step 0: 세포형 */
+function cdtNext() {
+  const isNos = CDT.data.cellType === 'lc';
+  if (CDT.step === 0)   CDT.step = isNos ? 0.5 : 1;
+  else if (CDT.step === 0.5) CDT.step = 1;
+  else if (CDT.step === 1)   CDT.step = 2;
+  else if (CDT.step === 2)   CDT.step = 3;
+  renderCdtStep();
+}
+
+function cdtBack() {
+  const isNos = CDT.data.cellType === 'lc';
+  if (CDT.step === 0.5) CDT.step = 0;
+  else if (CDT.step === 1) CDT.step = isNos ? 0.5 : 0;
+  else if (CDT.step === 2) CDT.step = 1;
+  else if (CDT.step === 3) CDT.step = 2;
+  renderCdtStep();
+}
+
+function cdtReset() {
+  CDT.step = 0;
+  CDT.data = {cellType:null, nosIhc:null, stage:null, markers:{}};
+  renderCdtStep();
+}
 function cdtStep0() {
   const opts = [
     {val:'ad',  icon:'🔵', title:'선암종 (Adenocarcinoma)',      desc:'드라이버 변이 풍부 · 비흡연자·여성 빈도 높음'},
     {val:'sq',  icon:'🔴', title:'편평세포암종 (Squamous Cell)', desc:'흡연 강연관 · PD-L1·FGFR 중심'},
-    {val:'lc',  icon:'🟣', title:'대세포암 / NOS',              desc:'조직형 미분류 · 선암에 준하는 검사'},
-    {val:'sclc',icon:'🟤', title:'소세포암 (SCLC)',             desc:'고등급 신경내분비 · 화학요법+면역항암 기반'}
+    {val:'lc',  icon:'🟣', title:'대세포암 / 비소세포암 (Large Cell / NOS)', desc:'조직형 미분류 · 선암에 준하는 검사 · TTF-1/p40 감별 필요'},
+    {val:'sclc',icon:'🟤', title:'소세포암 (Small Cell / SCLC)',      desc:'고등급 신경내분비 · 화학요법+면역항암 기반'}
   ];
   return `
     <div class="wiz-body">
@@ -2423,6 +2468,55 @@ function cdtStep0() {
         <button class="wiz-btn wiz-btn-next" onclick="cdtNext()" ${!CDT.data.cellType?'disabled':''}>다음 →</button>
       </div>
     </div>`;
+}
+
+/* Step 0.5: NOS 조직형 감별 IHC (lc 선택 시만) */
+function cdtStepNos() {
+  const cur = CDT.data.nosIhc;
+  const opts = [
+    {val:'ttf1', icon:'🔵', title:'TTF-1 양성 (선암 방향)',
+     desc:'선암종 마커(TTF-1) 양성 — 선암으로 분류하여 진행. EGFR·ALK 등 선암 드라이버 검사 전략 적용.'},
+    {val:'p40',  icon:'🔴', title:'p40 / p63 양성 (편평암 방향)',
+     desc:'편평암 마커(p40/p63/CK5/6) 양성 — 편평세포암으로 분류하여 진행. PD-L1·KRAS 중심 전략 적용.'},
+    {val:'unk',  icon:'🟣', title:'불확정 / 미시행 (NOS 유지)',
+     desc:'IHC로도 분류 불가 또는 아직 미시행 — NOS로 관리. 선암 수준 광범위 검사 권고. 페메트렉시드 사용 시 주의.'},
+  ];
+  return `
+    <div class="wiz-body">
+      <div class="wiz-question">① 조직형 감별 IHC 결과를 선택하세요
+        <span style="font-size:11px;color:var(--muted);font-weight:400;display:block;margin-top:4px">
+          TTF-1 / p40 / p63 / Napsin A / CK5·6 등 감별 IHC 결과
+        </span>
+      </div>
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius-sm);padding:10px 13px;margin-bottom:12px;font-size:11px;color:#14532d;line-height:1.65">
+        💡 <strong>왜 감별이 중요한가?</strong><br>
+        TTF-1 양성이면 선암 드라이버(EGFR·ALK·ROS1 등) 가능성이 높아 광범위 표적 검사가 필요합니다.
+        p40 양성이면 편평암 전략(PD-L1·KRAS 우선)으로 전환합니다.
+        감별이 안 되면 선암에 준하는 검사를 하되, <strong>페메트렉시드 화학요법은 신중하게 결정</strong>합니다.
+      </div>
+      <div class="wiz-options">
+        ${opts.map(o=>`
+          <div class="wiz-option ${cur===o.val?'selected':''}" onclick="nosSelect('${o.val}',this)">
+            <div class="wiz-option-icon">${o.icon}</div>
+            <div class="wiz-option-text">
+              <div class="wiz-option-title">${o.title}</div>
+              <div class="wiz-option-desc">${o.desc}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+      <div class="wiz-nav">
+        <button class="wiz-btn wiz-btn-back" onclick="cdtBack()">← 이전</button>
+        <button class="wiz-btn wiz-btn-next" onclick="cdtNext()" ${!cur?'disabled':''} id="nosNextBtn">다음 →</button>
+      </div>
+    </div>`;
+}
+
+function nosSelect(val, el) {
+  CDT.data.nosIhc = val;
+  // 감별 결과에 따라 실질적 cellType 분기 처리 (마커 목록 결정용)
+  el.closest('.wiz-options').querySelectorAll('.wiz-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('nosNextBtn').disabled = false;
 }
 
 /* Step 1: 병기 */
@@ -2454,6 +2548,14 @@ function cdtStep1() {
 
 /* Step 2: 검사 결과 입력 */
 // 마커별 우선순위 및 NCCN 카테고리 정보
+// NOS IHC 결과를 반영한 실효 세포형 반환
+function getEffectiveCellType() {
+  if (CDT.data.cellType !== 'lc') return CDT.data.cellType;
+  if (CDT.data.nosIhc === 'ttf1') return 'ad';  // TTF-1 양성 → 선암 방향
+  if (CDT.data.nosIhc === 'p40')  return 'sq';  // p40 양성 → 편평암 방향
+  return 'lc'; // 불확정 NOS 유지
+}
+
 const MARKER_META = {
   EGFR:    { p:{ad:1,sq:1,lc:1}, nccn:'Cat.1',  note:'PCR 우선·NGS 보완' },
   ALK:     { p:{ad:1,sq:2,lc:1}, nccn:'Cat.1',  note:'IHC 스크리닝 우선' },
@@ -2494,8 +2596,16 @@ function getMcPriorityBadge(mk, cellType) {
 }
 
 function cdtStep2() {
-  const mList = CDT_MARKERS[CDT.data.cellType] || [];
-  const cellType = CDT.data.cellType;
+  const effType = getEffectiveCellType();
+  const mList = CDT_MARKERS[effType] || CDT_MARKERS['lc'];
+  const cellType = effType;
+  const nosNote = CDT.data.cellType === 'lc' && CDT.data.nosIhc !== null
+    ? `<div style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:var(--radius-sm);padding:8px 12px;margin-bottom:10px;font-size:11px;color:#5b21b6">
+        🟣 <strong>NOS 분류:</strong> ${
+          CDT.data.nosIhc==='ttf1' ? 'TTF-1 양성 → 선암 방향 마커 목록 적용' :
+          CDT.data.nosIhc==='p40'  ? 'p40 양성 → 편평암 방향 마커 목록 적용' :
+          '조직형 불확정 → 선암 수준 광범위 마커 적용'
+        }</div>` : '';
   const items = mList.map(mk => {
     const cur = CDT.data.markers[mk] || 'unk';
     const badge = getMcPriorityBadge(mk, cellType);
@@ -2525,6 +2635,7 @@ function cdtStep2() {
   return `
     <div class="wiz-body">
       <div class="wiz-question">③ 현재 확인된 검사 결과를 선택하세요 <span style="font-size:11px;color:var(--muted);font-weight:400">(미검사 = 아직 결과 없음)</span></div>
+      ${nosNote}
       <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;font-size:11px;color:var(--muted)">
         <span style="background:#dcfce7;border:1px solid #86efac;color:#15803d;padding:2px 7px;border-radius:4px;font-weight:700">필수 1순위</span> 반드시 확인
         <span style="background:#fef3c7;border:1px solid #fcd34d;color:#92400e;padding:2px 7px;border-radius:4px;font-weight:700">2순위</span> 조건부 추가
@@ -2574,11 +2685,20 @@ function cdtReset(){ CDT.step=0; CDT.data={cellType:null,stage:null,markers:{}};
 
 /* ── RESULT LOGIC ── */
 function cdtResult() {
-  const {cellType, stage, markers} = CDT.data;
+  const {stage, markers} = CDT.data;
+  const cellType = getEffectiveCellType();  // NOS IHC 반영
+  const origCellType = CDT.data.cellType;
   const m = markers;
 
+  // NOS 감별 결과 안내
+  const nosIhcLabel = origCellType === 'lc' ? (
+    CDT.data.nosIhc === 'ttf1' ? '대세포암/NOS (TTF-1양성 → 선암 방향 적용)' :
+    CDT.data.nosIhc === 'p40'  ? '대세포암/NOS (p40양성 → 편평암 방향 적용)' :
+    '대세포암/NOS (조직형 불확정)'
+  ) : null;
+
   // patient summary
-  const cellLabel = {ad:'선암종',sq:'편평세포암',lc:'대세포암/NOS',sclc:'소세포암'}[cellType];
+  const cellLabel = nosIhcLabel || {ad:'선암종',sq:'편평세포암',lc:'대세포암/NOS',sclc:'소세포암'}[cellType];
   const stageLabel = {resectable:'수술 가능(I–II기)',unresectable3:'절제 불가 III기',meta:'전이성 IV기'}[stage];
   const posMarkers = Object.entries(m).filter(([,v])=>v==='pos'||v==='high'||v==='mid').map(([k])=>MARKER_LABELS[k]||k);
   const negMarkers = Object.entries(m).filter(([,v])=>v==='neg'||v==='low').map(([k])=>MARKER_LABELS[k]||k);
@@ -2588,9 +2708,15 @@ function cdtResult() {
   const unkRequired = allMarkers.filter(mk => (m[mk]||'unk')==='unk');
 
   // ── 결과 계산 ──
-  const nextTests = [];   // {icon, title, desc, tags}
-  const treatments = [];  // {icon, title, desc, tags}
-  const cautions  = [];   // {icon, title, desc}
+  const nextTests = [];
+  const treatments = [];
+  const cautions = [];
+
+  // NOS 불확정 시 페메트렉시드 주의 + 감별 IHC 권고
+  if (origCellType === 'lc' && CDT.data.nosIhc === 'unk') {
+    cautions.push({icon:'⚠️', title:'NOS (조직형 불확정) — 페메트렉시드 사용 주의', desc:'TTF-1 음성 또는 불확정 NOS에서 페메트렉시드 효과가 선암보다 제한적일 수 있습니다. 가능하면 TTF-1 추가 확인 후 결정 권고. 불가 시 파클리탁셀 기반 화학요법 고려.'});
+    nextTests.push({icon:'🔬', title:'조직형 감별 IHC 추가 시행 권고', ctdna:'TTF-1·p40는 단백 발현 마커 — ctDNA 대체 불가, 조직 IHC 필수', desc:'TTF-1, Napsin A, p40, p63, CK5/6 패널 추가 시행으로 선암·편평암 분류 재시도. 분류되면 해당 세포형 전략으로 전환.', tags:['<span class="result-tag rt-opt">감별 IHC</span>']});
+  }
 
   // SCLC 별도
   if (cellType === 'sclc') {
@@ -2612,7 +2738,7 @@ function cdtResult() {
   // 수술 가능: 보조치료 중심
   if (stage === 'resectable') {
     // EGFR
-    if ((m['EGFR']||'unk')==='unk') nextTests.push({icon:'🧬', title:'EGFR Real-time PCR', desc:'수술 가능 병기에서도 EGFR 검사 필수 — 완전절제 후 보조 오시머티닙(3세대) 여부 결정.', tags:['<span class="result-tag rt-1">필수</span><span class="result-tag rt-opt">PCR 우선</span>']});
+    if ((m['EGFR']||'unk')==='unk') nextTests.push({icon:'🧬', title:'EGFR Real-time PCR', ctdna:'조직 검체 부족 시 ctDNA ddPCR 대안 가능 (단, 수술 전 조직 확보 우선)', desc:'수술 가능 병기에서도 EGFR 검사 필수 — 완전절제 후 보조 오시머티닙(3세대) 여부 결정.', tags:['<span class="result-tag rt-1">필수</span><span class="result-tag rt-opt">PCR 우선</span>']});
     if (m['EGFR']==='pos') treatments.push({icon:'💊', title:'오시머티닙 (보조치료, 3년)', desc:'완전절제 후 EGFR Classical 양성 시 보조 오시머티닙 — NCCN Category 1, 재발 위험 감소.', tags:['<span class="result-tag rt-1">Category 1</span><span class="result-tag rt-1">보조치료</span>']});
     if ((m['ALK']||'unk')==='unk') nextTests.push({icon:'🧬', title:'ALK IHC 또는 NGS', desc:'ALK 양성 시 완전절제 후 알렉티닙 보조치료 — NCCN Category 1(2024 추가).', tags:['<span class="result-tag rt-1">필수</span>']});
     if (m['ALK']==='pos') treatments.push({icon:'💊', title:'알렉티닙 (보조치료)', desc:'완전절제 후 ALK 양성 시 알렉티닙 보조치료 — NCCN Category 1.', tags:['<span class="result-tag rt-1">Category 1</span><span class="result-tag rt-1">보조치료</span>']});
@@ -2674,6 +2800,7 @@ function cdtResult() {
     if (egfr === 'unk') {
       nextTests.push({
         icon:'🧬', title:'EGFR 검사 우선 시행 (매우 중요)',
+        ctdna:'조직 생검 어렵거나 시간 촉박 시 혈액 ctDNA ddPCR로 EGFR 신속 확인 가능 — 단, 음성이어도 위음성 가능하므로 가능하면 조직 검사 병행',
         desc:'EGFR 양성이면 더발루맙 공고요법 대신 오시머티닙(LAURA)으로 전략이 완전히 바뀝니다. CCRT 전 또는 진행 중 반드시 확인.',
         tags:['<span class="result-tag rt-warn">공고요법 결정 전 필수</span>']
       });
@@ -2788,7 +2915,7 @@ function cdtResult() {
   const driverUnk = ['EGFR','ALK','ROS1'].some(mk => (m[mk]||'unk')==='unk');
 
   if (driverUnk && cellType !== 'sq') {
-    nextTests.push({icon:'🧬', title:'드라이버 돌연변이 검사 완료 필요', desc:'EGFR PCR + ALK IHC + ROS1 NGS 결과가 없습니다. 표적치료 가능성 배제 전에 치료 결정을 보류하거나 병행 진행 권고.', tags:['<span class="result-tag rt-warn">우선 완료 권고</span>']});
+    nextTests.push({icon:'🧬', title:'드라이버 돌연변이 검사 완료 필요', ctdna:'EGFR·KRAS는 ctDNA ddPCR로 신속 확인 가능. ALK·ROS1·RET·NTRK는 ctDNA 검출 어려워 조직 RNA NGS 권고', desc:'EGFR PCR + ALK IHC + ROS1 NGS 결과가 없습니다. 표적치료 가능성 배제 전에 치료 결정을 보류하거나 병행 진행 권고.', tags:['<span class="result-tag rt-warn">우선 완료 권고</span>']});
   }
 
   // 미검사 항목 안내
@@ -2822,16 +2949,16 @@ function cdtResult() {
     }
     cautions.push({icon:'ℹ️', title:'TPS <1% — 면역항암제 단독요법 비권고', desc:'화학요법 병용으로 면역항암 효과 확보 권장.'});
   } else { // PD-L1 미검사
-    nextTests.unshift({icon:'🔬', title:'PD-L1 IHC (우선 시행)', desc:'전이성 폐암 1차 치료 결정의 핵심. TPS 수준에 따라 치료 전략이 달라집니다.', tags:['<span class="result-tag rt-warn">즉시 시행 필요</span><span class="result-tag rt-opt">IHC 22C3</span>']});
+    nextTests.unshift({icon:'🔬', title:'PD-L1 IHC (우선 시행)', ctdna:'PD-L1은 단백 발현 바이오마커 — ctDNA·혈액 검사로 대체 불가. 반드시 조직 IHC 필요.', desc:'전이성 폐암 1차 치료 결정의 핵심. TPS 수준에 따라 치료 전략이 달라집니다.', tags:['<span class="result-tag rt-warn">즉시 시행 필요</span><span class="result-tag rt-opt">IHC 22C3</span>']});
     treatments.push({icon:'⏳', title:'PD-L1 결과 확인 후 치료 결정', desc:'드라이버 음성 + PD-L1 미검사 상태에서는 결과 대기 또는 병행 화학요법 고려.', tags:['<span class="result-tag rt-gray">대기</span>']});
   }
 
   // TMB 미검사 안내 (meta + driver neg)
   if ((m['KRAS']||'unk')==='unk' && cellType==='ad') {
-    nextTests.push({icon:'🧬', title:'KRAS G12C PCR', desc:'드라이버 음성 시 KRAS G12C 확인 — 2차 치료 소토라십/아다그라십 준비.', tags:['<span class="result-tag rt-opt">2차 대비</span>']});
+    nextTests.push({icon:'🧬', title:'KRAS G12C PCR', ctdna:'KRAS G12C는 혈액 ctDNA ddPCR로 신속 검출 가능 — 소토라십/아다그라십 2차 치료 준비 목적', desc:'드라이버 음성 시 KRAS G12C 확인 — 2차 치료 소토라십/아다그라십 준비.', tags:['<span class="result-tag rt-opt">2차 대비</span>']});
   }
   if ((m['TMB']||'unk')==='unk') {
-    nextTests.push({icon:'📊', title:'TMB (NGS 패널 포함 시)', desc:'TMB-H(≥10 mut/Mb) 확인 — 펨브롤리주맙 종양불문 승인. NGS 패널 시행 시 동시 측정.', tags:['<span class="result-tag rt-opt">NGS 포함 측정</span>']});
+    nextTests.push({icon:'📊', title:'TMB (NGS 패널 포함 시)', ctdna:'혈액 TMB(bTMB) 측정 일부 플랫폼 가능하나 tissue TMB와 cut-off 기준 다름 — 표준화 미비', desc:'TMB-H(≥10 mut/Mb) 확인 — 펨브롤리주맙 종양불문 승인. NGS 패널 시행 시 동시 측정.', tags:['<span class="result-tag rt-opt">NGS 포함 측정</span>']});
   }
 
   return buildResultHTML(nextTests, treatments, cautions, cellLabel, stageLabel, posMarkers, negMarkers, unkMarkers);
@@ -2850,6 +2977,7 @@ function buildResultHTML(nextTests, treatments, cautions, cellLabel, stageLabel,
           <div class="result-row-title">${r.title}</div>
           <div class="result-row-desc">${r.desc}</div>
           ${r.tags ? `<div style="margin-top:5px">${r.tags.join('')}</div>` : ''}
+          ${r.ctdna ? `<div class="cdt-ctdna-note"><div class="cdt-ctdna-icon">🧪</div><div>${r.ctdna}</div></div>` : ''}
         </div>
       </div>`).join('');
   }
