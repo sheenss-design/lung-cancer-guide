@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
-<meta name="description" content="NCCN 2025/2026 기준 폐암 바이오마커 검사 가이드 — 세포형별 우선순위, 변이유형별 표적치료제, PCR/FISH/IHC/NGS 검사법 비교">
-<meta property="og:title" content="폐암 바이오마커 검사 가이드">
-<meta property="og:description" content="NCCN Guidelines 2025/2026 기준 임상 참고용 인터랙티브 가이드">
+<meta name="description" content="NCCN 2025/2026 기준 폐암 바이오마커 검사 가이드 및 임상 의사결정 보조도구 — 세포형별 우선순위, 변이유형별 표적치료제, PCR/FISH/IHC/NGS 검사법 비교">
+<meta property="og:title" content="폐암 바이오마커 및 의사결정 보조도구">
+<meta property="og:description" content="NCCN Guidelines 2025/2026 기준 임상 참고용 인터랙티브 가이드 및 의사결정 도구">
 <meta property="og:type" content="website">
-<title>폐암 바이오마커 검사 가이드</title>
+<title>폐암 바이오마커 및 의사결정 보조도구</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=DM+Mono:wght@400;500&family=Lora:wght@600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -404,7 +404,198 @@ h1 span{color:#2563eb}
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
-</style>
+
+/* ── SEARCH BAR ── */
+.search-wrap{position:relative;margin-bottom:16px}
+.search-input{width:100%;padding:11px 40px 11px 16px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);font-size:14px;font-family:'Noto Sans KR',sans-serif;outline:none;transition:border-color .2s}
+.search-input:focus{border-color:var(--pcr)}
+.search-input::placeholder{color:var(--muted)}
+.search-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:16px;pointer-events:none}
+.search-clear{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:18px;cursor:pointer;display:none;background:none;border:none;padding:0;line-height:1}
+.search-results-note{font-size:11px;color:var(--muted);margin-bottom:8px;min-height:16px}
+
+/* ── SECONDARY NAV (내성·약제·Changelog) ── */
+.secondary-nav{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.secondary-nav::-webkit-scrollbar{display:none}
+.sec-tab{flex-shrink:0;padding:7px 14px;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);transition:all .2s;user-select:none}
+.sec-tab:hover{border-color:var(--border2);color:var(--text2)}
+.sec-tab.active{background:#fff7ed;border-color:#fb923c;color:#c2410c}
+/* 암종 버튼 개별 활성 색상 */
+#tab-ad.active{background:#eff6ff;border-color:var(--ad);color:var(--ad)}
+#tab-sq.active{background:#fff1f2;border-color:var(--sq);color:var(--sq)}
+#tab-lc.active{background:#f5f3ff;border-color:var(--lc);color:var(--lc)}
+#tab-sclc.active{background:#fdf4ff;border-color:var(--sclc);color:var(--sclc)}
+.cell-type-btn{text-align:center;border-radius:var(--radius-sm)!important;padding:10px 8px!important;line-height:1.3}
+
+/* ── RESISTANCE PANEL ── */
+.panel-section{display:none}
+.panel-section.show{display:block}
+.resist-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:10px;overflow:hidden}
+.resist-header{padding:12px 14px;background:linear-gradient(135deg,#fff7ed,#ffedd5);border-bottom:1px solid #fed7aa;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.resist-title{font-family:'DM Mono',monospace;font-size:14px;font-weight:500;color:#9a3412}
+.resist-sub{font-size:11px;color:#c2410c;margin-top:2px}
+.resist-body{display:none;padding:14px}
+.resist-body.open{display:block}
+.resist-step{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start}
+.resist-step-num{width:22px;height:22px;border-radius:50%;background:#fff7ed;border:1.5px solid #fed7aa;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#c2410c;flex-shrink:0;margin-top:1px}
+.resist-step-content{flex:1}
+.resist-step-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px}
+.resist-step-desc{font-size:11px;color:var(--text2);line-height:1.65}
+.resist-marker-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.rmc{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}
+
+/* ── DRUG LOOKUP PANEL ── */
+.drug-search-wrap{margin-bottom:14px}
+.drug-search-input{width:100%;padding:10px 16px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);font-size:13px;font-family:'Noto Sans KR',sans-serif;outline:none;transition:border-color .2s}
+.drug-search-input:focus{border-color:#818cf8}
+.drug-result-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:13px 14px;margin-bottom:8px}
+.drug-result-name{font-size:14px;font-weight:700;color:#4f46e5;margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.drug-result-rows{font-size:12px;color:var(--text2);line-height:1.8}
+.drug-result-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:3px}
+.drug-result-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;width:70px;flex-shrink:0;margin-top:2px}
+.drug-result-val{flex:1;color:var(--text2);font-size:12px;line-height:1.55}
+.drug-empty{font-size:13px;color:var(--muted);text-align:center;padding:24px 0}
+
+/* ── INSURANCE INFO (급여 정보) in card body ── */
+.insurance-box{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius-sm);padding:11px 13px;margin-top:2px}
+.insurance-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.insurance-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:8px;flex-wrap:wrap}
+.insurance-label{font-size:11px;color:var(--text2);flex:1}
+.insurance-value{font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;white-space:nowrap}
+.iv-full{background:#dcfce7;color:#15803d;border:1px solid #86efac}
+.iv-50{background:#fef9c3;color:#854d0e;border:1px solid #fde047}
+.iv-80{background:#fef3c7;color:#92400e;border:1px solid #fcd34d}
+.iv-none{background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5}
+.iv-cond{background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc}
+.insurance-note{font-size:10px;color:#4ade80;margin-top:5px;line-height:1.55}
+.insurance-link{font-size:10px;color:#15803d;text-decoration:underline;cursor:pointer}
+
+/* ── ctDNA BOX in card body ── */
+.ctdna-box{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:var(--radius-sm);padding:11px 13px;margin-top:2px}
+.ctdna-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#5b21b6;margin-bottom:6px}
+.ctdna-row{display:flex;gap:6px;align-items:flex-start;margin-bottom:4px}
+.ctdna-dot{width:6px;height:6px;border-radius:50%;background:#a78bfa;flex-shrink:0;margin-top:5px}
+.ctdna-text{font-size:11px;color:var(--text2);line-height:1.6}
+
+/* ── CHANGELOG PANEL ── */
+.changelog-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:13px 14px;margin-bottom:8px}
+.changelog-ver{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:#5b21b6;margin-bottom:2px;display:flex;align-items:center;gap:8px}
+.changelog-date{font-size:10px;color:var(--muted);font-family:'Noto Sans KR',sans-serif}
+.changelog-current{font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;background:#f5f3ff;border:1px solid #ddd6fe;color:#5b21b6}
+.changelog-list{margin-top:6px;display:flex;flex-direction:column;gap:3px}
+.changelog-row{font-size:12px;color:var(--text2);display:flex;gap:7px;align-items:flex-start;line-height:1.5}
+.cl-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:6px}
+
+/* ── WELCOME / NO SELECTION ── */
+.welcome-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;text-align:center;box-shadow:var(--shadow)}
+.welcome-icon{font-size:36px;margin-bottom:12px}
+.welcome-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
+.welcome-desc{font-size:13px;color:var(--text2);line-height:1.75;max-width:480px;margin:0 auto 16px}
+.welcome-arrows{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.welcome-arrow{font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;background:var(--surface3);border:1px solid var(--border);color:var(--text2)}
+/* 암종 콘텐츠 영역 — 미선택 시 숨김 */
+.main-content{display:none}
+.main-content.show{display:block}
+
+/* ── PRINT ── */
+@media print{
+  body{background:#fff;color:#000;font-size:11px}
+  .app{padding:0;max-width:100%}
+  .header{box-shadow:none;border:1px solid #ccc;margin-bottom:12px}
+  .top-nav,.secondary-nav,.search-wrap,.filter-section,.summary-row,.legend-box{display:none!important}
+  .subtype-banner{break-inside:avoid}
+  .card{break-inside:avoid;box-shadow:none;border:1px solid #ccc;margin-bottom:6px}
+  .card-body{display:block!important}
+  .strategy-box,.driver-info-box,.immune-info-box,.sclc-info-box{display:none}
+  .panel-section{display:none!important}
+  h1{font-size:18px}
+  .marker-name{font-size:14px}
+  .print-only{display:block!important}
+  .no-print{display:none!important}
+}
+.print-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;background:var(--surface);border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;margin-left:auto}
+.print-btn:hover{border-color:var(--border2);color:var(--text2)}
+
+/* ── CLINICAL DECISION TOOL ── */
+.cdt-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:16px;box-shadow:var(--shadow)}
+.cdt-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.cdt-icon{font-size:24px}
+.cdt-title{font-size:15px;font-weight:700;color:var(--text)}
+.cdt-subtitle{font-size:11px;color:var(--muted);margin-top:2px}
+.cdt-disclaimer{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-sm);padding:8px 12px;font-size:11px;color:#92400e;margin-bottom:16px;line-height:1.6}
+
+/* Wizard steps */
+.wiz-steps{display:flex;gap:0;margin-bottom:20px;overflow-x:auto;scrollbar-width:none}
+.wiz-steps::-webkit-scrollbar{display:none}
+.wiz-step-dot{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;position:relative;cursor:default}
+.wiz-step-dot::after{content:'';position:absolute;top:13px;left:50%;width:100%;height:2px;background:var(--border);z-index:0}
+.wiz-step-dot:last-child::after{display:none}
+.wiz-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;z-index:1;border:2px solid var(--border);background:var(--surface);color:var(--muted);transition:all .2s}
+.wiz-dot.done{background:var(--p1);border-color:var(--p1);color:#fff}
+.wiz-dot.active{background:#2563eb;border-color:#2563eb;color:#fff}
+.wiz-step-label{font-size:9px;color:var(--muted);text-align:center;white-space:nowrap;font-weight:600;letter-spacing:.04em}
+.wiz-step-label.active{color:#2563eb}
+
+/* Wizard body */
+.wiz-body{min-height:200px}
+.wiz-question{font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px}
+.wiz-options{display:flex;flex-direction:column;gap:8px}
+.wiz-option{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all .18s;background:var(--surface2);user-select:none}
+.wiz-option:hover{border-color:var(--border2);background:var(--surface)}
+.wiz-option.selected{border-color:#2563eb;background:#eff6ff}
+.wiz-option-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.wiz-option-text{flex:1}
+.wiz-option-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}
+.wiz-option-desc{font-size:11px;color:var(--text2);line-height:1.5}
+
+/* Marker checklist */
+.marker-checklist{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px}
+@media(max-width:420px){.marker-checklist{grid-template-columns:1fr}}
+.mc-item{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;cursor:pointer;background:var(--surface2);transition:all .18s;user-select:none}
+.mc-item:hover{border-color:var(--border2)}
+.mc-item.pos{border-color:#16a34a;background:#f0fdf4}
+.mc-item.neg{border-color:#94a3b8;background:#f8fafc}
+.mc-item.unk{border-color:var(--border);background:var(--surface2)}
+.mc-name{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:var(--text);margin-bottom:4px}
+.mc-status-row{display:flex;gap:4px}
+.mc-btn{flex:1;font-size:10px;font-weight:700;padding:3px 0;border-radius:4px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;transition:all .15s;text-align:center}
+.mc-btn:hover{background:var(--surface3)}
+.mc-btn.active-pos{background:#dcfce7;border-color:#86efac;color:#15803d}
+.mc-btn.active-neg{background:#f1f5f9;border-color:#cbd5e1;color:#475569}
+.mc-btn.active-unk{background:#fef9c3;border-color:#fde047;color:#854d0e}
+
+/* Wizard nav */
+.wiz-nav{display:flex;gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
+.wiz-btn{padding:9px 20px;border-radius:var(--radius-sm);font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .18s}
+.wiz-btn-back{background:var(--surface3);color:var(--text2)}
+.wiz-btn-back:hover{background:var(--border)}
+.wiz-btn-next{background:#2563eb;color:#fff;margin-left:auto}
+.wiz-btn-next:hover{background:#1d4ed8}
+.wiz-btn-next:disabled{background:var(--border);color:var(--muted);cursor:default}
+.wiz-btn-reset{background:#fee2e2;color:#b91c1c;margin-left:auto}
+.wiz-btn-reset:hover{background:#fecaca}
+
+/* Result panel */
+.result-wrap{display:flex;flex-direction:column;gap:12px}
+.result-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
+.result-section-header{padding:10px 14px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--border)}
+.rsh-next{background:#eff6ff;color:#1d4ed8}
+.rsh-treat{background:#f0fdf4;color:#15803d}
+.rsh-caution{background:#fffbeb;color:#92400e}
+.result-section-body{padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.result-row{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:var(--radius-sm);background:var(--surface2)}
+.result-row-icon{font-size:16px;flex-shrink:0}
+.result-row-content{flex:1}
+.result-row-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px}
+.result-row-desc{font-size:11px;color:var(--text2);line-height:1.6}
+.result-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;margin:1px}
+.rt-1{background:#dcfce7;color:#15803d;border:1px solid #86efac}
+.rt-2{background:#fef3c7;color:#92400e;border:1px solid #fcd34d}
+.rt-opt{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
+.rt-warn{background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5}
+.rt-gray{background:#f1f5f9;color:#475569;border:1px solid #cbd5e1}
+.result-patient-summary{background:linear-gradient(135deg,#f8faff,#eff6ff);border:1px solid #bfdbfe;border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:4px;font-size:12px;color:#1e40af;line-height:1.7}
+.rps-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#2563eb;margin-bottom:6px}</style>
 </head>
 <body>
 <div class="app">
@@ -414,25 +605,131 @@ h1 span{color:#2563eb}
   <div class="header-eyebrow">
     <span class="badge-nccn"><span class="badge-live"></span>NCCN Guidelines® 2025/2026</span>
   </div>
-  <h1>폐암 <span>바이오마커</span> 검사 가이드</h1>
-  <p class="subtitle">세포형별 검사 우선순위 · 변이유형별 표적치료제 · 바이오마커 특성 · 검사법 비교</p>
+  <h1>폐암 <span>바이오마커</span> 및 의사결정 보조도구</h1>
+  <p class="subtitle">바이오마커 검사 우선순위 · 단계별 검사 전략 · 임상 의사결정 도구 · 내성 재검사 가이드 · 약제 역방향 탐색</p>
   <div class="header-meta">
     <span class="meta-chip mc-blue">NSCLC v3.2026</span>
     <span class="meta-chip mc-green">SCLC v2.2026</span>
     <span class="meta-chip mc-amber">단계별 검사 전략 포함</span>
-    <span class="meta-chip" style="background:#f5f3ff;border-color:#ddd6fe;color:#5b21b6">ver 2.3</span>
+    <span class="meta-chip" style="background:#f5f3ff;border-color:#ddd6fe;color:#5b21b6">ver 3.1</span>
+    <span class="meta-chip" style="background:#f8fafc;border-color:#cbd5e1;color:#64748b;cursor:pointer" onclick="showSecPanel('changelog',document.getElementById('tab-changelog'))">📋 업데이트 이력</span>
+    <div class="print-btn no-print" onclick="window.print()">🖨️ 인쇄</div>
   </div>
 </div>
 
-<!-- TOP NAV -->
-<div class="top-nav" id="topNav">
-  <div class="top-tab active" data-main="ad" onclick="switchMain('ad',this)">선암종<span class="tab-sub">Adenocarcinoma</span></div>
-  <div class="top-tab" data-main="sq" onclick="switchMain('sq',this)">편평세포암<span class="tab-sub">Squamous Cell</span></div>
-  <div class="top-tab" data-main="lc" onclick="switchMain('lc',this)">대세포암<span class="tab-sub">Large Cell / NOS</span></div>
-  <div class="top-tab" data-main="sclc" onclick="switchMain('sclc',this)">소세포암<span class="tab-sub">SCLC</span></div>
+<!-- SEARCH -->
+<div class="search-wrap">
+  <input class="search-input" id="searchInput" type="text" placeholder="🔍 바이오마커 또는 약제명 검색 (예: EGFR, 오시머티닙, crizotinib...)" oninput="onSearch(this.value)">
+  <button class="search-clear" id="searchClear" onclick="clearSearch()">×</button>
+</div>
+<div class="search-results-note" id="searchNote"></div>
+
+<!-- MAIN NAV -->
+<div id="mainNav" style="margin-bottom:16px">
+  <!-- 암종 선택: 2×2 그리드 -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+    <div class="sec-tab cell-type-btn" id="tab-ad" onclick="switchMain('ad',this)">🔵 선암종 <span style="font-size:10px;opacity:.75;display:block;margin-top:1px">Adenocarcinoma</span></div>
+    <div class="sec-tab cell-type-btn" id="tab-sq" onclick="switchMain('sq',this)">🔴 편평세포암 <span style="font-size:10px;opacity:.75;display:block;margin-top:1px">Squamous Cell</span></div>
+    <div class="sec-tab cell-type-btn" id="tab-lc" onclick="switchMain('lc',this)">🟣 대세포암 <span style="font-size:10px;opacity:.75;display:block;margin-top:1px">Large Cell / NOS</span></div>
+    <div class="sec-tab cell-type-btn" id="tab-sclc" onclick="switchMain('sclc',this)">🟤 소세포암 <span style="font-size:10px;opacity:.75;display:block;margin-top:1px">SCLC</span></div>
+  </div>
+  <!-- 보조 도구: 한 줄 -->
+  <div style="display:flex;gap:6px;flex-wrap:wrap">
+    <div class="sec-tab" id="tab-cdt" onclick="showSecPanel('cdt',this)">🩺 의사결정 도구</div>
+    <div class="sec-tab" id="tab-resist" onclick="showSecPanel('resist',this)">🔄 내성 후 재검사</div>
+    <div class="sec-tab" id="tab-drug" onclick="showSecPanel('drug',this)">💊 약제 역방향 탐색</div>
+  </div>
+  <div id="tab-changelog" style="display:none"></div>
+</div>
+
+<!-- CDT PANEL -->
+<div class="panel-section" id="panel-cdt"></div>
+
+<!-- RESISTANCE PANEL -->
+<div class="panel-section" id="panel-resist"></div>
+
+<!-- DRUG LOOKUP PANEL -->
+<div class="panel-section" id="panel-drug">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;margin-bottom:16px">
+    <div style="font-size:13px;font-weight:700;color:#4f46e5;margin-bottom:10px">💊 약제명으로 필요 검사 탐색</div>
+    <div class="drug-search-wrap">
+      <input class="drug-search-input" id="drugSearchInput" type="text" placeholder="약제명 입력 (예: 오시머티닙, 펨브롤리주맙, 타르라타맙...)" oninput="onDrugSearch(this.value)">
+    </div>
+    <div id="drugResults"><div class="drug-empty">약제명을 입력하면 관련 바이오마커와 필요 검사를 안내합니다.</div></div>
+  </div>
+</div>
+
+<!-- CHANGELOG PANEL -->
+<div class="panel-section" id="panel-changelog">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;margin-bottom:16px">
+    <div style="font-size:13px;font-weight:700;color:#5b21b6;margin-bottom:12px">📋 버전별 업데이트 이력</div>
+    <div class="changelog-item">
+      <div class="changelog-ver">ver 3.1 <span class="changelog-current">현재</span><span class="changelog-date">2026년 9월</span></div>
+      <div class="changelog-list">
+        <div class="changelog-row"><div class="cl-dot" style="background:#2563eb"></div>임상 의사결정 도구 신설 — 세포형·병기·검사결과 입력 → 추가검사·치료 안내</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#2563eb"></div>3단계 위저드: 세포형 → 병기 → 검사결과 → 맞춤 결과</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#2563eb"></div>NCCN 기반 치료 결정 트리: 드라이버 변이·PD-L1 분기 로직 구현</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#2563eb"></div>수술가능·절제불가III기·전이성IV기·SCLC 별도 치료 경로</div>
+      </div>
+    </div>
+    <div class="changelog-item">
+      <div class="changelog-ver">ver 3.0 <span class="changelog-date">2026년 9월</span></div>
+      <div class="changelog-list">
+        <div class="changelog-row"><div class="cl-dot" style="background:#16a34a"></div>바이오마커·약제명 통합 검색 기능 추가</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#dc2626"></div>내성 발생 후 재검사 가이드 섹션 신설</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#4f46e5"></div>약제명으로 역방향 탐색 기능 추가</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#15803d"></div>한국 건강보험 급여 정보 추가 (옵션A: 요약+링크)</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#7c3aed"></div>액체생검(ctDNA) 활용 가이드 각 카드에 추가</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#0369a1"></div>인쇄·PDF 출력 최적화 (🖨️ 버튼)</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#5b21b6"></div>버전별 업데이트 이력(Changelog) 섹션 신설</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#92400e"></div>모바일 카드 레이아웃 개선 (세로 늘어짐 수정)</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#6b7280"></div>NCCN 카테고리 필터 및 필터 설명 툴팁 추가</div>
+      </div>
+    </div>
+    <div class="changelog-item">
+      <div class="changelog-ver">ver 2.3 <span class="changelog-date">2026년 4월</span></div>
+      <div class="changelog-list">
+        <div class="changelog-row"><div class="cl-dot" style="background:#6b7280"></div>모바일 카드 헤더 레이아웃 재설계</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#6b7280"></div>카드 항목 순서 재배치 (약어→풀네임→변이종류→순위→검사법→리마크)</div>
+      </div>
+    </div>
+    <div class="changelog-item">
+      <div class="changelog-ver">ver 2.2 <span class="changelog-date">2026년 4월</span></div>
+      <div class="changelog-list">
+        <div class="changelog-row"><div class="cl-dot" style="background:#6b7280"></div>NCCN 카테고리 필터 추가</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#6b7280"></div>각 필터 설명 툴팁(?) 추가</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#6b7280"></div>우선순위 필터 추가</div>
+      </div>
+    </div>
+    <div class="changelog-item">
+      <div class="changelog-ver">ver 2.1 <span class="changelog-date">2026년 4월</span></div>
+      <div class="changelog-list">
+        <div class="changelog-row"><div class="cl-dot" style="background:#6b7280"></div><em>MET</em>(이탤릭, 유전자)와 MET(로마체, 단백질) 표기 구분</div>
+      </div>
+    </div>
+    <div class="changelog-item">
+      <div class="changelog-ver">ver 2.0 <span class="changelog-date">2026년 4월</span></div>
+      <div class="changelog-list">
+        <div class="changelog-row"><div class="cl-dot" style="background:#6b7280"></div>단계별 검사 전략 (한국 임상 현실 반영) 추가</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#6b7280"></div>소세포암 섹션 설명 박스 추가</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#6b7280"></div>EGFR Dato-DXd 2차 Preferred, DLL3 발현율 수정</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#6b7280"></div>밝은 테마, 모바일 최적화 전면 재설계</div>
+      </div>
+    </div>
+    <div class="changelog-item">
+      <div class="changelog-ver">ver 1.0 <span class="changelog-date">2026년 초</span></div>
+      <div class="changelog-list">
+        <div class="changelog-row"><div class="cl-dot" style="background:#6b7280"></div>최초 버전 — NCCN 2025/2026 기준 바이오마커 검사 가이드</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#6b7280"></div>NSCLC/SCLC 세포형별 바이오마커 테이블</div>
+        <div class="changelog-row"><div class="cl-dot" style="background:#6b7280"></div>PCR/FISH/IHC/NGS 검사법 비교</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- SUBTYPE BANNER -->
+<!-- MAIN CONTENT -->
+<div class="main-content" id="mainContent">
 <div id="subtypeBanner"></div>
 
 <!-- FILTERS -->
@@ -510,26 +807,8 @@ h1 span{color:#2563eb}
 <!-- CARDS -->
 <div id="cardsArea"></div>
 
-<!-- LEGEND -->
-<div class="legend-box">
-  <div class="legend-title">범례 (Legend)</div>
-  <div class="legend-grid">
-    <div class="legend-item"><div class="li-dot" style="background:var(--p1)"></div>필수 1순위 바이오마커</div>
-    <div class="legend-item"><div class="li-dot" style="background:var(--p2)"></div>2순위 / 조건부 검사</div>
-    <div class="legend-item"><div class="li-dot" style="background:var(--p3)"></div>참고 / 불필요</div>
-    <div class="legend-item"><div class="li-dot" style="background:var(--dna)"></div>DNA 변이 바이오마커</div>
-    <div class="legend-item"><div class="li-dot" style="background:var(--rna)"></div>RNA 융합/이상 바이오마커</div>
-    <div class="legend-item"><div class="li-dot" style="background:var(--prot)"></div>단백질 발현 바이오마커</div>
-    <div class="legend-item"><div class="li-dot" style="background:var(--dual)"></div>이중 속성 (DNA+단백질)</div>
-    <div class="legend-item"><div class="li-dot" style="background:var(--quant)"></div>정량적 DNA 바이오마커</div>
-    <div class="legend-item"><div class="li-dot" style="background:var(--pcr)"></div>PCR 검사</div>
-    <div class="legend-item"><div class="li-dot" style="background:var(--fish)"></div>FISH 검사</div>
-    <div class="legend-item"><div class="li-dot" style="background:var(--ihc)"></div>IHC 검사</div>
-    <div class="legend-item"><div class="li-dot" style="background:var(--ngs)"></div>NGS 패널</div>
-    <div class="legend-item"><div class="li-dot" style="background:#92400e"></div>★ 1차 권고 검사법</div>
-    <div class="legend-item"><div class="li-dot" style="background:#15803d"></div>✔ 적용 가능</div>
-  </div>
-</div>
+</div><!-- /main-content -->
+
 
 </div><!-- .app -->
 
@@ -1249,7 +1528,7 @@ const SUBTYPE_CONFIG = {
 /* ============================================================
    STATE
    ============================================================ */
-let currentMain = 'ad';
+let currentMain = null;  // 미선택 상태로 시작
 let currentMethod = 'all';
 let currentPriority = 'all';
 let currentNccn = 'all';
@@ -1257,19 +1536,35 @@ let currentNccn = 'all';
 /* ============================================================
    RENDER
    ============================================================ */
+function showMainContent(show) {
+  const mc = document.getElementById('mainContent');
+  if (show) mc.classList.add('show'); else mc.classList.remove('show');
+}
+
 function switchMain(type, el) {
   currentMain = type;
   currentMethod = 'all';
   currentPriority = 'all';
   currentNccn = 'all';
-  document.querySelectorAll('.top-tab').forEach(t => t.classList.remove('active'));
+  // 모든 nav 탭 비활성화 후 선택된 것만 활성화
+  document.querySelectorAll('#mainNav .sec-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
+  // 보조 패널 닫기
+  document.querySelectorAll('.panel-section').forEach(p => p.classList.remove('show'));
+  // 필터 초기화
   document.querySelectorAll('#priorityChips .chip').forEach(c => { c.className = 'chip'; });
   document.querySelectorAll('#nccnChips .chip').forEach(c => { c.className = 'chip'; });
   document.querySelectorAll('#filterChips .chip').forEach(c => { c.className = 'chip'; });
   document.querySelector('#priorityChips .chip').classList.add('on-all');
   document.querySelector('#nccnChips .chip').classList.add('on-all');
   document.querySelector('#filterChips .chip').classList.add('on-all');
+  // 검색 초기화
+  const si = document.getElementById('searchInput');
+  if (si) { si.value = ''; }
+  document.getElementById('searchNote').textContent = '';
+  document.getElementById('searchClear').style.display = 'none';
+  // 암종 콘텐츠 표시
+  showMainContent(true);
   renderAll();
 }
 
@@ -1319,6 +1614,7 @@ function toggleTooltip(id, btn) {
 }
 
 function renderAll() {
+  if (!currentMain) return;  // 미선택 상태면 렌더링 안 함
   renderBanner();
   renderSummary();
   renderCards();
@@ -1859,6 +2155,30 @@ function buildCard(m) {
 
         ${dxHtml}
 
+        <!-- 액체생검(ctDNA) -->
+        ${m.ctdna ? `
+        <div class="cb-section" style="margin-top:14px">액체생검 (ctDNA) 활용</div>
+        <div class="ctdna-box">
+          <div class="ctdna-title">🧪 액체생검 적용 가이드</div>
+          ${m.ctdna.map(t=>`<div class="ctdna-row"><div class="ctdna-dot"></div><div class="ctdna-text">${t}</div></div>`).join('')}
+        </div>` : ''}
+
+        <!-- 한국 급여 정보 -->
+        ${m.insurance ? `
+        <div class="cb-section" style="margin-top:14px">한국 건강보험 급여 현황</div>
+        <div class="insurance-box">
+          <div class="insurance-title">🇰🇷 급여 정보 (2025년 기준)</div>
+          ${m.insurance.rows.map(r=>`
+          <div class="insurance-row">
+            <span class="insurance-label">${r.label}</span>
+            <span class="insurance-value ${r.cls}">${r.value}</span>
+          </div>`).join('')}
+          <div class="insurance-note">⚠️ 급여 기준은 수시로 변경됩니다. 최신 정보는
+            <a href="https://www.hira.or.kr" target="_blank" class="insurance-link">심사평가원(hira.or.kr)</a> 확인 권고.
+            ${m.insurance.note||''}
+          </div>
+        </div>` : ''}
+
         <div style="margin-top:8px;padding:8px 10px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;font-size:11px;color:#92400e">
           ⚠️ 본 자료는 NCCN Guidelines® 2025/2026 기준 임상 참고용입니다. 실제 치료 결정은 담당 의료진과 상의하십시오.
         </div>
@@ -1871,7 +2191,983 @@ function toggleCard(id) {
   document.getElementById(`card-${id}`).classList.toggle('open');
 }
 
+/* ── SEARCH ── */
+function onSearch(val) {
+  const v = val.trim().toLowerCase();
+  document.getElementById('searchClear').style.display = v ? 'block' : 'none';
+
+  // 보조 패널 닫기, welcome 숨기고 카드 영역 표시
+  if (v) {
+    document.querySelectorAll('.panel-section').forEach(p => p.classList.remove('show'));
+    document.querySelectorAll('#mainNav .sec-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('subtypeBanner').style.display = 'none';
+    document.getElementById('filterSection').style.display = 'none';
+    document.getElementById('summaryRow').style.display = 'none';
+    document.getElementById('mainContent').classList.add('show');
+  } else {
+    document.getElementById('subtypeBanner').style.display = '';
+    document.getElementById('filterSection').style.display = '';
+    document.getElementById('summaryRow').style.display = '';
+    if (!currentMain) document.getElementById('mainContent').classList.remove('show');
+  }
+
+  const note = document.getElementById('searchNote');
+  const container = document.getElementById('cardsArea');
+
+  if (!v) {
+    note.textContent = '';
+    container.innerHTML = '';
+    renderAll();
+    return;
+  }
+
+  // ── 바이오마커 검색 ──
+  const markerData = currentMain === 'sclc'
+    ? MARKERS.filter(m => m.priority.sclc > 0)
+    : MARKERS.filter(m => m.priority[currentMain] > 0);
+
+  const matchedMarkers = markerData.filter(m => {
+    const haystack = [
+      m.name, m.full,
+      m.desc||'', m.note||'',
+      ...(m.mutations||[]).flatMap(mu => [mu.type, ...(mu.drugs||[]).map(d=>d.name)])
+    ].join(' ').toLowerCase();
+    return haystack.includes(v);
+  });
+
+  // ── 약제 검색 (DRUG_DB) ──
+  const matchedDrugs = DRUG_DB.filter(d => {
+    const haystack = [d.name, ...(d.aliases||[]), d.marker||'', d.mutation||'', d.note||''].join(' ').toLowerCase();
+    return haystack.includes(v);
+  });
+
+  const total = matchedMarkers.length + matchedDrugs.length;
+  if (total === 0) {
+    note.textContent = `"${val}"에 해당하는 바이오마커 또는 약제가 없습니다.`;
+    container.innerHTML = '';
+    return;
+  }
+  note.textContent = `"${val}" 검색 결과: 바이오마커 ${matchedMarkers.length}개 · 약제 ${matchedDrugs.length}개`;
+
+  container.innerHTML = '';
+
+  // 바이오마커 결과
+  if (matchedMarkers.length) {
+    const sh = document.createElement('div');
+    sh.className = 'section-head';
+    sh.innerHTML = `바이오마커 <span class="sh-count">${matchedMarkers.length}개</span>`;
+    container.appendChild(sh);
+    matchedMarkers.forEach(m => container.appendChild(buildCard(m)));
+  }
+
+  // 약제 결과
+  if (matchedDrugs.length) {
+    const sh2 = document.createElement('div');
+    sh2.className = 'section-head';
+    sh2.innerHTML = `약제 검색 결과 <span class="sh-count">${matchedDrugs.length}개</span>`;
+    container.appendChild(sh2);
+    matchedDrugs.forEach(d => {
+      const el = document.createElement('div');
+      el.className = 'drug-result-card';
+      el.innerHTML = `
+        <div class="drug-result-name">💊 ${d.name}
+          ${(d.aliases||[]).filter(a=>a.length<20).slice(0,3).map(a=>`<span style="font-size:10px;color:var(--muted);font-weight:400">${a}</span>`).join('')}
+        </div>
+        <div class="drug-result-rows">
+          <div class="drug-result-row"><span class="drug-result-label">표적 마커</span><span class="drug-result-val"><strong style="color:#2563eb">${d.marker}</strong></span></div>
+          <div class="drug-result-row"><span class="drug-result-label">대상 변이</span><span class="drug-result-val">${d.mutation}</span></div>
+          <div class="drug-result-row"><span class="drug-result-label">필요 검사</span><span class="drug-result-val">${d.tests.map(t=>`<span style="background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;font-size:10px;padding:1px 6px;border-radius:4px;margin:1px;display:inline-block">${t}</span>`).join('')}</span></div>
+          <div class="drug-result-row"><span class="drug-result-label">치료 라인</span><span class="drug-result-val">${d.line}</span></div>
+          <div class="drug-result-row"><span class="drug-result-label">참고</span><span class="drug-result-val">${d.note}</span></div>
+        </div>`;
+      container.appendChild(el);
+    });
+  }
+}
+
+function clearSearch() {
+  const si = document.getElementById('searchInput');
+  if (si) si.value = '';
+  document.getElementById('searchClear').style.display = 'none';
+  document.getElementById('searchNote').textContent = '';
+  document.getElementById('subtypeBanner').style.display = '';
+  document.getElementById('filterSection').style.display = '';
+  document.getElementById('summaryRow').style.display = '';
+  document.getElementById('cardsArea').innerHTML = '';
+  if (currentMain) {
+    showMainContent(true);
+    renderAll();
+  } else {
+    document.getElementById('mainContent').classList.remove('show');
+  }
+}
+
+/* ── SECONDARY PANEL ── */
+/* ============================================================
+   CLINICAL DECISION TOOL (CDT)
+   ============================================================ */
+
+const CDT = {
+  step: 0,
+  data: {
+    cellType: null,   // 'ad' | 'sq' | 'lc' | 'sclc'
+    stage: null,      // 'resectable' | 'unresectable3' | 'meta'
+    markers: {}       // {egfr:'pos'|'neg'|'unk', alk:..., ...}
+  }
+};
+
+// Marker checklist per cell type
+const CDT_MARKERS = {
+  ad:   ['EGFR','ALK','ROS1','KRAS','MET','RET','NTRK','ERBB2','PD-L1','BRAF','NRG1'],
+  sq:   ['EGFR','PD-L1','KRAS','FGFR','NTRK','MET','ERBB2'],
+  lc:   ['EGFR','ALK','ROS1','KRAS','MET','RET','NTRK','PD-L1','BRAF'],
+  sclc: ['DLL3','PD-L1']
+};
+
+// Marker display labels
+const MARKER_LABELS = {
+  EGFR:'EGFR', ALK:'ALK', ROS1:'ROS1', KRAS:'KRAS G12C', MET:'MET (ex14/증폭)',
+  RET:'RET', NTRK:'NTRK', ERBB2:'ERBB2/HER2', 'PD-L1':'PD-L1 (TPS)',
+  BRAF:'BRAF V600E', NRG1:'NRG1', FGFR:'FGFR 1/2/3',
+  DLL3:'DLL3', TMB:'TMB', STK11:'STK11'
+};
+
+// For PD-L1 we need TPS level, not just pos/neg
+const PDL1_LEVELS = ['TPS ≥50%','TPS 1–49%','TPS <1%','미검사'];
+
+function buildCdtPanel() {
+  const panel = document.getElementById('panel-cdt');
+  panel.innerHTML = `
+    <div class="cdt-wrap">
+      <div class="cdt-header">
+        <div class="cdt-icon">🩺</div>
+        <div>
+          <div class="cdt-title">임상 의사결정 보조 도구</div>
+          <div class="cdt-subtitle">세포형 · 병기 · 현재 검사 결과를 입력하면 추가 검사 및 치료 고려사항을 안내합니다</div>
+        </div>
+      </div>
+      <div class="cdt-disclaimer">⚠️ 본 도구는 NCCN Guidelines® 2025/2026 기반 <strong>임상 참고용</strong>입니다. 개별 환자의 치료 결정은 반드시 담당 의료진의 종합적 판단에 따르십시오.</div>
+      <div id="cdtStepBar"></div>
+      <div id="cdtBody"></div>
+    </div>`;
+  CDT.step = 0;
+  CDT.data = { cellType:null, stage:null, markers:{} };
+  renderCdtStep();
+}
+
+function renderCdtStep() {
+  renderCdtStepBar();
+  const body = document.getElementById('cdtBody');
+  if (CDT.step === 0) body.innerHTML = cdtStep0();
+  else if (CDT.step === 1) body.innerHTML = cdtStep1();
+  else if (CDT.step === 2) body.innerHTML = cdtStep2();
+  else body.innerHTML = cdtResult();
+  // bind pdl1 special select if on step 2
+  if (CDT.step === 2) bindMcButtons();
+}
+
+function renderCdtStepBar() {
+  const labels = ['세포형','병기','검사결과','결과 확인'];
+  document.getElementById('cdtStepBar').innerHTML = `
+    <div class="wiz-steps">
+      ${labels.map((l,i) => `
+        <div class="wiz-step-dot">
+          <div class="wiz-dot ${i < CDT.step ? 'done' : i === CDT.step ? 'active' : ''}">${i < CDT.step ? '✓' : i+1}</div>
+          <div class="wiz-step-label ${i === CDT.step ? 'active' : ''}">${l}</div>
+        </div>`).join('')}
+    </div>`;
+}
+
+/* Step 0: 세포형 */
+function cdtStep0() {
+  const opts = [
+    {val:'ad',  icon:'🔵', title:'선암종 (Adenocarcinoma)',      desc:'드라이버 변이 풍부 · 비흡연자·여성 빈도 높음'},
+    {val:'sq',  icon:'🔴', title:'편평세포암종 (Squamous Cell)', desc:'흡연 강연관 · PD-L1·FGFR 중심'},
+    {val:'lc',  icon:'🟣', title:'대세포암 / NOS',              desc:'조직형 미분류 · 선암에 준하는 검사'},
+    {val:'sclc',icon:'🟤', title:'소세포암 (SCLC)',             desc:'고등급 신경내분비 · 화학요법+면역항암 기반'}
+  ];
+  return `
+    <div class="wiz-body">
+      <div class="wiz-question">① 암 세포형을 선택하세요</div>
+      <div class="wiz-options">
+        ${opts.map(o=>`
+          <div class="wiz-option ${CDT.data.cellType===o.val?'selected':''}" onclick="cdtSelect('cellType','${o.val}',this)">
+            <div class="wiz-option-icon">${o.icon}</div>
+            <div class="wiz-option-text">
+              <div class="wiz-option-title">${o.title}</div>
+              <div class="wiz-option-desc">${o.desc}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+      <div class="wiz-nav">
+        <button class="wiz-btn wiz-btn-next" onclick="cdtNext()" ${!CDT.data.cellType?'disabled':''}>다음 →</button>
+      </div>
+    </div>`;
+}
+
+/* Step 1: 병기 */
+function cdtStep1() {
+  const opts = [
+    {val:'resectable',    icon:'🔪', title:'수술 가능 (I–II기, 일부 IIIA)',  desc:'완전절제 가능 · 수술 후 보조치료 전략'},
+    {val:'unresectable3', icon:'⚡', title:'절제 불가 III기 (IIIB–IIIC)',    desc:'동시 항암방사선 치료 · 면역항암 공고요법'},
+    {val:'meta',          icon:'🌐', title:'전이성 IV기',                    desc:'전신치료 중심 · 바이오마커 기반 표적·면역치료'}
+  ];
+  return `
+    <div class="wiz-body">
+      <div class="wiz-question">② 병기(Stage)를 선택하세요</div>
+      <div class="wiz-options">
+        ${opts.map(o=>`
+          <div class="wiz-option ${CDT.data.stage===o.val?'selected':''}" onclick="cdtSelect('stage','${o.val}',this)">
+            <div class="wiz-option-icon">${o.icon}</div>
+            <div class="wiz-option-text">
+              <div class="wiz-option-title">${o.title}</div>
+              <div class="wiz-option-desc">${o.desc}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+      <div class="wiz-nav">
+        <button class="wiz-btn wiz-btn-back" onclick="cdtBack()">← 이전</button>
+        <button class="wiz-btn wiz-btn-next" onclick="cdtNext()" ${!CDT.data.stage?'disabled':''}>다음 →</button>
+      </div>
+    </div>`;
+}
+
+/* Step 2: 검사 결과 입력 */
+// 마커별 우선순위 및 NCCN 카테고리 정보
+const MARKER_META = {
+  EGFR:    { p:{ad:1,sq:1,lc:1}, nccn:'Cat.1',  note:'PCR 우선·NGS 보완' },
+  ALK:     { p:{ad:1,sq:2,lc:1}, nccn:'Cat.1',  note:'IHC 스크리닝 우선' },
+  ROS1:    { p:{ad:1,sq:3,lc:1}, nccn:'Cat.1',  note:'RNA NGS 권고' },
+  KRAS:    { p:{ad:1,sq:1,lc:1}, nccn:'Cat.1',  note:'G12C 여부 확인' },
+  MET:     { p:{ad:1,sq:2,lc:1}, nccn:'Cat.1',  note:'RNA NGS 필수(ex14)' },
+  RET:     { p:{ad:1,sq:3,lc:1}, nccn:'Cat.1',  note:'RNA NGS 권고' },
+  NTRK:    { p:{ad:1,sq:2,lc:1}, nccn:'Cat.1',  note:'종양불문 승인' },
+  ERBB2:   { p:{ad:1,sq:2,lc:1}, nccn:'Cat.1',  note:'돌연변이·증폭·발현 구분' },
+  'PD-L1': { p:{ad:1,sq:1,lc:1}, nccn:'Cat.1',  note:'IHC 22C3 클론' },
+  BRAF:    { p:{ad:1,sq:2,lc:1}, nccn:'Cat.1',  note:'V600E 여부 중요' },
+  NRG1:    { p:{ad:2,sq:3,lc:2}, nccn:'신규2025',note:'KRAS-WT 선암 권고' },
+  FGFR:    { p:{ad:3,sq:1,lc:2}, nccn:'신규2025',note:'편평암 특이적' },
+  DLL3:    { p:{sclc:1},         nccn:'Cat.1',  note:'타르라타맙 대상' },
+  STK11:   { p:{ad:2},           nccn:'Cat.2A', note:'면역항암 내성 예측' },
+  TMB:     { p:{ad:2,sq:2,lc:2}, nccn:'Cat.1',  note:'NGS 포함 시 동시측정' },
+};
+
+function getMcPriorityBadge(mk, cellType) {
+  const meta = MARKER_META[mk];
+  if (!meta) return '';
+  const p = meta.p[cellType];
+  const nccn = meta.nccn;
+  const pBadge = p===1
+    ? `<span style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:#dcfce7;border:1px solid #86efac;color:#15803d">필수 1순위</span>`
+    : p===2
+    ? `<span style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:#fef3c7;border:1px solid #fcd34d;color:#92400e">2순위</span>`
+    : p===3
+    ? `<span style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:#f3f4f6;border:1px solid #d1d5db;color:#6b7280">참고</span>`
+    : '';
+  const nBadge = nccn==='Cat.1'
+    ? `<span style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:#fef9c3;border:1px solid #fde047;color:#713f12">NCCN Cat.1</span>`
+    : nccn==='Cat.2A'
+    ? `<span style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:#f3f4f6;border:1px solid #d1d5db;color:#6b7280">NCCN Cat.2A</span>`
+    : `<span style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:#dcfce7;border:1px solid #86efac;color:#14532d">NCCN ${nccn}</span>`;
+  const noteTxt = meta.note ? `<span style="font-size:9px;color:var(--muted)">${meta.note}</span>` : '';
+  return `<div style="display:flex;flex-wrap:wrap;gap:3px;align-items:center;margin-bottom:4px">${pBadge}${nBadge}${noteTxt}</div>`;
+}
+
+function cdtStep2() {
+  const mList = CDT_MARKERS[CDT.data.cellType] || [];
+  const cellType = CDT.data.cellType;
+  const items = mList.map(mk => {
+    const cur = CDT.data.markers[mk] || 'unk';
+    const badge = getMcPriorityBadge(mk, cellType);
+    if (mk === 'PD-L1') {
+      const levels = ['≥50%','1–49%','<1%','미검사'];
+      const vals   = ['high','mid','low','unk'];
+      return `
+        <div class="mc-item ${cur==='unk'?'unk':cur==='high'||cur==='mid'?'pos':'neg'}" id="mc-${mk}">
+          ${badge}
+          <div class="mc-name">PD-L1 TPS</div>
+          <div class="mc-status-row">
+            ${levels.map((l,i)=>`<button class="mc-btn ${cur===vals[i]?'active-'+(i<2?'pos':i===2?'neg':'unk'):''}" data-mk="PD-L1" data-val="${vals[i]}" onclick="mcSet('PD-L1','${vals[i]}')">${l}</button>`).join('')}
+          </div>
+        </div>`;
+    }
+    return `
+      <div class="mc-item ${cur==='pos'?'pos':cur==='neg'?'neg':'unk'}" id="mc-${mk}">
+        ${badge}
+        <div class="mc-name">${MARKER_LABELS[mk]||mk}</div>
+        <div class="mc-status-row">
+          <button class="mc-btn ${cur==='pos'?'active-pos':''}" data-val="pos" onclick="mcSet('${mk}','pos')">양성</button>
+          <button class="mc-btn ${cur==='neg'?'active-neg':''}" data-val="neg" onclick="mcSet('${mk}','neg')">음성</button>
+          <button class="mc-btn ${cur==='unk'?'active-unk':''}" data-val="unk" onclick="mcSet('${mk}','unk')">미검사</button>
+        </div>
+      </div>`;
+  }).join('');
+  return `
+    <div class="wiz-body">
+      <div class="wiz-question">③ 현재 확인된 검사 결과를 선택하세요 <span style="font-size:11px;color:var(--muted);font-weight:400">(미검사 = 아직 결과 없음)</span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;font-size:11px;color:var(--muted)">
+        <span style="background:#dcfce7;border:1px solid #86efac;color:#15803d;padding:2px 7px;border-radius:4px;font-weight:700">필수 1순위</span> 반드시 확인
+        <span style="background:#fef3c7;border:1px solid #fcd34d;color:#92400e;padding:2px 7px;border-radius:4px;font-weight:700">2순위</span> 조건부 추가
+        <span style="background:#fef9c3;border:1px solid #fde047;color:#713f12;padding:2px 7px;border-radius:4px;font-weight:700">NCCN Cat.1</span> 최고 근거수준
+      </div>
+      <div class="marker-checklist">${items}</div>
+      <div class="wiz-nav">
+        <button class="wiz-btn wiz-btn-back" onclick="cdtBack()">← 이전</button>
+        <button class="wiz-btn wiz-btn-next" onclick="cdtNext()">결과 확인 →</button>
+      </div>
+    </div>`;
+}
+
+function bindMcButtons(){}
+
+function mcSet(mk, val) {
+  CDT.data.markers[mk] = val;
+  const item = document.getElementById(`mc-${mk}`);
+  if (!item) return;
+  // 아이템 테두리/배경 색상 업데이트
+  item.className = 'mc-item ' + (
+    val==='pos'||val==='high'||val==='mid' ? 'pos' :
+    val==='neg'||val==='low' ? 'neg' : 'unk'
+  );
+  // 버튼 활성 클래스 — data-val로 정확히 찾기
+  item.querySelectorAll('.mc-btn').forEach(b => {
+    b.classList.remove('active-pos','active-neg','active-unk');
+    if (b.dataset.val === val) {
+      const cls = (val==='pos'||val==='high'||val==='mid') ? 'active-pos'
+                : (val==='neg'||val==='low') ? 'active-neg' : 'active-unk';
+      b.classList.add(cls);
+    }
+  });
+}
+
+function cdtSelect(field, val, el) {
+  CDT.data[field] = val;
+  el.closest('.wiz-options').querySelectorAll('.wiz-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  // enable next button
+  el.closest('.wiz-body').querySelector('.wiz-btn-next').disabled = false;
+}
+
+function cdtNext() { CDT.step = Math.min(3, CDT.step+1); renderCdtStep(); }
+function cdtBack() { CDT.step = Math.max(0, CDT.step-1); renderCdtStep(); }
+function cdtReset(){ CDT.step=0; CDT.data={cellType:null,stage:null,markers:{}}; renderCdtStep(); }
+
+/* ── RESULT LOGIC ── */
+function cdtResult() {
+  const {cellType, stage, markers} = CDT.data;
+  const m = markers;
+
+  // patient summary
+  const cellLabel = {ad:'선암종',sq:'편평세포암',lc:'대세포암/NOS',sclc:'소세포암'}[cellType];
+  const stageLabel = {resectable:'수술 가능(I–II기)',unresectable3:'절제 불가 III기',meta:'전이성 IV기'}[stage];
+  const posMarkers = Object.entries(m).filter(([,v])=>v==='pos'||v==='high'||v==='mid').map(([k])=>MARKER_LABELS[k]||k);
+  const negMarkers = Object.entries(m).filter(([,v])=>v==='neg'||v==='low').map(([k])=>MARKER_LABELS[k]||k);
+  const unkMarkers = Object.entries(m).filter(([,v])=>v==='unk').map(([k])=>MARKER_LABELS[k]||k);
+
+  const allMarkers = CDT_MARKERS[cellType] || [];
+  const unkRequired = allMarkers.filter(mk => (m[mk]||'unk')==='unk');
+
+  // ── 결과 계산 ──
+  const nextTests = [];   // {icon, title, desc, tags}
+  const treatments = [];  // {icon, title, desc, tags}
+  const cautions  = [];   // {icon, title, desc}
+
+  // SCLC 별도
+  if (cellType === 'sclc') {
+    nextTests.push({icon:'🔬', title:'신경내분비 IHC 패널', desc:'Synaptophysin·CD56·Chromogranin A·TTF-1·Ki-67·RB1 — 진단 확인 목적', tags:['<span class="result-tag rt-1">IHC</span><span class="result-tag rt-1">우선 시행</span>']});
+    if ((m['DLL3']||'unk')==='unk') nextTests.push({icon:'🎯', title:'DLL3 IHC', desc:'타르라타맙 2차 치료 대상 확인. 발현 무관 투여 가능하나 사전 확인 권고.', tags:['<span class="result-tag rt-opt">IHC</span>']});
+    if (stage==='meta') {
+      treatments.push({icon:'💊', title:'에토포시드 + 카보플라틴/시스플라틴 + 아테졸리주맙 또는 더발루맙', desc:'1차 표준치료. PD-L1 발현 무관 면역항암제 병용.', tags:['<span class="result-tag rt-1">1차 Preferred</span>']});
+      treatments.push({icon:'💊', title:'에토포시드 + 카보플라틴/시스플라틴 단독', desc:'면역항암제 사용 불가 시 대안.', tags:['<span class="result-tag rt-2">대안</span>']});
+    } else if (stage==='unresectable3') {
+      treatments.push({icon:'⚡', title:'동시 항암방사선 치료 (CCRT)', desc:'한정 병기(LD-SCLC) 표준치료. 에토포시드+시스플라틴 기반.', tags:['<span class="result-tag rt-1">표준 치료</span>']});
+      treatments.push({icon:'🧠', title:'예방적 뇌 방사선 (PCI)', desc:'완전반응 달성 후 고려.', tags:['<span class="result-tag rt-opt">완전반응 후</span>']});
+    }
+    cautions.push({icon:'⚠️', title:'PD-L1·TMB 검사는 치료 결정 필수 아님', desc:'아테졸리주맙·더발루맙은 PD-L1 발현 무관하게 사용. 검사가 치료를 지연시키지 않도록 주의.'});
+    return buildResultHTML(nextTests, treatments, cautions, cellLabel, stageLabel, posMarkers, negMarkers, unkMarkers);
+  }
+
+  // ── NSCLC 공통 ──
+
+  // 수술 가능: 보조치료 중심
+  if (stage === 'resectable') {
+    // EGFR
+    if ((m['EGFR']||'unk')==='unk') nextTests.push({icon:'🧬', title:'EGFR Real-time PCR', desc:'수술 가능 병기에서도 EGFR 검사 필수 — 완전절제 후 보조 오시머티닙(3세대) 여부 결정.', tags:['<span class="result-tag rt-1">필수</span><span class="result-tag rt-opt">PCR 우선</span>']});
+    if (m['EGFR']==='pos') treatments.push({icon:'💊', title:'오시머티닙 (보조치료, 3년)', desc:'완전절제 후 EGFR Classical 양성 시 보조 오시머티닙 — NCCN Category 1, 재발 위험 감소.', tags:['<span class="result-tag rt-1">Category 1</span><span class="result-tag rt-1">보조치료</span>']});
+    if ((m['ALK']||'unk')==='unk') nextTests.push({icon:'🧬', title:'ALK IHC 또는 NGS', desc:'ALK 양성 시 완전절제 후 알렉티닙 보조치료 — NCCN Category 1(2024 추가).', tags:['<span class="result-tag rt-1">필수</span>']});
+    if (m['ALK']==='pos') treatments.push({icon:'💊', title:'알렉티닙 (보조치료)', desc:'완전절제 후 ALK 양성 시 알렉티닙 보조치료 — NCCN Category 1.', tags:['<span class="result-tag rt-1">Category 1</span><span class="result-tag rt-1">보조치료</span>']});
+    if ((m['PD-L1']||'unk')==='unk') nextTests.push({icon:'🔬', title:'PD-L1 IHC', desc:'atezolizumab 보조치료 고려 시 참고 (Stage II-IIIA PD-L1 ≥1%).', tags:['<span class="result-tag rt-opt">참고</span>']});
+    if (!posMarkers.length && !unkMarkers.filter(u=>u!=='PD-L1 TPS').length) {
+      treatments.push({icon:'💉', title:'보조 화학요법 (Cisplatin 기반)', desc:'드라이버 음성 시 완전절제 후 보조 화학요법 표준.', tags:['<span class="result-tag rt-1">표준</span>']});
+    }
+    cautions.push({icon:'ℹ️', title:'수술 전 바이오마커 검사 완료 권고', desc:'보조치료 결정을 위해 EGFR·ALK는 수술 전 또는 수술 직후 조기에 검사 완료 권고.'});
+    return buildResultHTML(nextTests, treatments, cautions, cellLabel, stageLabel, posMarkers, negMarkers, unkMarkers);
+  }
+
+  // 절제불가 III기 — EGFR 양성 여부에 따라 분기
+  if (stage === 'unresectable3') {
+    const egfr = m['EGFR'] || 'unk';
+
+    // EGFR 양성 — LAURA 연구 기반
+    if (egfr === 'pos') {
+      const isAd = cellType === 'ad' || cellType === 'lc';
+      treatments.push({
+        icon:'⚡', title:'CCRT (동시 항암방사선치료) — 1단계',
+        desc:`화학요법은 아래 중 하나를 선택합니다 (EGFR 양성이어도 CCRT 자체는 동일하게 시행):<br>
+<strong style="color:#1d4ed8">① 카보플라틴 (AUC 2 주1회) + 파클리탁셀 (45mg/m² 주1회)</strong> — RTOG 0617 기반. 내약성 우수, 고령·신기능 저하 시 선호<br>
+<strong style="color:#1d4ed8">② 시스플라틴 (50mg/m²) + 에토포시드 (50mg/m²)</strong> — 전통적 표준. 체력(ECOG 0-1) 양호한 젊은 환자${isAd ? '<br><strong style="color:#7c3aed">③ 시스플라틴 + 페메트렉시드</strong> — 비편평(선암) 특화. PROCLAIM 연구 근거. OS 동등, 독성 프로파일 유리' : ''}`,
+        tags:['<span class="result-tag rt-1">1단계 표준</span>']
+      });
+      treatments.push({
+        icon:'💊', title:'오시머티닙 공고요법 (CCRT 후) — 2단계',
+        desc:'LAURA 연구(NEJM 2024): CCRT 후 오시머티닙 공고요법 — PFS 39.1개월 vs 위약 5.6개월 (HR 0.16). 더발루맙 대신 오시머티닙 사용.',
+        tags:['<span class="result-tag rt-1">2단계 표준</span>','<span class="result-tag rt-1">LAURA 2024</span>']
+      });
+      cautions.push({
+        icon:'⚠️', title:'더발루맙(PACIFIC) 공고요법 비권고',
+        desc:'PACIFIC 연구 post-hoc 분석에서 EGFR 양성 하위군에 더발루맙의 PFS·OS 개선 없음 확인. EGFR 양성 III기에서 더발루맙 사용 비권고 — 오시머티닙으로 대체.'
+      });
+      cautions.push({
+        icon:'ℹ️', title:'EGFR 검사가 없다면 반드시 확인 필요',
+        desc:'절제불가 III기에서 CCRT 후 공고요법 결정(더발루맙 vs 오시머티닙)이 EGFR 결과에 따라 완전히 달라집니다.'
+      });
+      if ((m['PD-L1']||'unk')==='unk') {
+        nextTests.push({
+          icon:'🔬', title:'PD-L1 IHC (참고)',
+          desc:'EGFR 양성 III기에서 더발루맙 사용 안 하므로 치료 결정에 필수 아님. 참고 목적.',
+          tags:['<span class="result-tag rt-gray">필수 아님</span>']
+        });
+      }
+      return buildResultHTML(nextTests, treatments, cautions, cellLabel, stageLabel, posMarkers, negMarkers, unkMarkers);
+    }
+
+    // EGFR 음성 또는 미검사 — PACIFIC 기반
+    const isAd2 = cellType === 'ad' || cellType === 'lc';
+    treatments.push({
+      icon:'⚡', title:'CCRT (동시 항암방사선치료) — 1단계',
+      desc:`화학요법은 아래 중 하나를 선택합니다:<br>
+<strong style="color:#1d4ed8">① 카보플라틴 (AUC 2 주1회) + 파클리탁셀 (45mg/m² 주1회)</strong> — RTOG 0617 기반. 내약성 우수, 고령·신기능 저하 시 선호<br>
+<strong style="color:#1d4ed8">② 시스플라틴 (50mg/m²) + 에토포시드 (50mg/m²)</strong> — 전통적 표준. 체력 양호한 젊은 환자${isAd2 ? '<br><strong style="color:#7c3aed">③ 시스플라틴 + 페메트렉시드</strong> — 비편평(선암) 특화. PROCLAIM 연구. OS 동등, 독성 유리' : ''}`,
+      tags:['<span class="result-tag rt-1">1단계 표준</span>']
+    });
+    treatments.push({
+      icon:'💊', title:'더발루맙 공고요법 1년 (CCRT 후) — 2단계',
+      desc:'PACIFIC 연구 — CCRT 후 진행 없으면 더발루맙 면역항암 공고요법. Category 1. EGFR 음성 확인 필수.',
+      tags:['<span class="result-tag rt-1">2단계 표준</span>','<span class="result-tag rt-1">PACIFIC</span>']
+    });
+    if (egfr === 'unk') {
+      nextTests.push({
+        icon:'🧬', title:'EGFR 검사 우선 시행 (매우 중요)',
+        desc:'EGFR 양성이면 더발루맙 공고요법 대신 오시머티닙(LAURA)으로 전략이 완전히 바뀝니다. CCRT 전 또는 진행 중 반드시 확인.',
+        tags:['<span class="result-tag rt-warn">공고요법 결정 전 필수</span>']
+      });
+    }
+    if ((m['PD-L1']||'unk')==='unk') {
+      nextTests.push({
+        icon:'🔬', title:'PD-L1 IHC (참고)',
+        desc:'더발루맙 공고요법 효과 예측 참고. TPS와 무관하게 더발루맙 사용 가능하나 참고 목적으로 확인.',
+        tags:['<span class="result-tag rt-opt">참고</span>']
+      });
+    }
+    cautions.push({
+      icon:'⚠️', title:'EGFR 양성이면 더발루맙 비권고',
+      desc:'EGFR 양성 환자에서 더발루맙 공고요법은 효과 없음(PACIFIC post-hoc). EGFR 결과 확인 후 공고요법 결정.'
+    });
+    return buildResultHTML(nextTests, treatments, cautions, cellLabel, stageLabel, posMarkers, negMarkers, unkMarkers);
+  }
+
+  // ── 전이성 IV기 ──
+
+  // 드라이버 양성 분기
+  if (m['EGFR']==='pos') {
+    const isNonSq = cellType === 'ad' || cellType === 'lc';
+    treatments.push({
+      icon:'💊',
+      title:'오시머티닙 단독 (osimertinib, 1차 Preferred)',
+      desc:'FLAURA 연구. PFS 18.9개월.<br><strong style="color:#15803d">선택 힌트:</strong> 고령·허약·화학요법 부담 큰 환자, 단순한 용법 선호 시',
+      tags:['<span class="result-tag rt-1">1차 Preferred</span>','<span class="result-tag rt-opt">경구 단독</span>']
+    });
+    if (isNonSq) {
+      treatments.push({
+        icon:'💊',
+        title:'오시머티닙 + 화학요법 (1차 Preferred)',
+        desc:'FLAURA2 연구. PFS 개선.<br><strong style="color:#15803d">선택 힌트:</strong> 고종양부담(뇌·간 다발전이), 빠른 종양 축소 필요 시<br><strong style="color:#0369a1">화학요법 조합 (비편평·선암):</strong> 카보플라틴 (AUC 5) + 페메트렉시드 (500mg/m²). 이후 오시머티닙 + 페메트렉시드 유지요법.',
+        tags:['<span class="result-tag rt-1">1차 Preferred</span>','<span class="result-tag rt-opt">화학요법 병용</span>','<span class="result-tag rt-gray">비편평암</span>']
+      });
+    } else {
+      // 편평세포암 EGFR 양성 — 페메트렉시드 사용 불가
+      treatments.push({
+        icon:'💊',
+        title:'오시머티닙 + 화학요법 (편평암)',
+        desc:'FLAURA2 연구 기반이나 편평암 서브그룹 데이터 제한적.<br><strong style="color:#15803d">선택 힌트:</strong> 고종양부담, 빠른 반응 필요 시<br><strong style="color:#dc2626">화학요법 조합 (편평암):</strong> 카보플라틴 + 파클리탁셀 또는 젬시타빈. 페메트렉시드는 편평암에서 사용 불가.',
+        tags:['<span class="result-tag rt-1">1차 Preferred</span>','<span class="result-tag rt-opt">화학요법 병용</span>','<span class="result-tag rt-warn">편평암 — 페메트렉시드 불가</span>']
+      });
+    }
+    treatments.push({
+      icon:'💊',
+      title:'아미반타맙 + 라제르티닙 (amivantamab + lazertinib, 1차 Preferred)',
+      desc:'MARIPOSA 연구. OS 개선 신호.<br><strong style="color:#15803d">선택 힌트:</strong> 체력(ECOG 0-1) 양호, OS 데이터 중시, 피하주사 가능 시<br><em style="color:var(--muted);font-size:11px">주의: 정맥혈전증 위험 — 항응고 예방요법 병행 필요</em>',
+      tags:['<span class="result-tag rt-1">1차 Preferred</span>','<span class="result-tag rt-opt">이중 표적</span>']
+    });
+    cautions.push({icon:'ℹ️', title:'세 가지 치료는 동등 Preferred — 절대적 순위 없음', desc:'오시머티닙 단독 / 오시머티닙+화학요법 / 아미반타맙+라제르티닙은 NCCN 동등 Category 1 Preferred. 환자의 체력, 종양부담, 부작용 내성, 선호도에 따라 결정.'});
+    cautions.push({icon:'⚠️', title:'EGFR 양성 — PD-L1 수치 무관하게 TKI 우선', desc:'TPS ≥50%라도 EGFR 양성 시 면역항암제 단독 비권고. TKI를 1차로 사용.'});
+    if (!isNonSq) cautions.push({icon:'ℹ️', title:'편평세포암 EGFR 양성 — 드문 경우', desc:'편평암에서 EGFR 양성은 ≤5%로 드묾. Classical mutation(Exon 19/21) 확인 필수. Uncommon mutation이면 아파티닙이 더 유리할 수 있음.'});
+    if ((m['PD-L1']||'unk')==='unk') nextTests.push({icon:'🔬', title:'PD-L1 IHC (참고)', desc:'EGFR TKI 진행 후 면역항암 전환 시 참고. 치료 결정 지연 안 되도록 주의.', tags:['<span class="result-tag rt-opt">참고</span>']});
+    return buildResultHTML(nextTests, treatments, cautions, cellLabel, stageLabel, posMarkers, negMarkers, unkMarkers);
+  }
+
+  if (m['ALK']==='pos') {
+    treatments.push({icon:'💊', title:'알렉티닙 (1차 Preferred)', desc:'ALEX 연구. PFS 34.8개월. 뇌전이 포함 효과 우수.', tags:['<span class="result-tag rt-1">1차 Preferred</span>']});
+    treatments.push({icon:'💊', title:'브리가티닙 (1차)', desc:'ALTA-1L 연구. Category 1.', tags:['<span class="result-tag rt-1">Category 1</span>']});
+    treatments.push({icon:'💊', title:'로라티닙 (1차)', desc:'CROWN 연구. 뇌전이 예방 효과 탁월.', tags:['<span class="result-tag rt-1">Category 1</span>']});
+    cautions.push({icon:'⚠️', title:'ALK 양성 — 면역항암제 단독 효과 제한', desc:'ALK 양성 시 펨브롤리주맙 단독 비권고. TKI 우선.'});
+    return buildResultHTML(nextTests, treatments, cautions, cellLabel, stageLabel, posMarkers, negMarkers, unkMarkers);
+  }
+
+  if (m['ROS1']==='pos') {
+    treatments.push({icon:'💊', title:'레포트렉티닙 (1차 Preferred)', desc:'NCCN 2024 추가. 뇌전이 포함 효과 우수.', tags:['<span class="result-tag rt-1">1차 Preferred</span>']});
+    treatments.push({icon:'💊', title:'엔트렉티닙 (1차)', desc:'뇌전이 포함. NTRK 교차 효과.', tags:['<span class="result-tag rt-1">Category 1</span>']});
+    return buildResultHTML(nextTests, treatments, cautions, cellLabel, stageLabel, posMarkers, negMarkers, unkMarkers);
+  }
+
+  if (m['MET']==='pos') {
+    treatments.push({icon:'💊', title:'테포티닙 (1차, METex14)', desc:'VISION 연구. Category 1.', tags:['<span class="result-tag rt-1">Category 1</span>']});
+    treatments.push({icon:'💊', title:'카프마티닙 (1차, METex14)', desc:'GEOMETRY mono-1 연구.', tags:['<span class="result-tag rt-1">Category 1</span>']});
+    cautions.push({icon:'ℹ️', title:'METex14 vs MET 증폭 구분 필요', desc:'RNA NGS로 METex14 skipping 확인 필수. DNA NGS만으로는 누락 가능.'});
+    return buildResultHTML(nextTests, treatments, cautions, cellLabel, stageLabel, posMarkers, negMarkers, unkMarkers);
+  }
+
+  if (m['RET']==='pos') {
+    treatments.push({icon:'💊', title:'셀퍼카티닙 (1차)', desc:'LIBRETTO-001 연구. 뇌전이 포함.', tags:['<span class="result-tag rt-1">Category 1</span>']});
+    treatments.push({icon:'💊', title:'프랄세티닙 (1차)', desc:'ARROW 연구.', tags:['<span class="result-tag rt-1">Category 1</span>']});
+    return buildResultHTML(nextTests, treatments, cautions, cellLabel, stageLabel, posMarkers, negMarkers, unkMarkers);
+  }
+
+  if (m['NTRK']==='pos') {
+    treatments.push({icon:'💊', title:'라로트렉티닙 (종양불문)', desc:'NTRK 융합 양성 — 암종 무관 FDA 승인.', tags:['<span class="result-tag rt-1">종양불문</span>']});
+    treatments.push({icon:'💊', title:'엔트렉티닙 (종양불문)', desc:'NTRK+ROS1 교차 효과.', tags:['<span class="result-tag rt-1">종양불문</span>']});
+    return buildResultHTML(nextTests, treatments, cautions, cellLabel, stageLabel, posMarkers, negMarkers, unkMarkers);
+  }
+
+  if (m['BRAF']==='pos') {
+    treatments.push({icon:'💊', title:'다브라페닙 + 트라메티닙 (1차)', desc:'BRAF V600E 양성 시 병용요법 — Category 1.', tags:['<span class="result-tag rt-1">Category 1</span>']});
+    cautions.push({icon:'ℹ️', title:'BRAF non-V600E는 표적치료 없음', desc:'V600E 여부 확인 필수. non-V600E는 현재 승인된 표적치료 없음.'});
+    return buildResultHTML(nextTests, treatments, cautions, cellLabel, stageLabel, posMarkers, negMarkers, unkMarkers);
+  }
+
+  if (m['ERBB2']==='pos') {
+    treatments.push({icon:'💊', title:'트라스투주맙 데룩스테칸 (T-DXd)', desc:'ERBB2 Exon20 삽입 양성 — Category 1, FDA 승인.', tags:['<span class="result-tag rt-1">Category 1</span>']});
+    cautions.push({icon:'ℹ️', title:'ERBB2 돌연변이 vs 증폭 vs 과발현 구분 필요', desc:'Exon20 삽입(돌연변이)만 T-DXd 표적. 증폭·과발현 단독은 현재 표준 표적치료 없음.'});
+    return buildResultHTML(nextTests, treatments, cautions, cellLabel, stageLabel, posMarkers, negMarkers, unkMarkers);
+  }
+
+  if (m['KRAS']==='pos') {
+    cautions.push({icon:'⚠️', title:'KRAS G12C — 1차는 면역항암요법 우선', desc:'G12C 양성이라도 1차 치료는 PD-L1 수준에 따른 면역항암 전략. 소토라십·아다그라십은 2차.'});
+    // PD-L1 기반 1차 결정
+  }
+
+  // ── 드라이버 음성 또는 미검사 → PD-L1 기반 분기 ──
+  const pdl1 = m['PD-L1'] || 'unk';
+  const driverNeg = ['EGFR','ALK','ROS1','MET','RET','NTRK','BRAF','ERBB2'].every(mk => m[mk]==='neg');
+  const driverUnk = ['EGFR','ALK','ROS1'].some(mk => (m[mk]||'unk')==='unk');
+
+  if (driverUnk && cellType !== 'sq') {
+    nextTests.push({icon:'🧬', title:'드라이버 돌연변이 검사 완료 필요', desc:'EGFR PCR + ALK IHC + ROS1 NGS 결과가 없습니다. 표적치료 가능성 배제 전에 치료 결정을 보류하거나 병행 진행 권고.', tags:['<span class="result-tag rt-warn">우선 완료 권고</span>']});
+  }
+
+  // 미검사 항목 안내
+  const toTest = allMarkers.filter(mk => (m[mk]||'unk')==='unk' && mk !== 'PD-L1');
+  if (toTest.length) {
+    nextTests.push({icon:'📋', title:`추가 검사 권고 (${toTest.length}개 항목 미확인)`,
+      desc: toTest.map(mk => MARKER_LABELS[mk]||mk).join(', '),
+      tags:['<span class="result-tag rt-opt">NGS 패널로 통합 검사 권장</span>']});
+  }
+
+  // PD-L1 분기
+  if (pdl1 === 'high') { // TPS ≥50%
+    treatments.push({icon:'💊', title:'펨브롤리주맙 단독 (1차 Preferred)', desc:'TPS ≥50% — KEYNOTE-024. PFS 10.3개월. 드라이버 음성 확인 필수.', tags:['<span class="result-tag rt-1">1차 Preferred</span>','<span class="result-tag rt-1">Category 1</span>']});
+    treatments.push({icon:'💊', title:'펨브롤리주맙 + 화학요법 (대안)', desc:'TPS ≥50%라도 병용 선택 가능.', tags:['<span class="result-tag rt-opt">대안</span>']});
+    if (cellType==='sq') treatments.push({icon:'💊', title:'펨브롤리주맙 + 카보플라틴/파클리탁셀 (편평암)', desc:'KEYNOTE-407 — 편평암 1차 표준.', tags:['<span class="result-tag rt-1">편평암 표준</span>']});
+    cautions.push({icon:'⚠️', title:'드라이버 변이 최종 확인 후 단독 면역항암 시작 권고', desc:'EGFR/ALK 결과 확인 전 펨브롤리주맙 단독 사용 시 TKI 병용 금기.'});
+  } else if (pdl1 === 'mid') { // TPS 1-49%
+    if (cellType !== 'sq') {
+      treatments.push({icon:'💊', title:'펨브롤리주맙 + 페메트렉시드 + 백금 (1차)', desc:'비편평 — KEYNOTE-189. Category 1.', tags:['<span class="result-tag rt-1">1차 Preferred</span>']});
+      treatments.push({icon:'💊', title:'아테졸리주맙 + 베바시주맙 + 카보/파클리탁셀 (IMpower150)', desc:'비편평 대안. EGFR/ALK 양성에서도 사용 가능한 유일한 면역항암 병용 요법.', tags:['<span class="result-tag rt-opt">대안</span>']});
+    } else {
+      treatments.push({icon:'💊', title:'펨브롤리주맙 + 카보플라틴/파클리탁셀 (편평암)', desc:'KEYNOTE-407. Category 1.', tags:['<span class="result-tag rt-1">1차 Preferred</span>']});
+    }
+  } else if (pdl1 === 'low') { // TPS <1%
+    if (cellType !== 'sq') {
+      treatments.push({icon:'💊', title:'펨브롤리주맙 + 페메트렉시드 + 백금', desc:'TPS <1%에서도 병용 효과 확인. Category 1.', tags:['<span class="result-tag rt-1">Category 1</span>']});
+      treatments.push({icon:'💊', title:'페메트렉시드 + 백금 (화학요법 단독)', desc:'면역항암제 사용 어려울 때 대안.', tags:['<span class="result-tag rt-2">대안</span>']});
+    } else {
+      treatments.push({icon:'💊', title:'펨브롤리주맙 + 카보플라틴/파클리탁셀 (편평암)', desc:'TPS <1%에서도 병용으로 혜택. KEYNOTE-407.', tags:['<span class="result-tag rt-1">Category 1</span>']});
+      treatments.push({icon:'💊', title:'카보플라틴/파클리탁셀 (화학요법 단독)', desc:'편평암 화학요법 대안.', tags:['<span class="result-tag rt-2">대안</span>']});
+    }
+    cautions.push({icon:'ℹ️', title:'TPS <1% — 면역항암제 단독요법 비권고', desc:'화학요법 병용으로 면역항암 효과 확보 권장.'});
+  } else { // PD-L1 미검사
+    nextTests.unshift({icon:'🔬', title:'PD-L1 IHC (우선 시행)', desc:'전이성 폐암 1차 치료 결정의 핵심. TPS 수준에 따라 치료 전략이 달라집니다.', tags:['<span class="result-tag rt-warn">즉시 시행 필요</span><span class="result-tag rt-opt">IHC 22C3</span>']});
+    treatments.push({icon:'⏳', title:'PD-L1 결과 확인 후 치료 결정', desc:'드라이버 음성 + PD-L1 미검사 상태에서는 결과 대기 또는 병행 화학요법 고려.', tags:['<span class="result-tag rt-gray">대기</span>']});
+  }
+
+  // TMB 미검사 안내 (meta + driver neg)
+  if ((m['KRAS']||'unk')==='unk' && cellType==='ad') {
+    nextTests.push({icon:'🧬', title:'KRAS G12C PCR', desc:'드라이버 음성 시 KRAS G12C 확인 — 2차 치료 소토라십/아다그라십 준비.', tags:['<span class="result-tag rt-opt">2차 대비</span>']});
+  }
+  if ((m['TMB']||'unk')==='unk') {
+    nextTests.push({icon:'📊', title:'TMB (NGS 패널 포함 시)', desc:'TMB-H(≥10 mut/Mb) 확인 — 펨브롤리주맙 종양불문 승인. NGS 패널 시행 시 동시 측정.', tags:['<span class="result-tag rt-opt">NGS 포함 측정</span>']});
+  }
+
+  return buildResultHTML(nextTests, treatments, cautions, cellLabel, stageLabel, posMarkers, negMarkers, unkMarkers);
+}
+
+function buildResultHTML(nextTests, treatments, cautions, cellLabel, stageLabel, posMarkers, negMarkers, unkMarkers) {
+  const posList = posMarkers.length ? posMarkers.map(p=>`<span class="result-tag rt-1">${p} 양성</span>`).join('') : '<span class="result-tag rt-gray">없음</span>';
+  const negList = negMarkers.length ? negMarkers.map(p=>`<span class="result-tag rt-gray">${p} 음성</span>`).join('') : '<span class="result-tag rt-gray">없음</span>';
+  const unkList = unkMarkers.length ? unkMarkers.map(p=>`<span class="result-tag rt-warn">${p} 미검사</span>`).join('') : '<span class="result-tag rt-opt">없음</span>';
+
+  function rows(arr) {
+    return arr.map(r=>`
+      <div class="result-row">
+        <div class="result-row-icon">${r.icon}</div>
+        <div class="result-row-content">
+          <div class="result-row-title">${r.title}</div>
+          <div class="result-row-desc">${r.desc}</div>
+          ${r.tags ? `<div style="margin-top:5px">${r.tags.join('')}</div>` : ''}
+        </div>
+      </div>`).join('');
+  }
+
+  return `
+    <div class="wiz-body">
+      <div class="result-patient-summary">
+        <div class="rps-title">입력 요약</div>
+        <strong>${cellLabel}</strong> · <strong>${stageLabel}</strong><br>
+        양성: ${posList}<br>
+        음성: ${negList}<br>
+        미검사: ${unkList}
+      </div>
+      <div class="result-wrap">
+        ${nextTests.length ? `
+        <div class="result-section">
+          <div class="result-section-header rsh-next">🔬 추가로 필요한 검사</div>
+          <div class="result-section-body">${rows(nextTests)}</div>
+        </div>` : ''}
+        ${treatments.length ? `
+        <div class="result-section">
+          <div class="result-section-header rsh-treat">💊 고려 가능한 치료 (우선순위순)</div>
+          <div class="result-section-body">${rows(treatments)}</div>
+        </div>` : ''}
+        ${cautions.length ? `
+        <div class="result-section">
+          <div class="result-section-header rsh-caution">⚠️ 임상 주의사항</div>
+          <div class="result-section-body">${rows(cautions)}</div>
+        </div>` : ''}
+      </div>
+      <div class="wiz-nav">
+        <button class="wiz-btn wiz-btn-back" onclick="cdtBack()">← 검사결과 수정</button>
+        <button class="wiz-btn wiz-btn-reset" onclick="cdtReset()">↺ 처음부터</button>
+      </div>
+    </div>`;
+}
+
+function showSecPanel(type, el) {
+  const wasActive = el && el.classList.contains('active');
+  document.querySelectorAll('#mainNav .sec-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel-section').forEach(p => p.classList.remove('show'));
+  clearSearch();
+  if (!wasActive) {
+    if (el) el.classList.add('active');
+    document.getElementById(`panel-${type}`).classList.add('show');
+    if (type === 'resist') buildResistPanel();
+    if (type === 'cdt') buildCdtPanel();
+    showMainContent(false);
+  } else {
+    if (currentMain) showMainContent(true);
+  }
+}
+
+/* ── RESISTANCE PANEL ── */
+const RESIST_DATA = [
+  {
+    id:'egfr-resist', gene:'EGFR', title:'EGFR TKI 내성 후 재검사',
+    sub:'1·2세대 또는 3세대 TKI 진행 시',
+    steps:[
+      {num:'1', title:'재생검 (조직 또는 액체생검)',
+       desc:'치료 중 진행 시 가능하면 재조직 생검 또는 ctDNA 액체생검 실시. 조직 생검이 어려운 경우 혈액 ctDNA로 대체 가능.'},
+      {num:'2', title:'T790M 변이 확인 (1·2세대 TKI 후)',
+       desc:'1·2세대 TKI(게피티닙·엘로티닙·아파티닙) 진행 시 T790M 여부 확인. 양성이면 오시머티닙(3세대) 전환.',
+       markers:['T790M PCR', 'ctDNA ddPCR', 'NGS']},
+      {num:'3', title:'MET 증폭 확인 (오시머티닙 후)',
+       desc:'오시머티닙 진행 시 MET 증폭 또는 EGFR C797S 변이 확인. MET 증폭 시 오시머티닙+MET TKI 병용 가능.',
+       markers:['FISH: MET 증폭', 'NGS: C797S, MET']},
+      {num:'4', title:'SCLC 전환 감별',
+       desc:'EGFR 양성 선암에서 치료 중 소세포암으로 전환되는 경우 있음. 재생검 시 신경내분비 마커 IHC 추가.',
+       markers:['IHC: Synaptophysin, CD56, Ki-67']}
+    ]
+  },
+  {
+    id:'alk-resist', gene:'ALK', title:'ALK TKI 내성 후 재검사',
+    sub:'크리조티닙·알렉티닙·브리가티닙 진행 시',
+    steps:[
+      {num:'1', title:'재생검 및 내성 변이 확인',
+       desc:'ALK 내성 변이는 종류에 따라 다음 치료가 달라지므로 RNA NGS로 내성 기전 확인이 필수.'},
+      {num:'2', title:'G1202R / L1196M 단독 변이',
+       desc:'단독 내성 변이 시 로라티닙(3세대) 전환. 로라티닙이 이 변이들에 가장 효과적.',
+       markers:['RNA NGS: G1202R, L1196M']},
+      {num:'3', title:'복합 내성 변이',
+       desc:'G1202R+L1196M 등 복합 변이 시 현재 승인된 표적치료 제한적. 임상시험 참여 권장.',
+       markers:['RNA NGS: 복합 변이 패턴']}
+    ]
+  },
+  {
+    id:'ros1-resist', gene:'ROS1', title:'ROS1 TKI 내성 후 재검사',
+    sub:'크리조티닙·엔트렉티닙·레포트렉티닙 진행 시',
+    steps:[
+      {num:'1', title:'G2032R 용매 노출 변이 확인',
+       desc:'가장 흔한 ROS1 내성 변이. 레포트렉티닙이 일부 효과. 2세대 TRK/ROS1 억제제 임상시험 참여 권장.',
+       markers:['RNA NGS: G2032R']}
+    ]
+  },
+  {
+    id:'met-resist', gene:'MET', title:'MET TKI 내성 후 재검사',
+    sub:'테포티닙·카프마티닙 진행 시',
+    steps:[
+      {num:'1', title:'2차 MET 변이 확인',
+       desc:'METex14 TKI 내성 시 D1228H/N, Y1230C 등 kinase domain 변이 발생 가능. RNA+DNA NGS 시행.',
+       markers:['NGS: D1228H/N, Y1230C']},
+      {num:'2', title:'동반 내성 기전 확인',
+       desc:'EGFR, KRAS 등 bypass 활성화로 인한 내성 기전 확인.',
+       markers:['광범위 NGS 패널']}
+    ]
+  },
+  {
+    id:'kras-resist', gene:'KRAS G12C', title:'KRAS G12C 억제제 내성 후 재검사',
+    sub:'소토라십·아다그라십 진행 시',
+    steps:[
+      {num:'1', title:'KRAS 2차 변이 확인',
+       desc:'Y96D, H95R 등 switch II pocket 변이로 인한 내성. 다음 세대 KRAS 억제제 임상시험 참여.',
+       markers:['NGS: KRAS Y96D, H95R']},
+      {num:'2', title:'Bypass 경로 확인',
+       desc:'EGFR, MET, RET 등 bypass 활성화 확인. 광범위 NGS로 동반 변이 탐색.',
+       markers:['광범위 NGS 패널']}
+    ]
+  }
+];
+
+function buildResistPanel() {
+  const panel = document.getElementById('panel-resist');
+  if (panel.innerHTML.trim()) return; // already built
+  panel.innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;margin-bottom:16px">
+      <div style="font-size:13px;font-weight:700;color:#9a3412;margin-bottom:4px">🔄 내성 발생 후 재검사 가이드</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:12px">표적치료제 사용 중 내성(치료 실패)이 발생했을 때 어떤 바이오마커를 다시 검사해야 하는지 안내합니다.</div>
+      ${RESIST_DATA.map(r => `
+        <div class="resist-card">
+          <div class="resist-header" onclick="toggleResist('rb-${r.id}')">
+            <div>
+              <div class="resist-title">${r.gene} — ${r.title}</div>
+              <div class="resist-sub">${r.sub}</div>
+            </div>
+            <span style="color:#c2410c;font-size:18px;transition:transform .2s" id="ri-${r.id}">+</span>
+          </div>
+          <div class="resist-body" id="rb-${r.id}">
+            ${r.steps.map(s => `
+              <div class="resist-step">
+                <div class="resist-step-num">${s.num}</div>
+                <div class="resist-step-content">
+                  <div class="resist-step-title">${s.title}</div>
+                  <div class="resist-step-desc">${s.desc}</div>
+                  ${s.markers ? `<div class="resist-marker-chips">${s.markers.map(m=>`<span class="rmc">${m}</span>`).join('')}</div>` : ''}
+                </div>
+              </div>`).join('')}
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+function toggleResist(id) {
+  const body = document.getElementById(id);
+  const icon = document.getElementById('ri-' + id.replace('rb-',''));
+  const open = body.classList.toggle('open');
+  icon.textContent = open ? '×' : '+';
+}
+
+/* ── DRUG LOOKUP ── */
+const DRUG_DB = [
+  {name:'오시머티닙 (osimertinib)', aliases:['타그리소','tagrisso','osimertinib','osi'], marker:'EGFR', mutation:'Classical(Exon19/21) 또는 T790M', tests:['Real-time PCR (EGFR)','NGS 패널'], line:'1차(Classical) / 2차(T790M)', note:'3세대 EGFR TKI. Exon20ins에는 사용 불가.'},
+  {name:'아미반타맙 (amivantamab)', aliases:['rybrevant','amivantamab'], marker:'EGFR', mutation:'Exon 20 삽입 또는 Classical(+라제르티닙)', tests:['NGS 패널 (Exon20 ins)'], line:'1차', note:'Exon20ins: 화학요법 병용. Classical: 라제르티닙 병용(MARIPOSA).'},
+  {name:'라제르티닙 (lazertinib)', aliases:['렉라자','leclaza','lazertinib'], marker:'EGFR', mutation:'Classical(Exon19/21)', tests:['Real-time PCR','NGS'], line:'1차 (아미반타맙 병용)', note:'MARIPOSA 연구. 아미반타맙과 병용.'},
+  {name:'게피티닙 (gefitinib)', aliases:['이레사','iressa','gefitinib'], marker:'EGFR', mutation:'Classical(Exon19/21)', tests:['Real-time PCR','NGS'], line:'1차', note:'1세대 EGFR TKI.'},
+  {name:'엘로티닙 (erlotinib)', aliases:['타쎄바','tarceva','erlotinib'], marker:'EGFR', mutation:'Classical(Exon19/21)', tests:['Real-time PCR','NGS'], line:'1차', note:'1세대 EGFR TKI.'},
+  {name:'아파티닙 (afatinib)', aliases:['지오트립','giotrif','afatinib'], marker:'EGFR', mutation:'Classical 및 Uncommon(S768I, L861Q, G719X)', tests:['Real-time PCR','NGS'], line:'1차', note:'2세대 EGFR TKI. Uncommon에서 preferred.'},
+  {name:'다코미티닙 (dacomitinib)', aliases:['비짐프로','vizimpro','dacomitinib'], marker:'EGFR', mutation:'Classical(Exon19/21)', tests:['Real-time PCR','NGS'], line:'1차', note:'2세대 EGFR TKI.'},
+  {name:'모보세르티닙 (mobocertinib)', aliases:['엑스키비티','exkivity','mobocertinib'], marker:'EGFR', mutation:'EGFR Exon 20 삽입', tests:['NGS'], line:'2차', note:'Exon20ins 특화.'},
+  {name:'알렉티닙 (alectinib)', aliases:['알레센자','alecensa','alectinib'], marker:'ALK', mutation:'ALK 융합', tests:['IHC (D5F3)','FISH','RNA NGS'], line:'1차 및 보조치료', note:'ALK 1차 Preferred. 완전절제 후 보조치료도 Cat.1.'},
+  {name:'브리가티닙 (brigatinib)', aliases:['알룬브릭','alunbrig','brigatinib'], marker:'ALK', mutation:'ALK 융합', tests:['IHC','RNA NGS'], line:'1차', note:'Category 1.'},
+  {name:'로라티닙 (lorlatinib)', aliases:['로브레나','lobrena','lorlatinib'], marker:'ALK', mutation:'ALK 융합 (내성 포함 G1202R)', tests:['RNA NGS'], line:'1차 또는 내성 후 2차', note:'3세대 ALK TKI.'},
+  {name:'세리티닙 (ceritinib)', aliases:['자이카디아','zykadia','ceritinib'], marker:'ALK', mutation:'ALK 융합', tests:['IHC','RNA NGS'], line:'1차 또는 2차', note:'Category 1.'},
+  {name:'크리조티닙 (crizotinib)', aliases:['잘코리','xalkori','crizotinib'], marker:'ALK / ROS1 / MET', mutation:'ALK 융합, ROS1 융합, MET 증폭', tests:['IHC','FISH','RNA NGS'], line:'구세대 1차', note:'현재는 후순위.'},
+  {name:'레포트렉티닙 (repotrectinib)', aliases:['어거빅','augtyro','repotrectinib'], marker:'ROS1 / NTRK', mutation:'ROS1 융합, NTRK 융합', tests:['RNA NGS'], line:'1차 (ROS1 Preferred)', note:'ROS1 및 NTRK에 효과. 뇌전이 포함.'},
+  {name:'엔트렉티닙 (entrectinib)', aliases:['로즐리트렉','rozlytrek','entrectinib'], marker:'ROS1 / NTRK', mutation:'ROS1 융합, NTRK1/2/3 융합', tests:['RNA NGS','IHC (pan-TRK)'], line:'1차', note:'종양불문 승인(NTRK).'},
+  {name:'라로트렉티닙 (larotrectinib)', aliases:['비트락비','vitrakvi','larotrectinib'], marker:'NTRK', mutation:'NTRK1/2/3 융합', tests:['RNA NGS','IHC (pan-TRK)'], line:'1차 (종양불문)', note:'NTRK 융합 종양불문 FDA 승인.'},
+  {name:'소토라십 (sotorasib)', aliases:['루마크라스','lumakras','sotorasib'], marker:'KRAS', mutation:'KRAS G12C', tests:['PCR (G12C)','NGS'], line:'2차', note:'KRAS G12C 특이적. 1차는 면역항암 우선.'},
+  {name:'아다그라십 (adagrasib)', aliases:['크라자티','krazati','adagrasib'], marker:'KRAS', mutation:'KRAS G12C', tests:['PCR (G12C)','NGS'], line:'2차', note:'KRAS G12C 특이적.'},
+  {name:'다브라페닙 (dabrafenib)', aliases:['타핀라','tafinlar','dabrafenib'], marker:'BRAF', mutation:'BRAF V600E', tests:['PCR (V600E)','NGS'], line:'1차 (트라메티닙 병용)', note:'반드시 트라메티닙과 병용.'},
+  {name:'트라메티닙 (trametinib)', aliases:['메키니스트','mekinist','trametinib'], marker:'BRAF', mutation:'BRAF V600E', tests:['PCR','NGS'], line:'1차 (다브라페닙 병용)', note:'MEK 억제제.'},
+  {name:'테포티닙 (tepotinib)', aliases:['텝메코','tepmetko','tepotinib'], marker:'MET', mutation:'METex14 skipping', tests:['RNA NGS'], line:'1차', note:'METex14 FDA 승인.'},
+  {name:'카프마티닙 (capmatinib)', aliases:['타브렉타','tabrecta','capmatinib'], marker:'MET', mutation:'METex14 skipping', tests:['RNA NGS'], line:'1차', note:'METex14 FDA 승인.'},
+  {name:'셀퍼카티닙 (selpercatinib)', aliases:['레테브모','retevmo','selpercatinib'], marker:'RET', mutation:'RET 융합', tests:['RNA NGS'], line:'1차', note:'RET 융합 FDA 승인.'},
+  {name:'프랄세티닙 (pralsetinib)', aliases:['가브레토','gavreto','pralsetinib'], marker:'RET', mutation:'RET 융합', tests:['RNA NGS'], line:'1차', note:'RET 융합 FDA 승인.'},
+  {name:'트라스투주맙 데룩스테칸 (trastuzumab deruxtecan, T-DXd)', aliases:['T-DXd','엔허투','enhertu','trastuzumab deruxtecan'], marker:'ERBB2/HER2', mutation:'ERBB2 Exon20 삽입', tests:['NGS (Exon20 ins)','IHC (HER2 3+)'], line:'1차', note:'HER2 돌연변이 FDA 승인.'},
+  {name:'펨브롤리주맙 (pembrolizumab)', aliases:['키트루다','keytruda','pembrolizumab','pembro'], marker:'PD-L1 / TMB', mutation:'TPS≥50% 또는 TMB-H(≥10)', tests:['IHC (22C3)','NGS (TMB)'], line:'1차 (TPS≥50% 단독)', note:'TPS 1~49%: 화학요법 병용. TMB-H: 종양불문.'},
+  {name:'아테졸리주맙 (atezolizumab)', aliases:['티쎈트릭','tecentriq','atezolizumab'], marker:'PD-L1 / SCLC', mutation:'PD-L1 발현 무관(SCLC)', tests:['IHC (SP142)'], line:'1차', note:'NSCLC: SP142 클론. SCLC: 발현 무관.'},
+  {name:'더발루맙 (durvalumab)', aliases:['임핀지','imfinzi','durvalumab'], marker:'PD-L1 / SCLC', mutation:'PD-L1 발현 무관(SCLC)', tests:['IHC (28-8)'], line:'1차', note:'SCLC: 발현 무관. CASPIAN 연구. 절제불가 III기 공고요법(EGFR 음성 시).'},
+  {name:'니볼루맙 (nivolumab)', aliases:['옵디보','opdivo','nivolumab','nivo'], marker:'PD-L1 / TMB', mutation:'PD-L1 발현 또는 TMB-H', tests:['IHC (28-8)'], line:'1차 또는 2차', note:'NSCLC 2차, 일부 1차.'},
+  {name:'세미플리맙 (cemiplimab)', aliases:['리브타요','libtayo','cemiplimab'], marker:'PD-L1', mutation:'TPS ≥50%', tests:['IHC'], line:'1차', note:'TPS ≥50% 단독요법. Category 1.'},
+  {name:'타르라타맙 (tarlatamab)', aliases:['이므델트라','imdelltra','tarlatamab'], marker:'DLL3', mutation:'DLL3 과발현 (발현 무관 투여 가능)', tests:['IHC (DLL3, 참고용)'], line:'2차 이후 (SCLC)', note:'DLL3×CD3 BiTE 항체. FDA 2024 승인.'},
+  {name:'다토포타맙 데룩스테칸 (datopotamab deruxtecan)', aliases:['dato-dxd','datopotamab','datopotamab deruxtecan'], marker:'EGFR', mutation:'EGFR Classical (2차)', tests:['PCR','NGS'], line:'2차 Preferred', note:'오시머티닙+화학요법 후 진행 시 2차 Preferred.'},
+];
+
+function onDrugSearch(val) {
+  const v = val.trim().toLowerCase();
+  const resultsEl = document.getElementById('drugResults');
+  if (!v) {
+    resultsEl.innerHTML = '<div class="drug-empty">약제명을 입력하면 관련 바이오마커와 필요 검사를 안내합니다.</div>';
+    return;
+  }
+  const matched = DRUG_DB.filter(d =>
+    d.name.toLowerCase().includes(v) ||
+    (d.aliases||[]).some(a => a.toLowerCase().includes(v))
+  );
+  if (!matched.length) {
+    resultsEl.innerHTML = `<div class="drug-empty">"${val}"에 해당하는 약제를 찾을 수 없습니다.<br><span style="font-size:11px">일반명 또는 상품명으로 검색해보세요.</span></div>`;
+    return;
+  }
+  resultsEl.innerHTML = matched.map(d => `
+    <div class="drug-result-card">
+      <div class="drug-result-name">💊 ${d.name}
+        ${(d.aliases||[]).slice(0,2).map(a=>`<span style="font-size:10px;color:var(--muted);font-weight:400">${a}</span>`).join('')}
+      </div>
+      <div class="drug-result-rows">
+        <div class="drug-result-row"><span class="drug-result-label">표적 마커</span><span class="drug-result-val"><strong style="color:#2563eb">${d.marker}</strong></span></div>
+        <div class="drug-result-row"><span class="drug-result-label">대상 변이</span><span class="drug-result-val">${d.mutation}</span></div>
+        <div class="drug-result-row"><span class="drug-result-label">필요 검사</span><span class="drug-result-val">${d.tests.map(t=>`<span style="background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;font-size:10px;padding:1px 6px;border-radius:4px;margin:1px;display:inline-block">${t}</span>`).join('')}</span></div>
+        <div class="drug-result-row"><span class="drug-result-label">치료 라인</span><span class="drug-result-val">${d.line}</span></div>
+        <div class="drug-result-row"><span class="drug-result-label">참고</span><span class="drug-result-val">${d.note}</span></div>
+      </div>
+    </div>`).join('');
+}
+
+/* ── INSURANCE DATA — injected per marker in MARKERS ── */
+// Insurance info is added inline in MARKERS data below via addInsuranceToMarkers()
+function addInsuranceToMarkers() {
+  const INS = {
+    egfr: {rows:[
+      {label:'EGFR PCR (동반진단 키트)', value:'급여 100%', cls:'iv-full'},
+      {label:'EGFR NGS (진행성·전이성)', value:'선별급여 50%', cls:'iv-50'},
+    ], note:'EGFR 동반진단 키트(ddPCR)는 환자 부담 없음.'},
+    alk: {rows:[
+      {label:'ALK IHC', value:'급여 적용', cls:'iv-cond'},
+      {label:'ALK FISH', value:'급여 적용', cls:'iv-cond'},
+      {label:'ALK NGS (진행성·전이성)', value:'선별급여 50%', cls:'iv-50'},
+    ], note:'IHC·FISH 세부 본인부담률은 기관·조건에 따라 상이.'},
+    ros1: {rows:[
+      {label:'ROS1 FISH', value:'급여 적용', cls:'iv-cond'},
+      {label:'ROS1 NGS (진행성·전이성)', value:'선별급여 50%', cls:'iv-50'},
+    ], note:''},
+    kras: {rows:[
+      {label:'KRAS G12C PCR', value:'급여 적용', cls:'iv-cond'},
+      {label:'KRAS NGS (진행성·전이성)', value:'선별급여 50%', cls:'iv-50'},
+    ], note:''},
+    braf: {rows:[
+      {label:'BRAF PCR', value:'급여 적용', cls:'iv-cond'},
+      {label:'BRAF NGS (진행성·전이성)', value:'선별급여 50%', cls:'iv-50'},
+    ], note:''},
+    met: {rows:[
+      {label:'MET FISH (증폭)', value:'급여 적용', cls:'iv-cond'},
+      {label:'MET NGS (진행성·전이성)', value:'선별급여 50%', cls:'iv-50'},
+      {label:'카프마티닙·테포티닙 (약제)', value:'비급여', cls:'iv-none'},
+    ], note:'MET TKI 약제는 현재 비급여 — 환자 전액 부담.'},
+    ret: {rows:[
+      {label:'RET NGS (진행성·전이성)', value:'선별급여 50%', cls:'iv-50'},
+      {label:'셀퍼카티닙·프랄세티닙 (약제)', value:'비급여', cls:'iv-none'},
+    ], note:'RET 억제제 약제는 현재 비급여.'},
+    ntrk: {rows:[
+      {label:'NTRK IHC (pan-TRK)', value:'급여 적용', cls:'iv-cond'},
+      {label:'NTRK NGS (진행성·전이성)', value:'선별급여 50%', cls:'iv-50'},
+    ], note:''},
+    erbb2: {rows:[
+      {label:'HER2 IHC', value:'급여 적용', cls:'iv-cond'},
+      {label:'HER2 FISH', value:'급여 적용', cls:'iv-cond'},
+      {label:'ERBB2 NGS (진행성·전이성)', value:'선별급여 50%', cls:'iv-50'},
+    ], note:''},
+    pdl1: {rows:[
+      {label:'PD-L1 IHC', value:'급여 적용', cls:'iv-cond'},
+    ], note:'동반진단 키트(22C3 등) 기준. 세부 기관별 상이.'},
+    tmb: {rows:[
+      {label:'TMB (NGS, 진행성·전이성)', value:'선별급여 50%', cls:'iv-50'},
+    ], note:'NGS 패널에 포함 시 TMB 동시 측정.'},
+    'sclc-dll3': {rows:[
+      {label:'DLL3 IHC', value:'급여여부 미확정', cls:'iv-cond'},
+      {label:'타르라타맙 (약제)', value:'급여여부 미확정', cls:'iv-cond'},
+    ], note:'2024년 FDA 승인 신약 — 국내 급여 기준 확인 필요.'},
+  };
+  MARKERS.forEach(m => {
+    if (INS[m.id]) m.insurance = INS[m.id];
+  });
+}
+
+/* ── ctDNA DATA ── */
+function addCtdnaToMarkers() {
+  const CTDNA = {
+    egfr: [
+      'EGFR classical mutation(Exon19/21)은 혈액 ctDNA ddPCR로 검출 가능 — 조직 생검 어려울 때 대안으로 권고',
+      '조직+혈액 동시 검사 시 검출률 향상 (NCCN 권고)',
+      '민감도 한계: 소량 종양부담(early stage, 단일 전이) 시 위음성 가능 — 음성이어도 조직 재검 고려',
+      'T790M 내성 확인 시 혈액 ctDNA가 조직 생검 대비 빠르고 비침습적 — 단, 조직 내성 기전을 모두 반영하지 못할 수 있음',
+    ],
+    alk: [
+      '혈액 ctDNA로 ALK 융합전사체 검출 어려움 — 조직 생검 우선',
+      'RNA-based ctDNA 기술 개발 중이나 현재 임상 표준 아님',
+    ],
+    ros1: [
+      'ctDNA로 ROS1 융합 검출 민감도 낮음 — 조직 RNA NGS 우선',
+      'FIG-ROS1 등 일부 변이는 FISH·ctDNA 모두 검출 어려움',
+    ],
+    kras: [
+      'KRAS G12C는 혈액 ctDNA ddPCR로 검출 가능 — 신속 확인 목적으로 활용',
+      '치료 중 ctDNA G12C 수치 변화로 치료 반응 모니터링 가능 (연구 단계)',
+    ],
+    braf: [
+      'BRAF V600E는 ctDNA ddPCR로 검출 가능',
+      'non-V600E 변이는 NGS 기반 ctDNA 검사 필요',
+    ],
+    met: [
+      'METex14 skip은 ctDNA RNA 검사에서 민감도 낮음 — 조직 RNA NGS 우선',
+      'MET 증폭(copy number)은 ctDNA NGS로 일부 검출 가능하나 위음성 주의',
+      'EGFR 내성 후 MET 증폭 확인 시 ctDNA 활용 가능 (신속, 비침습적)',
+    ],
+    ret: ['RET 융합은 ctDNA에서 검출 민감도 낮음 — 조직 RNA NGS 우선 권고'],
+    ntrk: ['NTRK 융합은 ctDNA 검출 어려움 — 조직 RNA NGS 필수'],
+    erbb2: [
+      'ERBB2 Exon20 삽입은 ctDNA NGS로 검출 가능',
+      'HER2 증폭 copy number는 ctDNA로 일부 평가 가능',
+    ],
+    pdl1: ['PD-L1은 단백 발현 바이오마커로 ctDNA와 무관 — 반드시 IHC(조직 검사)로만 측정'],
+    tmb: [
+      '혈액 TMB(bTMB)는 tissue TMB와 상관성 있으나 완전히 대체 불가',
+      'ctDNA 기반 bTMB는 일부 플랫폼에서 측정 가능하나 cut-off 표준화 미비',
+    ],
+  };
+  MARKERS.forEach(m => {
+    if (CTDNA[m.id]) m.ctdna = CTDNA[m.id];
+  });
+}
+
 /* Init */
+addInsuranceToMarkers();
+addCtdnaToMarkers();
 renderAll();
 </script>
 </body>
