@@ -612,7 +612,7 @@ h1 span{color:#2563eb}
     <span class="meta-chip mc-green">SCLC v2.2026</span>
     <span class="meta-chip mc-amber">단계별 검사 전략 포함</span>
     <span class="meta-chip" style="background:#f5f3ff;border-color:#ddd6fe;color:#5b21b6">ver 3.1</span>
-    <span class="meta-chip" style="background:#f8fafc;border-color:#cbd5e1;color:#64748b;cursor:pointer" onclick="showSecPanel('changelog',document.getElementById('tab-changelog'))">📋 업데이트 이력</span>
+    <span class="meta-chip" style="background:#f8fafc;border-color:#cbd5e1;color:#64748b;cursor:pointer" onclick="toggleChangelog(this)">📋 업데이트 이력</span>
     <div class="print-btn no-print" onclick="window.print()">🖨️ 인쇄</div>
   </div>
 </div>
@@ -1536,6 +1536,26 @@ let currentNccn = 'all';
 /* ============================================================
    RENDER
    ============================================================ */
+function toggleChangelog(el) {
+  const panel = document.getElementById('panel-changelog');
+  const isOpen = panel.classList.contains('show');
+  // 모든 패널·탭 닫기
+  document.querySelectorAll('#mainNav .sec-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel-section').forEach(p => p.classList.remove('show'));
+  if (!isOpen) {
+    panel.classList.add('show');
+    showMainContent(false);
+    el.style.background = '#f5f3ff';
+    el.style.borderColor = '#ddd6fe';
+    el.style.color = '#5b21b6';
+  } else {
+    el.style.background = '#f8fafc';
+    el.style.borderColor = '#cbd5e1';
+    el.style.color = '#64748b';
+    if (currentMain) showMainContent(true);
+  }
+}
+
 function showMainContent(show) {
   const mc = document.getElementById('mainContent');
   if (show) mc.classList.add('show'); else mc.classList.remove('show');
